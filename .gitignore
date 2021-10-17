@@ -1,1 +1,5 @@
 *.DS_Store
+*.import
+tests/metadata.json
+tests/results.xml
+builds/
