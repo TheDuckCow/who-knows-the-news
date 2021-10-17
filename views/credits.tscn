@@ -1,0 +1,15 @@
+[gd_scene format=2]
+
+[node name="credits" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+bbcode_enabled = true
+bbcode_text = "Font: [Public sans](https://github.com/uswds/public-sans/tree/develop/fonts)"
+text = "Font: [Public sans](https://github.com/uswds/public-sans/tree/develop/fonts)"
