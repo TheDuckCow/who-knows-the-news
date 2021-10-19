@@ -1,8 +1,7 @@
+## Primary controller for the scramble game screen.
 extends Control
 
 const ScrambleState = preload("res://logic/scramble_state.gd")
-var state: ScrambleState
-
 const LoadScramble = preload("res://logic/load_scramble.gd")
 
 enum ScrambleSource {
@@ -16,6 +15,9 @@ enum ScrambleSource {
 export(ScrambleSource) var source = ScrambleSource.TEST
 
 onready var phrase_label = get_node("VBoxContainer/phrase_state")
+onready var keyboard = get_node("VBoxContainer/keyboard")
+
+var state: ScrambleState
 
 ## Additioanl configuration vars, to be like proto "oneof" messages.
 
@@ -39,6 +41,9 @@ var daily_article_topic: String
 
 func _ready():
 	load_scramble()
+	var res = state.connect("state_updated_phrase", self, "update_phrase_label")
+	if res != OK:
+		push_error("Failed to connect phrase label")
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -52,6 +57,10 @@ func load_scramble():
 			solution = res[0]
 			start = res[1]
 			#[solution, start] = LoadScramble.load_test(0) # Doesn't work.
+		ScrambleSource.TUTORIAL:
+			var res = LoadScramble.load_tutorial(0)
+			solution = res[0]
+			start = res[1]
 		_:
 			print("No match to scramble source")
 

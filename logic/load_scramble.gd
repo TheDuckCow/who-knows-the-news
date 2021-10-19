@@ -6,6 +6,9 @@ const TEST_VALUES = {
 	1: ["Hello World!", {"h":"z", "e":"u", "l":"q"}]
 }
 
+const TUTORIAL_VALUES = {
+}
+
 const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
 
 ## Generate a random, valid scramble transform.
@@ -13,7 +16,7 @@ const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
 ## Output is a dict of all 26 english start-end character mappings, no repeats.
 static func generate_transform():
 	var transform = {}
-	var num = len(ONLY_SCRAMBLE_CHARS)
+	#var num = len(ONLY_SCRAMBLE_CHARS)
 	
 	var available = []
 	for ch in ONLY_SCRAMBLE_CHARS:
@@ -79,6 +82,15 @@ static func load_test(index:int):
 	print_debug("Raw data for selected test: ", TEST_VALUES[index])
 	var solution = TEST_VALUES[index][0]
 	var transform = TEST_VALUES[index][1]
+	var start = apply_scramble(solution, transform)
+	var ret = [solution, start]
+	return ret
+
+
+static func load_tutorial(index:int):
+	print_debug("Raw data for selected test: ", TUTORIAL_VALUES[index])
+	var solution = TUTORIAL_VALUES[index][0]
+	var transform = TUTORIAL_VALUES[index][1]
 	var start = apply_scramble(solution, transform)
 	var ret = [solution, start]
 	return ret
