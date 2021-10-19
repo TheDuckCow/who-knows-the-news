@@ -2,6 +2,7 @@
 extends Reference
 
 signal state_updated_phrase
+signal puzzle_solved
 
 var solution_phrase: String
 var starting_phrase: String
@@ -38,7 +39,6 @@ func swap_chars(a:String, b:String):
 	var updated := false
 	if len(a) != 1 or len(b) != 1:
 		push_error("Wrong length for character swaps")
-	print_debug("Swapping chars ", a, b)
 	for ind in range(len(current_phrase)):
 		if current_phrase[ind].to_lower() == a.to_lower():
 			if current_phrase[ind] == a.to_lower():
@@ -63,5 +63,5 @@ func check_solved():
 		return
 	end_msec = OS.get_ticks_msec()
 	is_solved = true
-	print("Puzzle solved")
-	# TODO: raise signal.
+	print("Puzzle solved!")
+	emit_signal("puzzle_solved")

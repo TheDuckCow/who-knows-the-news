@@ -12,6 +12,9 @@ signal key_pressed(character)
 onready var KeyButton = preload("res://keyboard/key_button.tscn")
 onready var game_scene = get_node("../../")
 
+# Way to disable the keyboard if needed, e.g. on game win.
+var is_active := true
+
 # Keyboard layouts, where r0 = first, top row of keys.
 # Intent is to only show keys that would be swappable.
 # TODO: Create special keys, such as ".." for spacer.
@@ -71,8 +74,8 @@ func add_key_to_row(parent_row:HBoxContainer, key:String) -> void:
 
 ## When a new character is pressed by shortcut key or virtual key press.
 func on_key_pressed(character:String) -> void:
-	print("Pressed key: ", character)
-	# TODO: verify if scene in game mode still, or if ended.
+	if not is_active:
+		return
 	if mid_swap == "":
 		mid_swap = character
 		highlight_key(character, true)

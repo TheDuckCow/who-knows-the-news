@@ -16,6 +16,7 @@ export(ScrambleSource) var source = ScrambleSource.TEST
 
 onready var phrase_label = get_node("VBoxContainer/phrase_state")
 onready var keyboard = get_node("VBoxContainer/keyboard")
+onready var step_label = get_node("VBoxContainer/top_spacer/HBoxContainer/steps")
 
 var state: ScrambleState
 
@@ -44,6 +45,9 @@ func _ready():
 	var res = state.connect("state_updated_phrase", self, "update_phrase_label")
 	if res != OK:
 		push_error("Failed to connect phrase label")
+	res = state.connect("puzzle_solved", self, "_on_puzzle_solved")
+	if res != OK:
+		push_error("Failed to connect puzzle solved")
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -68,10 +72,21 @@ func load_scramble():
 	update_phrase_label()
 	print(state.current_phrase)
 
+func _process(delta):
+	var t
+	if state.is_solved:
+		t = state.end_msec - state.start_msec
+	else:
+		t = OS.get_ticks_msec() - state.start_msec
+	var txt = "%s steps, %ss" % [
+		state.turns_taken,
+		int(t/1000)
+	]
+	step_label.text = txt
 
 func update_phrase_label():
 	phrase_label.bbcode_text = "[center]%s[/center]" % state.current_phrase
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func _on_puzzle_solved():
+	keyboard.is_active = false
