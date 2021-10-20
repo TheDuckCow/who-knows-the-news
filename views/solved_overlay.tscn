@@ -1,0 +1,180 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/medio/medio_20.tres" type="DynamicFont" id=3]
+[ext_resource path="res://views/solved_overlay.gd" type="Script" id=4]
+
+[sub_resource type="Animation" id=2]
+resource_name = "animate_in"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("anim_control:anchor_top")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0.139, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("anim_control:modulate:a")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.407843, 0.407843, 0.407843, 1 )
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color( 0, 0, 0, 0.141176 )
+shadow_size = 10
+shadow_offset = Vector2( 5, 5 )
+
+[node name="solved_overlay" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "animate_in"
+anims/animate_in = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0.5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.227451 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="anim_control" type="Control" parent="."]
+modulate = Color( 1, 1, 1, 0.905246 )
+anchor_top = 0.0131708
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="anim_control"]
+anchor_left = 0.2
+anchor_top = 0.4
+anchor_right = 0.8
+anchor_bottom = 0.45
+margin_right = 40.0
+margin_bottom = 68.0
+rect_min_size = Vector2( 0, 60 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="anim_control/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="anim_control/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="anim_control/Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 5.0
+margin_bottom = -3.57851
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="puzzle_solved_static" type="Label" parent="anim_control/Control/VBoxContainer"]
+margin_right = 520.0
+margin_bottom = 51.0
+custom_fonts/font = ExtResource( 2 )
+text = "Puzzle Solved!"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="stats" type="Label" parent="anim_control/Control/VBoxContainer"]
+margin_top = 55.0
+margin_right = 520.0
+margin_bottom = 91.0
+text = "In xyz"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="anim_control/Control"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 20.0
+margin_right = -10.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="menu" type="Button" parent="anim_control/Control/HBoxContainer"]
+margin_right = 240.0
+margin_bottom = 27.0
+focus_neighbour_left = NodePath("../leaderboard_name")
+focus_neighbour_top = NodePath("../leaderboard_name")
+focus_neighbour_right = NodePath("../leaderboard_name")
+focus_neighbour_bottom = NodePath("../leaderboard_name")
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Back to menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="leaderboard_name" type="Button" parent="anim_control/Control/HBoxContainer"]
+margin_left = 260.0
+margin_right = 500.0
+margin_bottom = 27.0
+focus_neighbour_left = NodePath("../menu")
+focus_neighbour_top = NodePath("../menu")
+focus_neighbour_right = NodePath("../menu")
+focus_neighbour_bottom = NodePath("../menu")
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 3 )
+text = "Enter leaderboard name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="anim_control/Control/HBoxContainer/menu" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="anim_control/Control/HBoxContainer/leaderboard_name" to="." method="_on_leaderboard_name_pressed"]

@@ -3,6 +3,7 @@ extends Control
 
 const ScrambleState = preload("res://logic/scramble_state.gd")
 const LoadScramble = preload("res://logic/load_scramble.gd")
+const SolvedOverlay = preload("res://views/solved_overlay.tscn")
 
 enum ScrambleSource {
 	TEST,
@@ -90,3 +91,5 @@ func update_phrase_label():
 
 func _on_puzzle_solved():
 	keyboard.is_active = false
+	var solve_popup = SolvedOverlay.instance()
+	add_child(solve_popup)

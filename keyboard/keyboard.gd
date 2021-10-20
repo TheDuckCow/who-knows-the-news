@@ -1,6 +1,8 @@
 ## Defines the overall size of the interactiv keyboard.
 extends Control
 
+const LoadScramble = preload("res://logic/load_scramble.gd")
+
 enum LayoutType {
 	US
 }
@@ -75,6 +77,9 @@ func add_key_to_row(parent_row:HBoxContainer, key:String) -> void:
 ## When a new character is pressed by shortcut key or virtual key press.
 func on_key_pressed(character:String) -> void:
 	if not is_active:
+		return
+	if not character.to_lower() in LoadScramble.ONLY_SCRAMBLE_CHARS:
+		# Skip other characters like esc etc.
 		return
 	if mid_swap == "":
 		mid_swap = character

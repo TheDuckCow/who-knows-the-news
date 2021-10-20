@@ -4,7 +4,7 @@ const GAME_SCENE = "res://views/game_scene.tscn"
 
 
 func _ready():
-	pass
+	$layout/VBoxContainer/play_daily.grab_focus()
 
 
 func _on_play_today_pressed():
