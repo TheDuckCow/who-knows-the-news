@@ -7,9 +7,13 @@ const TEST_VALUES = {
 }
 
 const TUTORIAL_VALUES = {
+	0: ["Fake news", {"f":"k", "a":"e", "k":"s", "e":"a", "n":"f", "w":"n", "s":"w"}], # Hint: Alternative facts
+	1: ["No news is good news", {"n":"o"}], # , Hint: When you don't hear something...
+	2: ["Who Knows the News", {"k":"n"}], # Hint: The name of the game
 }
 
 const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
+
 
 ## Generate a random, valid scramble transform.
 ## 
@@ -21,7 +25,6 @@ static func generate_transform():
 	var available = []
 	for ch in ONLY_SCRAMBLE_CHARS:
 		available.append(ch)
-	print_debug(available)
 	
 	for src in ONLY_SCRAMBLE_CHARS:
 		var selection = available[randi() % available.size()]
@@ -67,7 +70,7 @@ static func apply_scramble(source:String, transform:Dictionary):
 		if not ch in ONLY_SCRAMBLE_CHARS:
 			continue
 		if not ch in lookup:
-			push_error("Char %s no in lookup map" % ch)
+			push_error("Char %s not in lookup map from %s" % [ch, source])
 			return null
 		
 		# Valid match, apply the according upper or lower case letter.
@@ -78,8 +81,8 @@ static func apply_scramble(source:String, transform:Dictionary):
 	return scrambled_string
 
 
-static func load_test(index:int):
-	print_debug("Raw data for selected test: ", TEST_VALUES[index])
+static func load_test(index:int) -> Array:
+	#print_debug("Raw data for selected test: ", TEST_VALUES[index])
 	var solution = TEST_VALUES[index][0]
 	var transform = TEST_VALUES[index][1]
 	var start = apply_scramble(solution, transform)
@@ -87,10 +90,43 @@ static func load_test(index:int):
 	return ret
 
 
-static func load_tutorial(index:int):
-	print_debug("Raw data for selected test: ", TUTORIAL_VALUES[index])
+static func load_tutorial(index:int) -> Array:
+	#print_debug("Raw data for selected test: ", TUTORIAL_VALUES[index])
 	var solution = TUTORIAL_VALUES[index][0]
 	var transform = TUTORIAL_VALUES[index][1]
 	var start = apply_scramble(solution, transform)
 	var ret = [solution, start]
 	return ret
+
+
+## Start loading an article from Google news RSS feed.
+## Caller must run queue_free() node returned.
+##
+## keyphrase: The rss feed to pull from.
+## country_code: Filter for countries, default = US if empty.
+static func get_rss_article_url(keyphrase:String, country_code:String) -> HTTPRequest:
+	if not country_code:
+		country_code = "US"
+	var url = "https://news.google.com/rss/search?q=%s&hl=en-%s" % [
+		keyphrase, country_code
+	]
+	print_debug("Loading article from RSS from: %s" % url)
+	return url
+
+## Non static loader to send request for rss feed values.
+func load_rss_article_request(url) -> HTTPRequest:
+	var http = HTTPRequest.new()
+	http.set_timeout(15) # 15 seconds.
+	add_child(http)
+	http.connect("request_completed", http, "_on_rss_load_parse")
+	http.request(url)
+	return http
+	
+
+func _on_rss_load_parse(result, response_code, headers, body):
+	print_debug("RSS request completed")
+	#var json = JSON.parse(body.get_string_from_utf8())
+	print_debug(body.get_string_from_utf8())
+	
+	# Send "parsed" signal, and then self-destruct here.
+	# queue_free() # Queues free the Loader itself, and any child HTTP nodes.

@@ -31,6 +31,9 @@ margin_left = 40.0
 margin_top = 40.0
 margin_right = -40.0
 margin_bottom = -40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="layout"]
 anchor_right = 1.0
@@ -50,7 +53,7 @@ align = 1
 [node name="play_daily" type="Button" parent="layout/VBoxContainer"]
 margin_top = 61.0
 margin_right = 720.0
-margin_bottom = 360.0
+margin_bottom = 308.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Play Today's Puzzle"
@@ -59,17 +62,27 @@ __meta__ = {
 }
 
 [node name="HSeparator" type="HSeparator" parent="layout/VBoxContainer"]
-margin_top = 370.0
+margin_top = 318.0
 margin_right = 720.0
-margin_bottom = 380.0
+margin_bottom = 328.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="play_prior_day" type="Button" parent="layout/VBoxContainer"]
+margin_top = 338.0
+margin_right = 720.0
+margin_bottom = 380.0
+size_flags_horizontal = 3
+text = "Play a Prior Daily Puzzle"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="custom_topic" type="Button" parent="layout/VBoxContainer"]
 margin_top = 390.0
 margin_right = 720.0
 margin_bottom = 432.0
 size_flags_horizontal = 3
-text = "Play a Prior Daily Puzzle"
+text = "Create Puzzle from Topic"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -100,3 +113,5 @@ fit_content_height = true
 scroll_active = false
 
 [connection signal="pressed" from="layout/VBoxContainer/play_daily" to="." method="_on_play_today_pressed"]
+[connection signal="pressed" from="layout/VBoxContainer/custom_topic" to="." method="_on_custom_topic_pressed"]
+[connection signal="pressed" from="layout/VBoxContainer/Tutorial" to="." method="_on_tutorial_pressed"]

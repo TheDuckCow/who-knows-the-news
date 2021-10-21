@@ -1,4 +1,5 @@
 ## Object structure for maintaining the state of a Scramble.
+class_name ScrambleState
 extends Reference
 
 signal state_updated_phrase

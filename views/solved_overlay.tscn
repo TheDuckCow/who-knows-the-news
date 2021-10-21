@@ -5,7 +5,7 @@
 [ext_resource path="res://fonts/medio/medio_20.tres" type="DynamicFont" id=3]
 [ext_resource path="res://views/solved_overlay.gd" type="Script" id=4]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 resource_name = "animate_in"
 length = 0.5
 tracks/0/type = "value"
@@ -41,7 +41,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.3 )
 }
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.407843, 0.407843, 0.407843, 1 )
 corner_radius_top_left = 10
 corner_radius_top_right = 10
@@ -62,7 +62,7 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "animate_in"
-anims/animate_in = SubResource( 2 )
+anims/animate_in = SubResource( 1 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 modulate = Color( 1, 1, 1, 0.5 )
@@ -97,7 +97,7 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="anim_control/Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -161,7 +161,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="leaderboard_name" type="Button" parent="anim_control/Control/HBoxContainer"]
+[node name="next_button" type="Button" parent="anim_control/Control/HBoxContainer"]
 margin_left = 260.0
 margin_right = 500.0
 margin_bottom = 27.0
@@ -177,4 +177,4 @@ __meta__ = {
 }
 
 [connection signal="pressed" from="anim_control/Control/HBoxContainer/menu" to="." method="_on_menu_pressed"]
-[connection signal="pressed" from="anim_control/Control/HBoxContainer/leaderboard_name" to="." method="_on_leaderboard_name_pressed"]
+[connection signal="pressed" from="anim_control/Control/HBoxContainer/next_button" to="." method="_on_leaderboard_name_pressed"]

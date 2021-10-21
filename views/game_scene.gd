@@ -42,13 +42,7 @@ var daily_article_topic: String
 
 
 func _ready():
-	load_scramble()
-	var res = state.connect("state_updated_phrase", self, "update_phrase_label")
-	if res != OK:
-		push_error("Failed to connect phrase label")
-	res = state.connect("puzzle_solved", self, "_on_puzzle_solved")
-	if res != OK:
-		push_error("Failed to connect puzzle solved")
+	pass
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -63,7 +57,7 @@ func load_scramble():
 			start = res[1]
 			#[solution, start] = LoadScramble.load_test(0) # Doesn't work.
 		ScrambleSource.TUTORIAL:
-			var res = LoadScramble.load_tutorial(0)
+			var res = LoadScramble.load_tutorial(tutorial_index)
 			solution = res[0]
 			start = res[1]
 		_:
@@ -72,8 +66,16 @@ func load_scramble():
 	state = ScrambleState.new(solution, start)
 	update_phrase_label()
 	print(state.current_phrase)
+	
+	# Finally, make connections to this state object now created.
+	var res = state.connect("state_updated_phrase", self, "update_phrase_label")
+	if res != OK:
+		push_error("Failed to connect phrase label")
+	res = state.connect("puzzle_solved", self, "_on_puzzle_solved")
+	if res != OK:
+		push_error("Failed to connect puzzle solved")
 
-func _process(delta):
+func _process(_delta):
 	var t
 	if state.is_solved:
 		t = state.end_msec - state.start_msec
@@ -84,6 +86,7 @@ func _process(delta):
 		int(t/1000)
 	]
 	step_label.text = txt
+
 
 func update_phrase_label():
 	phrase_label.bbcode_text = "[center]%s[/center]" % state.current_phrase
