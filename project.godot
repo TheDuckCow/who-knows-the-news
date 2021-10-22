@@ -201,8 +201,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 SceneTransition="*res://views/scene_transition.tscn"
+Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 
 [display]
 
@@ -219,4 +219,5 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 environment/default_environment="res://default_env.tres"

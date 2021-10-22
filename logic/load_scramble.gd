@@ -192,14 +192,15 @@ func parse_articles_xml(body:PoolByteArray) -> Array:
 		return []
 	
 	var articles = []
-	var mid_article = false
 	var mid_article_data = {}
-	
 	var found_first_itm = false
 	
 	# Idea is to partition by "item", where each item is and then filter down only for sections
 	# which the right attributes
 	while parser.read() != ERR_FILE_EOF:
+		#print_debug(parser.get_node_type())
+		#if parser.get_node_type() != XMLParser.NODE_TEXT:
+		#	continue
 		if parser.get_node_name() == 'item':
 			found_first_itm = true
 			if _is_article_data_complete(mid_article_data):

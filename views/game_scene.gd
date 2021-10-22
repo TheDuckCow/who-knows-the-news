@@ -126,7 +126,7 @@ func _on_puzzle_solved():
 
 func show_article_metadata(article_info) -> void:
 	print_debug(article_info)
-	publisher_info.bbcode_text = "[right][url=%s]%s\n%s" % [
+	publisher_info.bbcode_text = "[right][url=%s]%s[/url]\n%s" % [
 		article_info['link'],
 		article_info['source'],
 		article_info['pubDate']

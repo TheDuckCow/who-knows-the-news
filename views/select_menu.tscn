@@ -103,7 +103,7 @@ margin_right = 720.0
 margin_bottom = 560.0
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = "Game by [url=\"theduckcow.com\"]Patrick W. Crawford (TheDuckCow)[/url]
+bbcode_text = "Game by [url=\"http://theduckcow.com\"]Patrick W. Crawford (TheDuckCow)[/url]
 
 Made for the 2021 [url=https://itch.io/jam/godot-fire-charity-jam-1]\"Godot Fire Charity Jam\"[/url] using the Godot game engine."
 text = "Game by Patrick W. Crawford (TheDuckCow)
