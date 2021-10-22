@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://main_theme.tres" type="Theme" id=1]
+[ext_resource path="res://views/topic_select.gd" type="Script" id=2]
+
+[node name="topic_select" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.372549, 0.372549, 0.372549, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="topic" type="LineEdit" parent="VBoxContainer"]
+margin_right = 760.0
+margin_bottom = 46.0
+placeholder_text = "Politics"
+caret_blink = true
+
+[node name="country" type="OptionButton" parent="VBoxContainer"]
+margin_top = 66.0
+margin_right = 760.0
+margin_bottom = 108.0
+text = "Country"
+
+[node name="language" type="OptionButton" parent="VBoxContainer"]
+margin_top = 128.0
+margin_right = 760.0
+margin_bottom = 170.0
+text = "Language"
+
+[node name="start" type="Button" parent="VBoxContainer"]
+margin_top = 190.0
+margin_right = 760.0
+margin_bottom = 232.0
+text = "Start Puzzle"
+
+[connection signal="pressed" from="VBoxContainer/start" to="." method="_on_start_pressed"]

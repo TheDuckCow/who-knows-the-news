@@ -15,6 +15,11 @@ const TUTORIAL_VALUES = {
 const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
 
 
+signal article_loaded(solution, start)
+signal article_load_failed(reason)
+signal article_metadata(article_dict)
+
+
 ## Generate a random, valid scramble transform.
 ## 
 ## Output is a dict of all 26 english start-end character mappings, no repeats.
@@ -102,31 +107,168 @@ static func load_tutorial(index:int) -> Array:
 ## Start loading an article from Google news RSS feed.
 ## Caller must run queue_free() node returned.
 ##
-## keyphrase: The rss feed to pull from.
+## topic: The rss keyword/phrase feed to pull from.
 ## country_code: Filter for countries, default = US if empty.
-static func get_rss_article_url(keyphrase:String, country_code:String) -> HTTPRequest:
+## language: Language of articles, en for English.
+static func get_rss_article_url(topic:String, country_code:String, language:String) -> HTTPRequest:
 	if not country_code:
 		country_code = "US"
-	var url = "https://news.google.com/rss/search?q=%s&hl=en-%s" % [
-		keyphrase, country_code
+	if not language:
+		language = "en"
+	var url = "https://news.google.com/rss/search?q=%s&hl=%s-%s" % [
+		topic, language, country_code
 	]
 	print_debug("Loading article from RSS from: %s" % url)
 	return url
 
 ## Non static loader to send request for rss feed values.
+## Will fire a signal on http load
 func load_rss_article_request(url) -> HTTPRequest:
 	var http = HTTPRequest.new()
 	http.set_timeout(15) # 15 seconds.
 	add_child(http)
-	http.connect("request_completed", http, "_on_rss_load_parse")
+	http.connect("request_completed", self, "_on_rss_load_parse")
 	http.request(url)
 	return http
 	
 
-func _on_rss_load_parse(result, response_code, headers, body):
-	print_debug("RSS request completed")
-	#var json = JSON.parse(body.get_string_from_utf8())
-	print_debug(body.get_string_from_utf8())
+func _on_rss_load_parse(result, response_code, _headers, body):
+	print_debug("RSS request completed, parse XML now")
+	if response_code != HTTPClient.RESPONSE_OK:
+		emit_signal("article_load_failed", "Non 200 response code (%s): %s" % [
+			response_code, result])
+		return
 	
-	# Send "parsed" signal, and then self-destruct here.
-	# queue_free() # Queues free the Loader itself, and any child HTTP nodes.
+	# Debug mode to save the xml to a file.
+	var debug = false
+	if debug:
+		print_debug("tmp file at: %s/", OS.get_user_data_dir())
+		var save_xml = File.new()
+		var filename = "user://tmp_article_data.xml"
+		save_xml.open(filename, File.WRITE)
+		save_xml.store_buffer(body)
+		#var parser = XMLParser.new()
+		#var err = parser.open(filename)
+	
+	var articles := parse_articles_xml(body)
+	if articles == []:
+		return # Should have already raised signal if needed.
+	
+	var this_article := select_target_article(articles)
+	var solution = this_article["title"]
+	var transform = generate_transform()
+	var initial_state = apply_scramble(solution, transform)
+	
+	emit_signal("article_metadata", this_article) # To load other scene visuals.
+	emit_signal("article_loaded", solution, initial_state) # To load puzzle.
+
+
+## Parse for article data and return in structured way
+##
+## A single article in the RSS xml feed is structured like so:
+## <item>
+##   <title>Playco acquires Goodboy for HTML5 game engine PixiJS - VentureBeat</title>
+##   <link>https://link.com/article/</link>
+##   <guid isPermaLink="false">unique_id</guid>
+##   <pubDate>Tue, 28 Sep 2021 07:00:00 GMT</pubDate>
+##   <description>Description of article with link tags...</description>
+##   <source url="https://link.com">SiteName</source>
+## </item>
+##
+## body: The raw xml response from the http node
+## Returns: array of dictionaries, with structure:
+##   {title, link, pubDate, source}
+func parse_articles_xml(body:PoolByteArray) -> Array:
+	var parser = XMLParser.new()
+	var err = parser.open_buffer(body)
+	if err != OK:
+		push_error("Failed to open response as XML")
+		emit_signal("article_load_failed", "Failed to open response as XML")
+		return []
+	
+	if parser.is_empty():
+		push_error("XML parser found response to be empty")
+		emit_signal("article_load_failed", "XML parser found response to be empty")
+		return []
+	
+	var articles = []
+	var mid_article = false
+	var mid_article_data = {}
+	
+	var found_first_itm = false
+	
+	# Idea is to partition by "item", where each item is and then filter down only for sections
+	# which the right attributes
+	while parser.read() != ERR_FILE_EOF:
+		if parser.get_node_name() == 'item':
+			found_first_itm = true
+			if _is_article_data_complete(mid_article_data):
+				articles.append(mid_article_data)
+			mid_article_data = {}
+		elif found_first_itm == false:
+			continue # Skip all headers before first item tag.
+		var node_name = parser.get_node_name()
+		if not node_name in ['title', 'link', 'pubDate', 'source']:
+			continue
+		if node_name in mid_article_data:
+			continue # Would be a </closing> tag, so skip it.
+		
+		# Do another read to get the next attribute value within this article.
+		parser.read()
+		mid_article_data[node_name] = parser.get_node_data()
+		
+	# Closing condition.
+	if _is_article_data_complete(mid_article_data):
+		articles.append(mid_article_data)
+	
+	print_debug("Parsed data, article count: ", len(articles))
+	return articles
+
+
+## Ensure complete coverage of the required articles keys are present.
+func _is_article_data_complete(article_data:Dictionary) -> bool:
+	if not 'title' in article_data:
+		return false
+	elif not 'link' in article_data:
+		return false
+	elif not 'pubDate' in article_data:
+		return false
+	elif not 'source' in article_data:
+		return false
+	return true
+
+
+## Select a suitable article from the total list of articles present.
+func select_target_article(articles:Array) -> Dictionary:
+	# TODO: Rate by ensuring not too long, some indication of number of chars,
+	# and potentially a flag to decide how difficult or not.
+	# Could also keep a session cache of which article links have already been
+	# used, to avoid repeats.
+
+	# For now, just returning the shortest article by name for ease.
+	var shortest_headline_ind = 0
+	var shortest_headline_len = -1
+	for i in range(len(articles)):
+		print_debug("article: ", articles[i]["title"])
+		
+		# If already known to be too long, try to cut out the org name from
+		# title suffix. Almost every article will end in " - PublisherName",
+		# sometimes it is doubled up e.g. " - Name - Name"
+		var title:String = articles[i]["title"]
+		if len(title) > 40:
+			title = title.split("|", true, 1)[0]
+		if len(title) > 40:
+			title = title.split(" - ", true, 1)[0]
+		
+		print_debug("Shortened: ", title)
+		
+		if shortest_headline_len < 0:
+			shortest_headline_ind = i
+			shortest_headline_len = len(title)
+		elif len(title) < 8:
+			continue # Title is too short (but ok if this is the first)
+		elif len(title) < shortest_headline_len:
+			shortest_headline_ind = i
+			shortest_headline_len = len(title)
+	return articles[shortest_headline_ind]
+	

@@ -20,12 +20,7 @@ func _on_play_today_pressed():
 
 
 func _on_custom_topic_pressed():
-	#assert(get_tree().change_scene(GAME_SCENE) == OK)
-	#var trans = SceneTransition.instance()
-	#add_child(trans)
-	#_transition_rect.transition_to(GAME_SCENE)
-	# TODO: Change to scene transition autoload to pass in vars for gamescene.
-	pass
+	SceneTransition.load_topic_select_scene()
 
 
 func _on_tutorial_pressed():

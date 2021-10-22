@@ -64,7 +64,7 @@ func test_load_tutorials() -> void:
 
 func test_load_rss() -> void:
 	describe("When loading (unmocked) feed from an rss feed")
-	var url = LoadScramble.get_rss_article_url("Godot", "US")
+	var url = LoadScramble.get_rss_article_url("Godot", "US", "en")
 	asserts.is_not_null(url, "generated rss url is not empty")
 	
 	# Must add loader to scene in order to use http request.

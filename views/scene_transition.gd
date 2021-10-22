@@ -4,6 +4,7 @@ extends CanvasLayer
 const GameSceneGd := preload("res://views/game_scene.gd")
 const GameScene := preload("res://views/game_scene.tscn")
 const SelectMenu := preload("res://views/select_menu.tscn")
+const TopicSelect := preload("res://views/topic_select.tscn")
 
 onready var _anim_player := $Control/AnimationPlayer
 onready var _texture_rect := $Control/texture_rect
@@ -55,15 +56,29 @@ func start_tutorial_scene(index:int) -> void:
 	
 	current_scene.source = GameSceneGd.ScrambleSource.TUTORIAL
 	current_scene.tutorial_index = index
-	
-	_anim_player.play("next_page")
 	current_scene.load_scramble()
+	_anim_player.play("next_page")
+
+
+func load_topic_select_scene() -> void:
+	_load_new_scene(TopicSelect)
+	_anim_player.play("next_page")
+
+
+func start_topic_scene(topic:String, country:String, language:String) -> void:
+	_load_new_scene(GameScene)
+	current_scene.source = GameSceneGd.ScrambleSource.TOPIC_ARTICLE
+	current_scene.daily_article_topic = topic
+	current_scene.daily_article_country = country 
+	current_scene.daily_article_language = language
+	current_scene.load_scramble()
+	_anim_player.play("next_page")
 
 
 func _on_animation_finished(_anim_name) -> void:
 	_anim_player.disconnect("animation_finished", self, "_on_animation_finished")
 	print("Finished animation, start the game scene")
 	_texture_rect.visible = false
-	# To put back at start, not visible but avoids initisl jitter.
+	# To put back at start - not visible, avoids jitter on next animation run.
 	_anim_player.play_backwards("next_page")
 
