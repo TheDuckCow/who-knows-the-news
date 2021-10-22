@@ -1,11 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://keyboard/keyboard.tscn" type="PackedScene" id=1]
 [ext_resource path="res://views/game_scene.gd" type="Script" id=2]
+[ext_resource path="res://fonts/medio/medio_20.tres" type="DynamicFont" id=3]
+[ext_resource path="res://main_theme.tres" type="Theme" id=4]
 
 [node name="game_scene" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 4 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -34,17 +37,18 @@ __meta__ = {
 }
 
 [node name="steps" type="Label" parent="VBoxContainer/top_spacer/HBoxContainer"]
-margin_left = 673.0
-margin_top = 13.0
+margin_left = 618.0
+margin_top = 2.0
 margin_right = 720.0
-margin_bottom = 27.0
+margin_bottom = 38.0
 text = "0 steps"
 
 [node name="phrase_state" type="RichTextLabel" parent="VBoxContainer"]
 margin_top = 154.0
 margin_right = 720.0
-margin_bottom = 204.0
+margin_bottom = 368.0
 rect_min_size = Vector2( 0, 50 )
+size_flags_vertical = 3
 bbcode_enabled = true
 bbcode_text = "[center]Hello World[/center]"
 text = "Hello World"
@@ -52,7 +56,7 @@ text = "Hello World"
 [node name="keyboard" parent="VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 208.0
+margin_top = 372.0
 margin_right = 720.0
 margin_bottom = 586.0
 rect_min_size = Vector2( 0, 200 )
@@ -63,3 +67,41 @@ margin_top = 590.0
 margin_right = 720.0
 margin_bottom = 640.0
 rect_min_size = Vector2( 0, 50 )
+
+[node name="publisher_info" type="RichTextLabel" parent="."]
+margin_top = 586.0
+margin_right = 800.0
+margin_bottom = 637.0
+grow_vertical = 0
+custom_fonts/normal_font = ExtResource( 3 )
+bbcode_enabled = true
+bbcode_text = "[right][url=\"\"]Publisher Name[/url]
+Article Date[/right]"
+text = "Publisher Name
+Article Date"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="go_back" type="Button" parent="."]
+margin_left = 14.1223
+margin_top = 13.1222
+margin_right = 94.1223
+margin_bottom = 40.1222
+custom_fonts/font = ExtResource( 3 )
+text = "GO BACK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="show_answer" type="Button" parent="."]
+margin_left = 14.0
+margin_top = 51.0
+margin_right = 114.0
+margin_bottom = 78.0
+custom_fonts/font = ExtResource( 3 )
+text = "GIVE UP"
+
+[connection signal="meta_clicked" from="publisher_info" to="." method="_on_publisher_info_meta_clicked"]
+[connection signal="pressed" from="go_back" to="." method="_on_go_back_pressed"]
+[connection signal="pressed" from="show_answer" to="." method="_on_show_answer_pressed"]

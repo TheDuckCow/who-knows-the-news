@@ -25,3 +25,7 @@ func _on_custom_topic_pressed():
 
 func _on_tutorial_pressed():
 	SceneTransition.start_tutorial_scene(0)
+
+
+func _on_link_clicked(meta):
+	assert(OS.shell_open(meta) == OK)

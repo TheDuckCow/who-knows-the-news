@@ -15,9 +15,10 @@ enum ScrambleSource {
 
 export(ScrambleSource) var source = ScrambleSource.TEST
 
-onready var phrase_label = get_node("VBoxContainer/phrase_state")
-onready var keyboard = get_node("VBoxContainer/keyboard")
-onready var step_label = get_node("VBoxContainer/top_spacer/HBoxContainer/steps")
+onready var phrase_label := get_node("VBoxContainer/phrase_state")
+onready var keyboard := get_node("VBoxContainer/keyboard")
+onready var step_label := get_node("VBoxContainer/top_spacer/HBoxContainer/steps")
+onready var publisher_info := get_node("publisher_info")
 
 var state: ScrambleState
 
@@ -43,6 +44,7 @@ var daily_article_topic: String
 
 func _ready():
 	phrase_label.visible = false # In case of still loading.
+	publisher_info.visible = false
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -68,12 +70,9 @@ func load_scramble():
 			add_child(loader)
 			var _http = loader.load_rss_article_request(url)
 			
-			#yield(loader, "article_load_failed")
-			#yield(loader, "article_loaded")
-			#yield(http, "request_completed")
-			
 			loader.connect("article_loaded", self, "load_state")
 			loader.connect("article_load_failed", self, "load_failed")
+			loader.connect("article_metadata", self, "show_article_metadata")
 		_:
 			load_failed("No match to scramble source")
 
@@ -96,6 +95,7 @@ func load_failed(reason:String):
 	push_error("Failed to load scene with: %s" % reason)
 	# TODO: Handle here, maybe with popup and timer to go back to main menu
 	# to try again.
+	SceneTransition.load_menu_select()
 
 
 func _process(_delta):
@@ -122,3 +122,27 @@ func _on_puzzle_solved():
 	keyboard.is_active = false
 	var solve_popup = SolvedOverlay.instance()
 	add_child(solve_popup)
+
+
+func show_article_metadata(article_info) -> void:
+	print_debug(article_info)
+	publisher_info.bbcode_text = "[right][url=%s]%s\n%s" % [
+		article_info['link'],
+		article_info['source'],
+		article_info['pubDate']
+	]
+	publisher_info.visible = true
+
+
+func _on_go_back_pressed():
+	SceneTransition.load_menu_select()
+
+
+func _on_show_answer_pressed():
+	state.give_up()
+	update_phrase_label()
+	# Display something else..?
+
+
+func _on_publisher_info_meta_clicked(meta):
+	assert(OS.shell_open(meta) == OK)

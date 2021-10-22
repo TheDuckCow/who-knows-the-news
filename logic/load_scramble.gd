@@ -249,8 +249,6 @@ func select_target_article(articles:Array) -> Dictionary:
 	var shortest_headline_ind = 0
 	var shortest_headline_len = -1
 	for i in range(len(articles)):
-		print_debug("article: ", articles[i]["title"])
-		
 		# If already known to be too long, try to cut out the org name from
 		# title suffix. Almost every article will end in " - PublisherName",
 		# sometimes it is doubled up e.g. " - Name - Name"
@@ -260,7 +258,8 @@ func select_target_article(articles:Array) -> Dictionary:
 		if len(title) > 40:
 			title = title.split(" - ", true, 1)[0]
 		
-		print_debug("Shortened: ", title)
+		# print_debug("article: ", articles[i]["title"])
+		# print_debug("Shortened: ", title)
 		
 		if shortest_headline_len < 0:
 			shortest_headline_ind = i

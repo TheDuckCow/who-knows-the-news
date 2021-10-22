@@ -115,3 +115,4 @@ scroll_active = false
 [connection signal="pressed" from="layout/VBoxContainer/play_daily" to="." method="_on_play_today_pressed"]
 [connection signal="pressed" from="layout/VBoxContainer/custom_topic" to="." method="_on_custom_topic_pressed"]
 [connection signal="pressed" from="layout/VBoxContainer/Tutorial" to="." method="_on_tutorial_pressed"]
+[connection signal="meta_clicked" from="layout/VBoxContainer/RichTextLabel" to="." method="_on_link_clicked"]

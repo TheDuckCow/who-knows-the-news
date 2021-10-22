@@ -12,6 +12,7 @@ var current_phrase: String
 var start_msec: int
 var end_msec: int
 var is_solved := false
+var gave_up := false
 
 var article_page_url: String
 var article_image_url: String
@@ -66,3 +67,11 @@ func check_solved():
 	is_solved = true
 	print("Puzzle solved!")
 	emit_signal("puzzle_solved")
+
+func give_up():
+	current_phrase = solution_phrase
+	end_msec = OS.get_ticks_msec()
+	is_solved = true
+	gave_up = true
+	print("Gave up")
+	
