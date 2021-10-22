@@ -51,7 +51,7 @@ rect_min_size = Vector2( 0, 50 )
 size_flags_vertical = 3
 bbcode_enabled = true
 bbcode_text = "[center]Hello World[/center]"
-text = "Hello World"
+text = "[center]Hello World[/center]"
 
 [node name="keyboard" parent="VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
@@ -77,8 +77,8 @@ custom_fonts/normal_font = ExtResource( 3 )
 bbcode_enabled = true
 bbcode_text = "[right][url=\"\"]Publisher Name[/url]
 Article Date[/right]"
-text = "Publisher Name
-Article Date"
+text = "[right][url=\"\"]Publisher Name[/url]
+Article Date[/right]"
 __meta__ = {
 "_edit_use_anchors_": false
 }

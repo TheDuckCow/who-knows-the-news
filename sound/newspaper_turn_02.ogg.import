@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/newspaper_turn_02.ogg-45afd685daea85ecb04903d14820e23d.oggstr"
+
+[deps]
+
+source_file="res://sound/newspaper_turn_02.ogg"
+dest_files=[ "res://.import/newspaper_turn_02.ogg-45afd685daea85ecb04903d14820e23d.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

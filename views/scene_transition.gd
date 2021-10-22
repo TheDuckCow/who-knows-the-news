@@ -8,6 +8,8 @@ const TopicSelect := preload("res://views/topic_select.tscn")
 
 onready var _anim_player := $Control/AnimationPlayer
 onready var _texture_rect := $Control/texture_rect
+onready var _audio_a := $audio_a
+onready var _audio_b := $audio_b
 
 var current_scene: Node
 
@@ -27,7 +29,10 @@ func _process(_delta):
 
 
 func _load_new_scene(scn):
-	assert(_anim_player.connect("animation_finished", self, "_on_animation_finished") == OK)
+	run_random_audio()
+	var res = _anim_player.connect("animation_finished", self, "_on_animation_finished")
+	if res != OK:
+		push_error("Failed to connect animation player")
 	#_anim_player.seek(0, true) # Make sure at start of anim to begin with.
 	# First, capture the current viewport
 	var img = get_viewport().get_texture().get_data()
@@ -82,3 +87,11 @@ func _on_animation_finished(_anim_name) -> void:
 	# To put back at start - not visible, avoids jitter on next animation run.
 	_anim_player.play_backwards("next_page")
 
+
+func run_random_audio():
+	if randf() > 0.5:
+		_audio_a.pitch_scale = 1 + randf() * 0.5
+		_audio_a.play()
+	else:
+		_audio_b.pitch_scale = 1 + randf() * 0.5
+		_audio_b.play()
