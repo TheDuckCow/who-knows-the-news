@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/victory_jingle.mp3-4ab2aeedd266111dc50a7f3259587d4d.mp3str"
+
+[deps]
+
+source_file="res://sound/victory_jingle.mp3"
+dest_files=[ "res://.import/victory_jingle.mp3-4ab2aeedd266111dc50a7f3259587d4d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
