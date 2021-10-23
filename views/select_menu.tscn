@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://views/select_menu.gd" type="Script" id=1]
 [ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=2]
 [ext_resource path="res://main_theme.tres" type="Theme" id=3]
+[ext_resource path="res://fonts/bricktown/Bricktown.otf" type="DynamicFontData" id=4]
 [ext_resource path="res://views/page_background.tscn" type="PackedScene" id=5]
 [ext_resource path="res://sound/hover_crumple.tscn" type="PackedScene" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+extra_spacing_top = -8
+extra_spacing_bottom = -8
+font_data = ExtResource( 4 )
 
 [node name="select_menu" type="Control"]
 anchor_right = 1.0
@@ -38,7 +45,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="game_title_mobile" type="RichTextLabel" parent="layout/VBoxContainer"]
+margin_right = 760.0
+margin_bottom = 76.0
+size_flags_horizontal = 3
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Who Knows
+The News[/center]"
+text = "Who Knows
+The News"
+fit_content_height = true
+
 [node name="play_daily" type="Button" parent="layout/VBoxContainer"]
+margin_top = 86.0
 margin_right = 760.0
 margin_bottom = 322.0
 rect_min_size = Vector2( 0, 75 )

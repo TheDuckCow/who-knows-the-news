@@ -66,9 +66,13 @@ func _ready():
 	
 	assert(keyboard.connect("key_pressed", self, "_on_key_pressed") == OK)
 	
+	# The many attempts of just trying to get the keyboard to display properly.
 	var this_view = get_viewport()
 	this_view.connect("size_changed", self, "_on_screen_size_change")
+	var _startup_timer = get_tree().create_timer(0.6)
+	keyboard.modulate.a = 0
 	_on_screen_size_change()
+	assert(_startup_timer.connect("timeout", self, "_on_screen_size_change") == OK)
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -260,6 +264,7 @@ func _on_reset_pressed():
 
 ## Create a more responsive display.
 func _on_screen_size_change():
+	keyboard.modulate.a = 1
 	if Cache.is_compact_screen_size():
 		scroll_area.margin_top = _v_margin_initial - 30
 		keyboard.use_small_font = true
