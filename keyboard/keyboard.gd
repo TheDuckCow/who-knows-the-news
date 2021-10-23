@@ -92,7 +92,6 @@ func on_key_pressed(character:String) -> void:
 	var focus_button := get_key(character)
 	if focus_button:
 		focus_button.grab_focus()
-	# Raise signal to parent?
 
 
 func get_key(key:String) -> Button:

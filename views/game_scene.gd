@@ -47,6 +47,8 @@ func _ready():
 	phrase_label.visible = false # In case of still loading.
 	publisher_name.visible = false
 	publish_date.visible = false
+	
+	assert(keyboard.connect("key_pressed", self, "_on_key_pressed") == OK)
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -115,9 +117,30 @@ func _process(_delta):
 	step_label.text = txt
 
 
+func _on_key_pressed(_chart):
+	update_phrase_label()
+
+
 func update_phrase_label():
 	phrase_label.visible = true
-	phrase_label.bbcode_text = "[center]%s[/center]" % state.current_phrase
+	var tmp_phrase = []
+	for i in range(len(state.current_phrase)):
+		if state.current_phrase[i] == state.solution_phrase[i]:
+			if state.current_phrase[i] == keyboard.mid_swap and false:
+				# Warn that it's already a valid character, don't swap!
+				tmp_phrase.append("[color=red]%s[/color]" % state.current_phrase[i])
+			else:
+				# Black for already correct charater
+				tmp_phrase.append("[color=black]%s[/color]" % state.current_phrase[i])
+		else:
+			if state.current_phrase[i] == keyboard.mid_swap and false:
+				# Highlight the character being swapped.
+				tmp_phrase.append("[color=blue]%s[/color]" % state.current_phrase[i])
+			else:
+				# Lighter color for not yet confirmed
+				tmp_phrase.append("[color=gray]%s[/color]" % state.current_phrase[i])
+	
+	phrase_label.bbcode_text = "[center]%s[/center]" % PoolStringArray(tmp_phrase).join("")
 
 
 func _on_puzzle_solved():
@@ -144,8 +167,12 @@ func _on_go_back_pressed():
 func _on_show_answer_pressed():
 	state.give_up()
 	update_phrase_label()
-	# Display something else..?
 
 
 func _on_publisher_info_meta_clicked(meta):
 	assert(OS.shell_open(meta) == OK)
+
+
+func _on_reset_pressed():
+	state.reset()
+	update_phrase_label()

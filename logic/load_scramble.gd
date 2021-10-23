@@ -215,8 +215,9 @@ func parse_articles_xml(body:PoolByteArray) -> Array:
 		elif found_first_itm == false:
 			continue # Skip all headers before first item tag.
 		var node_name = parser.get_node_name()
-		if not node_name in ['title', 'link', 'pubDate', 'source']:
+		if not node_name in ['title', 'link', 'pubDate', 'source']: # 'description'
 			continue
+		# TODO: need some special handling of 'description'
 		if node_name in mid_article_data:
 			continue # Would be a </closing> tag, so skip it.
 		
@@ -242,6 +243,8 @@ func _is_article_data_complete(article_data:Dictionary) -> bool:
 		return false
 	elif not 'source' in article_data:
 		return false
+	#elif not 'description' in article_data:
+	#	return false
 	return true
 
 
@@ -255,6 +258,7 @@ func select_target_article(articles:Array) -> Dictionary:
 	# For now, just returning the shortest article by name for ease.
 	var shortest_headline_ind = 0
 	var shortest_headline_len = -1
+	var shortest_title_value = ""
 	for i in range(len(articles)):
 		# If already known to be too long, try to cut out the org name from
 		# title suffix. Almost every article will end in " - PublisherName",
@@ -264,6 +268,7 @@ func select_target_article(articles:Array) -> Dictionary:
 			title = title.split("|", true, 1)[0]
 		if len(title) > 40:
 			title = title.split(" - ", true, 1)[0]
+		shortest_title_value = title
 		
 		# print_debug("article: ", articles[i]["title"])
 		# print_debug("Shortened: ", title)
@@ -276,5 +281,7 @@ func select_target_article(articles:Array) -> Dictionary:
 		elif len(title) < shortest_headline_len:
 			shortest_headline_ind = i
 			shortest_headline_len = len(title)
-	return articles[shortest_headline_ind]
 	
+	# Update the title to the shortened version, and return the whole structure.
+	articles[shortest_headline_ind]['title'] = shortest_title_value
+	return articles[shortest_headline_ind]
