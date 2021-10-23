@@ -8,3 +8,7 @@ cp -r tmp_build/ releases/$TODAY/
 cd releases/$TODAY
 rm who-knows-the-news.zip
 zip who-knows-the-news.zip index.html *.js *.png *.wasm *.pck *.import
+
+echo "Go to: "
+echo "http://localhost:8000/"
+python3 -m http.server
