@@ -15,15 +15,19 @@ enum ScrambleSource {
 
 export(ScrambleSource) var source = ScrambleSource.TEST
 
-onready var phrase_label := get_node("VBoxContainer/phrase_state")
-onready var keyboard := get_node("VBoxContainer/keyboard")
-onready var step_label := get_node("VBoxContainer/HBoxContainer/steps")
-onready var publisher_name := get_node("VBoxContainer/HBoxContainer2/pub_name")
-onready var publish_date := get_node("VBoxContainer/HBoxContainer2/pub_date")
-onready var dscription := get_node("VBoxContainer/description")
-onready var topic_hint := get_node("VBoxContainer/topic_hint")
+onready var phrase_label := get_node("vscroll/VBoxContainer/phrase_state")
+onready var keyboard := get_node("vscroll/VBoxContainer/keyboard")
+onready var step_label := get_node("vscroll/VBoxContainer/status_bar/steps")
+onready var publisher_name := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_name")
+onready var publish_date := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_date")
+onready var dscription := get_node("vscroll/VBoxContainer/description")
+onready var topic_hint := get_node("vscroll/VBoxContainer/topic_hint")
+onready var status_bar := get_node("vscroll/VBoxContainer/status_bar")
+
+onready var spacer_to_del := get_node("vscroll/VBoxContainer/spacer_del_on_finish")
 
 var state: ScrambleState
+var article_link := "https://theduckcow.com" # Populated after load if any.
 
 ## Additioanl configuration vars, to be like proto "oneof" messages.
 
@@ -46,6 +50,7 @@ var daily_article_topic: String
 
 
 func _ready():
+	keyboard.game_scene = self
 	phrase_label.visible = false # In case of still loading.
 	publisher_name.visible = false
 	publish_date.visible = false
@@ -72,7 +77,7 @@ func load_scramble():
 			solution = res[0]
 			start = res[1]
 			load_state(solution, start)
-			show_tutorial_metadata(tutorial_index)
+			show_tutorial_metadata()
 			keyboard.update_allowed_keys(solution)
 		ScrambleSource.TOPIC_ARTICLE:
 			var url = LoadScramble.get_rss_article_url(
@@ -90,6 +95,9 @@ func load_scramble():
 
 
 func load_state(solution, start):
+	if not solution or not start:
+		load_failed("Solution or initial state is null")
+		return
 	state = ScrambleState.new(solution, start)
 	keyboard.update_allowed_keys(solution)
 	update_phrase_label()
@@ -113,9 +121,16 @@ func load_failed(reason:String):
 
 
 func _process(_delta):
+	if not is_instance_valid(step_label):
+		# At the end of the game, this section is dismissed.
+		return
+	step_label.text = get_timer_text()
+
+
+func get_timer_text() -> String:
 	var t
 	if not state:
-		return
+		return ""
 	if state.is_solved:
 		t = state.end_msec - state.start_msec
 	else:
@@ -124,7 +139,7 @@ func _process(_delta):
 		state.turns_taken,
 		int(t/1000)
 	]
-	step_label.text = txt
+	return txt
 
 
 func _on_key_pressed(_chart):
@@ -155,13 +170,31 @@ func update_phrase_label():
 
 
 func _on_puzzle_solved():
+	var container = status_bar.get_node("../")
 	keyboard.is_active = false
-	var solve_popup = SolvedOverlay.instance()
-	add_child(solve_popup)
+	var solve_popup := SolvedOverlay.instance()
+	
+	# Assign the "next" action.
+	if source == ScrambleSource.TUTORIAL:
+		if tutorial_index < len(LoadScramble.TUTORIAL_VALUES) - 1:
+			solve_popup.next_mode = ScrambleSource.TUTORIAL
+			solve_popup.tutorial_index = tutorial_index + 1
+		else:
+			solve_popup.next_mode = ScrambleSource.DAILY_ARTICLE
+	else:
+		solve_popup.next_mode = ScrambleSource.TOPIC_ARTICLE
+	
+	solve_popup.article_link = article_link
+	solve_popup.stat_text = get_timer_text()
+	spacer_to_del.queue_free()
+	container.add_child_below_node(keyboard, solve_popup)
+	status_bar.queue_free()
+	keyboard.queue_free()
 
 
 func show_article_metadata(article_info) -> void:
 	print_debug(article_info)
+	article_link = article_info["link"]
 	publisher_name.bbcode_text = "[url=%s]%s[/url]" % [
 		article_info["link"],
 		article_info["source"]
@@ -172,12 +205,15 @@ func show_article_metadata(article_info) -> void:
 	topic_hint.text = "Category: %s" % daily_article_topic
 
 
-func show_tutorial_metadata(tutorial_index) -> void:
-	publisher_name.text = "Tutorial " + str(tutorial_index)
+func show_tutorial_metadata() -> void:
+	# publisher_name.text = "Tutorial " + str(tutorial_index)
+	publisher_name.bbcode_text = "[url=https://theduckcow.com]Moo-Ack! Productions[/url]"
 	publisher_name.visible = true
+	publish_date.text = ""
+	publish_date.visible = true
 	dscription.visible = true
 	dscription.text = LoadScramble.TUTORIAL_META[tutorial_index][0]
-	topic_hint.text = LoadScramble.TUTORIAL_META[tutorial_index][1]
+	topic_hint.text = "Category: " + LoadScramble.TUTORIAL_META[tutorial_index][1]
 
 
 func _on_go_back_pressed():

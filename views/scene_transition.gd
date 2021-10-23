@@ -15,8 +15,6 @@ var current_scene: Node
 
 
 func _ready():
-	#var root = get_tree().get_root()
-	# current_scene = root.get_child(root.get_child_count() - 1)
 	# No need for an initial animation to fade in.
 	# _anim_player.play_backwards("fade")
 	_texture_rect.visible = false
@@ -79,6 +77,10 @@ func start_topic_scene(topic:String, country:String, language:String) -> void:
 	current_scene.load_scramble()
 	_anim_player.play("next_page")
 
+func load_daily_puzzle():
+	_load_new_scene(GameScene)
+	current_scene.source = GameSceneGd.ScrambleSource.TOPIC_ARTICLE
+
 
 func _on_animation_finished(_anim_name) -> void:
 	_anim_player.disconnect("animation_finished", self, "_on_animation_finished")
@@ -86,6 +88,7 @@ func _on_animation_finished(_anim_name) -> void:
 	_texture_rect.visible = false
 	# To put back at start - not visible, avoids jitter on next animation run.
 	_anim_player.play_backwards("next_page")
+
 
 
 func run_random_audio():

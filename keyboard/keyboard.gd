@@ -12,7 +12,8 @@ enum LayoutType {
 signal key_pressed(character)
 
 onready var KeyButton = preload("res://keyboard/key_button.tscn")
-onready var game_scene = get_node("../../")
+
+var game_scene := Node
 
 # Way to disable the keyboard if needed, e.g. on game win.
 var is_active := true

@@ -8,14 +8,17 @@ const TEST_VALUES = {
 
 const TUTORIAL_VALUES = {
 	0: ["Fake news", {"f":"k", "a":"e", "k":"s", "e":"a", "n":"f", "w":"n", "s":"w"}], # Hint: Alternative facts
-	1: ["No news is good news", {"n":"o"}], # , Hint: When you don't hear something...
-	2: ["Who Knows the News", {"k":"n"}], # Hint: The name of the game
+	1: ["No news is good news", {}], # , Hint: When you don't hear something...
+	2: ["Who Knows the News\nby Patrick W. Crawford", {}], # Hint: The name of the game
 }
 
 const TUTORIAL_META = {
-	0: ["Solve the puzzle by unscrambling the letters above in as few steps as possible. Press two letters in a row to swap them. ", "Alternate Facts"],
-	1: ["Longer phrases may be harder, but take note when gray letters turn black - that means the letter is in the correct spot already!", "When you don't hear something"],
-	2: ["If you are really stuck, you can consider the topic at the top left (what's the hint here? Name of the game?), or even go searching on the publisher's website by clicking the link.", "The name of the game"]
+	0: ["    Tutorial stage 1/3. Solve the puzzle by unscrambling the letters above in as few steps as possible. Press two letters in a row to swap them. You can either use the virtual keyboard below, or simply type the letter on your physical keyboard.",
+		"Alternate Facts"],
+	1: ["    Tutorial stage 2/3. Longer phrases may be harder, but take note when gray letters turn black - that means the letter is in the correct spot already! Just be careful that you don’t turn solved black characters back into gray ones (and yes, that also means no cheating by just mashing on your keyboard).",
+	"When you hear no updates"],
+	2: ["   Tutorial stage 3/3. If you are really stuck, you can consider the topic at the top left. There’s a good chance that word will appear in the article, or otherwise hint at the solution. Another option is to click on the Publisher Name link, which will appear to the left just underneath the scrambled headline. You could try searching for the actual news article there!",
+		"The name of the game"]
 }
 
 const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
@@ -67,20 +70,21 @@ static func apply_scramble(source:String, transform:Dictionary):
 	var lookup = {} # Converted
 	var assignments = []
 	for key in transform:
-		if len(key) != 1:
+		var keyl = key.to_lower()
+		if len(keyl) != 1:
 			push_error("Key (%s) in transform is not a single char" % key)
 			return null
-		if len(transform[key]) != 1:
-			push_error("Value (%s) of key (%s) in transform is not a single char" % [transform[key], key])
+		if len(transform[keyl]) != 1:
+			push_error("Value (%s) of key (%s) in transform is not a single char" % [transform[keyl], keyl])
 			return null
-		if key in lookup:
-			push_error("Duplicate source mappings for %s in apply_scramble" % key)
+		if keyl in lookup:
+			push_error("Duplicate source mappings for %s in apply_scramble" % keyl)
 			return null
-		if transform[key] in assignments:
-			push_error("Duplicate end mappings for %s in apply_scramble" % transform[key])
+		if transform[keyl] in assignments:
+			push_error("Duplicate end mappings for %s in apply_scramble" % transform[keyl])
 			return null
-		lookup[key] = transform[key]
-		assignments.append(transform[key])
+		lookup[keyl] = transform[keyl].to_lower()
+		assignments.append(transform[keyl])
 	
 	# Now perform the transform, ensuring that each letter has a lookup match.
 	for i in range(len(source)):
@@ -88,6 +92,9 @@ static func apply_scramble(source:String, transform:Dictionary):
 		if not ch in ONLY_SCRAMBLE_CHARS:
 			continue
 		if not ch in lookup:
+			print_debug(source)
+			print_debug(transform)
+			print_debug(lookup)
 			push_error("Char %s not in lookup map from %s" % [ch, source])
 			return null
 		
@@ -112,6 +119,8 @@ static func load_tutorial(index:int) -> Array:
 	#print_debug("Raw data for selected test: ", TUTORIAL_VALUES[index])
 	var solution = TUTORIAL_VALUES[index][0]
 	var transform = TUTORIAL_VALUES[index][1]
+	if not transform: # Apparently can't just use == {}, won't return true
+		transform = generate_transform(solution)
 	var start = apply_scramble(solution, transform)
 	var ret = [solution, start]
 	return ret
