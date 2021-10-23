@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://views/scene_transition.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://sound/newspaper_turn_01.ogg" type="AudioStream" id=3]
 [ext_resource path="res://sound/newspaper_turn_02.ogg" type="AudioStream" id=4]
+[ext_resource path="res://sound/crumple_01.ogg" type="AudioStream" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "next_page"
@@ -96,4 +97,8 @@ volume_db = -1.0
 
 [node name="audio_b" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+volume_db = -1.0
+
+[node name="hover_crumple" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
 volume_db = -1.0

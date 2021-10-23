@@ -1,9 +1,18 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://fonts/medio/medio_20.tres" type="DynamicFont" id=1]
 [ext_resource path="res://main_theme.tres" type="Theme" id=2]
 [ext_resource path="res://images/theduckcow-logo.png" type="Texture" id=3]
 [ext_resource path="res://views/page_background.gd" type="Script" id=4]
+[ext_resource path="res://sound/hover_crumple.tscn" type="PackedScene" id=5]
+[ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=6]
+[ext_resource path="res://fonts/bricktown/Bricktown.otf" type="DynamicFontData" id=7]
+[ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+extra_spacing_top = -10
+extra_spacing_bottom = -5
+font_data = ExtResource( 7 )
 
 [node name="page_background" type="Control"]
 anchor_right = 1.0
@@ -17,6 +26,11 @@ __meta__ = {
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="hover_crumple" parent="." instance=ExtResource( 5 )]
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
@@ -36,17 +50,18 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
-margin_right = 150.0
+margin_right = 80.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 150, 0 )
+rect_min_size = Vector2( 80, 0 )
 texture = ExtResource( 3 )
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
-margin_left = 154.0
-margin_top = 2.0
-margin_right = 606.0
-margin_bottom = 38.0
+margin_left = 84.0
+margin_top = 1.0
+margin_right = 644.0
+margin_bottom = 39.0
 size_flags_horizontal = 3
+custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Who Knows The News"
 align = 1
@@ -54,12 +69,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
-margin_left = 610.0
+[node name="language" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 648.0
 margin_right = 760.0
 margin_bottom = 40.0
-rect_min_size = Vector2( 150, 0 )
-custom_fonts/font = ExtResource( 1 )
+rect_min_size = Vector2( 80, 0 )
+custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Language"
 flat = true
@@ -72,13 +87,13 @@ margin_bottom = 48.0
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 52.0
 margin_right = 760.0
-margin_bottom = 73.0
+margin_bottom = 68.0
 
 [node name="date" type="Label" parent="VBoxContainer/HBoxContainer2"]
 margin_right = 378.0
-margin_bottom = 21.0
+margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 1 )
+custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Oct. 10, 2021"
 __meta__ = {
@@ -88,9 +103,9 @@ __meta__ = {
 [node name="top_credit" type="RichTextLabel" parent="VBoxContainer/HBoxContainer2"]
 margin_left = 382.0
 margin_right = 760.0
-margin_bottom = 21.0
+margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_fonts/normal_font = ExtResource( 1 )
+custom_fonts/normal_font = ExtResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[right]By Patrick W. Crawford ([url=https://theduckcow.com]TheDuckCow[/url])[/right]"
@@ -98,8 +113,20 @@ text = "[right]By Patrick W. Crawford ([url=https://theduckcow.com]TheDuckCow[/u
 scroll_active = false
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
-margin_top = 77.0
+margin_top = 72.0
 margin_right = 760.0
-margin_bottom = 81.0
+margin_bottom = 76.0
 
+[node name="Label" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -20.0
+margin_right = -5.0
+custom_fonts/font = ExtResource( 6 )
+text = "(C) 2021 - Patrick W. Crawford, all rights reserved"
+align = 2
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/language" to="." method="_on_lang_update"]
+[connection signal="mouse_entered" from="VBoxContainer/HBoxContainer/language" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="meta_clicked" from="VBoxContainer/HBoxContainer2/top_credit" to="." method="_on_top_credit_meta_clicked"]

@@ -203,6 +203,7 @@ config/icon="res://icon.png"
 
 SceneTransition="*res://views/scene_transition.tscn"
 Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
+Cache="*res://logic/cache.gd"
 
 [display]
 

@@ -17,8 +17,9 @@ export(ScrambleSource) var source = ScrambleSource.TEST
 
 onready var phrase_label := get_node("VBoxContainer/phrase_state")
 onready var keyboard := get_node("VBoxContainer/keyboard")
-onready var step_label := get_node("VBoxContainer/top_spacer/HBoxContainer/steps")
-onready var publisher_info := get_node("publisher_info")
+onready var step_label := get_node("VBoxContainer/HBoxContainer/steps")
+onready var publisher_name := get_node("VBoxContainer/HBoxContainer2/pub_name")
+onready var publish_date := get_node("VBoxContainer/HBoxContainer2/pub_date")
 
 var state: ScrambleState
 
@@ -44,7 +45,8 @@ var daily_article_topic: String
 
 func _ready():
 	phrase_label.visible = false # In case of still loading.
-	publisher_info.visible = false
+	publisher_name.visible = false
+	publish_date.visible = false
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -126,12 +128,13 @@ func _on_puzzle_solved():
 
 func show_article_metadata(article_info) -> void:
 	print_debug(article_info)
-	publisher_info.bbcode_text = "[right][url=%s]%s[/url]\n%s" % [
+	publisher_name.bbcode_text = "[url=%s]%s[/url]" % [
 		article_info['link'],
-		article_info['source'],
-		article_info['pubDate']
+		article_info['source']
 	]
-	publisher_info.visible = true
+	publish_date.text = article_info['pubDate']
+	publisher_name.visible = true
+	publish_date.visible = true
 
 
 func _on_go_back_pressed():

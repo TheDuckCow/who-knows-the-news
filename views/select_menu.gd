@@ -8,6 +8,8 @@ func _ready():
 	if not SceneTransition.current_scene:
 		# One time, afterwards it should self-assign.
 		SceneTransition.current_scene = self
+	
+	
 
 
 func _on_play_today_pressed():
