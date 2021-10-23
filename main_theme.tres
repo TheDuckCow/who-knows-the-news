@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=2]
+[gd_resource type="Theme" load_steps=12 format=2]
 
 [ext_resource path="res://fonts/medio/medio.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=2]
@@ -73,6 +73,33 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_bottom = 2
+border_color = Color( 0.247059, 0.247059, 0.247059, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.690196, 0.690196, 0.690196, 1 )
+border_width_left = 1
+border_width_right = 1
+border_color = Color( 0.690196, 0.690196, 0.690196, 1 )
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.894118, 0.894118, 0.894118, 0 )
+border_width_left = 3
+border_width_top = 2
+border_width_right = 3
+border_width_bottom = 2
+border_color = Color( 0.894118, 0.894118, 0.894118, 0 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [sub_resource type="DynamicFont" id=1]
 size = 35
 font_data = ExtResource( 1 )
@@ -99,19 +126,19 @@ Label/constants/shadow_offset_x = 1
 Label/constants/shadow_offset_y = 1
 Label/fonts/font = null
 Label/styles/normal = null
-LineEdit/colors/clear_button_color = Color( 0.88, 0.88, 0.88, 1 )
-LineEdit/colors/clear_button_color_pressed = Color( 1, 1, 1, 1 )
-LineEdit/colors/cursor_color = Color( 0.94, 0.94, 0.94, 1 )
-LineEdit/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
+LineEdit/colors/clear_button_color = Color( 0.215686, 0.215686, 0.215686, 1 )
+LineEdit/colors/clear_button_color_pressed = Color( 0.211765, 0.211765, 0.211765, 1 )
+LineEdit/colors/cursor_color = Color( 0.0666667, 0.0666667, 0.0666667, 1 )
+LineEdit/colors/font_color = Color( 0.227451, 0.227451, 0.227451, 1 )
 LineEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
-LineEdit/colors/font_color_uneditable = Color( 0.88, 0.88, 0.88, 0.5 )
-LineEdit/colors/selection_color = Color( 0.49, 0.49, 0.49, 1 )
+LineEdit/colors/font_color_uneditable = Color( 0.203922, 0.203922, 0.203922, 0.501961 )
+LineEdit/colors/selection_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 LineEdit/constants/minimum_spaces = 12
 LineEdit/fonts/font = null
 LineEdit/icons/clear = null
-LineEdit/styles/focus = null
-LineEdit/styles/normal = null
-LineEdit/styles/read_only = null
+LineEdit/styles/focus = SubResource( 9 )
+LineEdit/styles/normal = SubResource( 9 )
+LineEdit/styles/read_only = SubResource( 9 )
 RichTextLabel/colors/default_color = Color( 0.0745098, 0.0705882, 0.0705882, 1 )
 RichTextLabel/colors/font_color_selected = Color( 0.0745098, 0.0705882, 0.0705882, 1 )
 RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 0 )
@@ -129,3 +156,12 @@ RichTextLabel/fonts/mono_font = null
 RichTextLabel/fonts/normal_font = ExtResource( 2 )
 RichTextLabel/styles/focus = null
 RichTextLabel/styles/normal = null
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/styles/grabber = SubResource( 8 )
+VScrollBar/styles/grabber_highlight = null
+VScrollBar/styles/grabber_pressed = null
+VScrollBar/styles/scroll = SubResource( 7 )
+VScrollBar/styles/scroll_focus = null

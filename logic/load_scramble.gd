@@ -149,14 +149,25 @@ func load_rss_article_request(url) -> HTTPRequest:
 	var http = HTTPRequest.new()
 	http.set_timeout(15) # 15 seconds.
 	add_child(http)
+	http.use_threads = false
+	#http.blocking_signals...
 	http.connect("request_completed", self, "_on_rss_load_parse")
-	http.request(url)
+	var headers = [
+		"Access-Control-Allow-Origin: https://news.google.com/",
+		"Access-Control-Allow-Methods: GET"]
+	http.request(url, headers)
 	return http
 	
 
 func _on_rss_load_parse(result, response_code, _headers, body):
 	print_debug("RSS request completed, parse XML now")
+	if response_code == 0:
+		print_debug("0 response code: %s, body: %s" % [result, body])
+		emit_signal("article_load_failed", "Could not connect to server")
+		return
 	if response_code != HTTPClient.RESPONSE_OK:
+		print_debug("Non 200 response code (%s): %s, body: %s" % [
+			response_code, result, body])
 		emit_signal("article_load_failed", "Non 200 response code (%s): %s" % [
 			response_code, result])
 		return

@@ -4,6 +4,7 @@ const GAME_SCENE = "res://views/game_scene.tscn"
 
 
 func _ready():
+	SceneTransition.is_menu_screen = true
 	$layout/VBoxContainer/play_daily.grab_focus()
 	if not SceneTransition.current_scene:
 		# One time, afterwards it should self-assign.

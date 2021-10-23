@@ -13,7 +13,7 @@ const LANGUAGES = [
 
 var language = "en"
 var solved_urls = []
-
+var sound_on := true
 
 func _ready():
 	assert(connect("language_update", self, "_on_language_update") == OK)

@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
+[ext_resource path="res://images/sound_on.png" type="Texture" id=1]
 [ext_resource path="res://main_theme.tres" type="Theme" id=2]
 [ext_resource path="res://images/theduckcow-logo.png" type="Texture" id=3]
 [ext_resource path="res://views/page_background.gd" type="Script" id=4]
@@ -49,16 +50,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
+[node name="logo" type="TextureRect" parent="VBoxContainer/HBoxContainer"]
 margin_right = 80.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 80, 0 )
 texture = ExtResource( 3 )
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="game_title" type="Label" parent="VBoxContainer/HBoxContainer"]
 margin_left = 84.0
 margin_top = 1.0
-margin_right = 644.0
+margin_right = 611.0
 margin_bottom = 39.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 1 )
@@ -70,8 +71,8 @@ __meta__ = {
 }
 
 [node name="language" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
-margin_left = 648.0
-margin_right = 760.0
+margin_left = 615.0
+margin_right = 724.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 80, 0 )
 custom_fonts/font = ExtResource( 8 )
@@ -79,7 +80,13 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Language"
 flat = true
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+[node name="sound_toggle" type="TextureButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 728.0
+margin_right = 760.0
+margin_bottom = 40.0
+texture_normal = ExtResource( 1 )
+
+[node name="top_separator" type="HSeparator" parent="VBoxContainer"]
 margin_top = 44.0
 margin_right = 760.0
 margin_bottom = 48.0
@@ -109,7 +116,7 @@ custom_fonts/normal_font = ExtResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[right]By Patrick W. Crawford ([url=https://theduckcow.com]TheDuckCow[/url])[/right]"
-text = "[right]By Patrick W. Crawford ([url=https://theduckcow.com]TheDuckCow[/url])[/right]"
+text = "By Patrick W. Crawford (TheDuckCow)"
 scroll_active = false
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
@@ -124,9 +131,14 @@ anchor_bottom = 1.0
 margin_top = -20.0
 margin_right = -5.0
 custom_fonts/font = ExtResource( 6 )
-text = "(C) 2021 - Patrick W. Crawford, all rights reserved"
-align = 2
+custom_colors/font_color = Color( 0.619608, 0.619608, 0.619608, 1 )
+text = "Provided as-is, news from Google RSS feeds"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/language" to="." method="_on_lang_update"]
 [connection signal="mouse_entered" from="VBoxContainer/HBoxContainer/language" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/sound_toggle" to="." method="_on_sound_toggle_pressed"]
 [connection signal="meta_clicked" from="VBoxContainer/HBoxContainer2/top_credit" to="." method="_on_top_credit_meta_clicked"]

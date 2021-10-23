@@ -1,8 +1,6 @@
 ## Defines the overall size of the interactiv keyboard.
 extends Control
 
-const LoadScramble = preload("res://logic/load_scramble.gd")
-
 enum LayoutType {
 	US
 }
@@ -11,13 +9,11 @@ enum LayoutType {
 # warning-ignore:unused_signal
 signal key_pressed(character)
 
-onready var KeyButton = preload("res://keyboard/key_button.tscn")
-
-var game_scene := Node
-
-# Way to disable the keyboard if needed, e.g. on game win.
-var is_active := true
-var allowed_keys = []
+const SmallFont = preload("res://fonts/cotham-sans/cotham_16.tres")
+const LoadScramble = preload("res://logic/load_scramble.gd")
+const MOD_BLUE = Color(0.7, 0.8, 1.0)
+const MOD_RED = Color(1.0, 0.8, 0.8)
+const MOD_NONE = Color(1.0, 1.0, 1.0)
 
 # Keyboard layouts, where r0 = first, top row of keys.
 # Intent is to only show keys that would be swappable.
@@ -30,11 +26,21 @@ const LAYOUT = {
 	]
 }
 
+onready var KeyButton = preload("res://keyboard/key_button.tscn")
+onready var row_container := get_node("rows")
+onready var key_audio := get_node("key_audio")
+
+var game_scene := Node
+
+# Way to disable the keyboard if needed, e.g. on game win.
+var is_active := true
+var allowed_keys = []
+var use_small_font := false
+
 # To indicate if in the middle of swapping 2 characters, awaiting second char.
 var mid_swap := ""
 
 var use_layout = LayoutType.US
-onready var row_container = $rows
 
 
 func _ready():
@@ -56,22 +62,45 @@ func generate_keyboard() -> void:
 		# Disconnect needed?
 		row.queue_free()
 	
+	var pnode = get_node("../")
+	var parent_width = pnode.rect_size.x
+	var max_row_width = 0
+	for row in LAYOUT[use_layout]:
+		if len(row) > max_row_width:
+			max_row_width = len(row)
+	
+	var button_size = 0
+	if max_row_width > 0:
+		button_size = (parent_width * 0.75) / max_row_width
+	else:
+		push_warning("Couldn't get best keyboard size")
+	
 	for row in LAYOUT[use_layout]:
 		var new_row = HBoxContainer.new()
 		row_container.add_child(new_row)
-		var start_spacer = Control.new()
-		start_spacer.size_flags_horizontal = true
-		var end_spacer = Control.new()
+		var start_spacer := Control.new()
+		start_spacer.size_flags_horizontal = SIZE_EXPAND
+		var end_spacer := Control.new()
+		end_spacer.size_flags_horizontal = SIZE_EXPAND
 		new_row.add_child(start_spacer)
 		for key in row:
-			add_key_to_row(new_row, key)
+			add_key_to_row(new_row, key, button_size)
 		new_row.add_child(end_spacer)
 
 
 ## Populate a single row of keys, connecting signals as needed.
-func add_key_to_row(parent_row:HBoxContainer, key:String) -> void:
+func add_key_to_row(parent_row:HBoxContainer, key:String, size:float) -> void:
 	var new_key = KeyButton.instance()
+	new_key.size = size
 	new_key.text = key
+	if use_small_font:
+		#new_key.add_font_override(SmallFont)
+		#print_debug("CURRENT SIZE: ", new_key.get_font("font"))
+		#var dynamicfont = new_key.get_font("font")
+		new_key.set("custom_fonts/font", SmallFont)
+
+
+		
 	parent_row.add_child(new_key)
 	new_key.connect("pressed_with_value", self, "on_key_pressed")
 
@@ -118,6 +147,10 @@ func on_key_pressed(character:String) -> void:
 	var focus_button := get_key(character)
 	if focus_button:
 		focus_button.grab_focus()
+	
+	if Cache.sound_on:
+		key_audio.pitch_scale = 1 + randf() * 0.3
+		key_audio.play(0)
 
 
 func get_key(key:String) -> Button:
@@ -139,6 +172,8 @@ func highlight_key(key:String, enable:bool) -> void:
 		return
 	# Do more styling
 	if enable:
+		node_ref.modulate = MOD_BLUE
 		node_ref.set_position(node_ref.rect_position + Vector2(0, 3))
 	else:
+		node_ref.modulate = MOD_NONE
 		node_ref.set_position(node_ref.rect_position - Vector2(0, 3))

@@ -26,6 +26,10 @@ onready var status_bar := get_node("vscroll/VBoxContainer/status_bar")
 
 onready var spacer_to_del := get_node("vscroll/VBoxContainer/spacer_del_on_finish")
 
+# Nodes for responsive display
+onready var scroll_area := get_node("vscroll")
+onready var _v_margin_initial = scroll_area.margin_top
+
 var state: ScrambleState
 var article_link := "https://theduckcow.com" # Populated after load if any.
 
@@ -57,6 +61,10 @@ func _ready():
 	topic_hint.text = "Category: Loading..."
 	
 	assert(keyboard.connect("key_pressed", self, "_on_key_pressed") == OK)
+	
+	var this_view = get_viewport()
+	this_view.connect("size_changed", self, "_on_screen_size_change")
+	_on_screen_size_change()
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -116,8 +124,8 @@ func load_failed(reason:String):
 	push_error("Failed to load scene with: %s" % reason)
 	# TODO: Handle here, maybe with popup and timer to go back to main menu
 	# to try again.
-	topic_hint.text = "Failed to load article"
-	SceneTransition.load_menu_select()
+	topic_hint.text = "Failed to load article (%s)" % reason
+	# SceneTransition.load_menu_select()
 
 
 func _process(_delta):
@@ -135,9 +143,14 @@ func get_timer_text() -> String:
 		t = state.end_msec - state.start_msec
 	else:
 		t = OS.get_ticks_msec() - state.start_msec
-	var txt = "%s steps, %ss" % [
+	
+	var minutes = int(floor(t/1000 / 60))
+	var seconds = int(floor(t/1000 % 60))
+	var txt = "%s %s, %02d:%02d" % [
 		state.turns_taken,
-		int(t/1000)
+		tr("swaps"),
+		minutes,
+		seconds
 	]
 	return txt
 
@@ -149,6 +162,9 @@ func _on_key_pressed(_chart):
 func update_phrase_label():
 	phrase_label.visible = true
 	var tmp_phrase = []
+	if not state: # E.g. if it failed to load.
+		phrase_label.bbcode_text = ""
+		return
 	for i in range(len(state.current_phrase)):
 		if state.current_phrase[i] == state.solution_phrase[i]:
 			if state.current_phrase[i] == keyboard.mid_swap and false:
@@ -202,18 +218,20 @@ func show_article_metadata(article_info) -> void:
 	publish_date.text = article_info["pubDate"]
 	publisher_name.visible = true
 	publish_date.visible = true
-	topic_hint.text = "Category: %s" % daily_article_topic
+	topic_hint.text = "%s: %s" % [tr("Category"), daily_article_topic]
 
 
 func show_tutorial_metadata() -> void:
-	# publisher_name.text = "Tutorial " + str(tutorial_index)
 	publisher_name.bbcode_text = "[url=https://theduckcow.com]Moo-Ack! Productions[/url]"
 	publisher_name.visible = true
 	publish_date.text = ""
 	publish_date.visible = true
 	dscription.visible = true
 	dscription.text = LoadScramble.TUTORIAL_META[tutorial_index][0]
-	topic_hint.text = "Category: " + LoadScramble.TUTORIAL_META[tutorial_index][1]
+	topic_hint.text = "%s: %s" % [
+		tr("Category"),
+		LoadScramble.TUTORIAL_META[tutorial_index][1]
+	]
 
 
 func _on_go_back_pressed():
@@ -232,3 +250,20 @@ func _on_publisher_info_meta_clicked(meta):
 func _on_reset_pressed():
 	state.reset()
 	update_phrase_label()
+
+
+## Create a more responsive display
+func _on_screen_size_change():
+	var screen_size = get_viewport_rect().size
+	if screen_size.y < 580:
+		# Y hieght is constrained
+		scroll_area.margin_top = _v_margin_initial - 30
+		if keyboard.use_small_font == false:
+			keyboard.use_small_font = true
+			keyboard.generate_keyboard()
+	else:
+		# Y hieght is plenty tall
+		scroll_area.margin_top = _v_margin_initial
+		if keyboard.use_small_font == true:
+			keyboard.use_small_font = false
+			keyboard.generate_keyboard()

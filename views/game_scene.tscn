@@ -40,7 +40,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="vscroll"]
 margin_right = 760.0
-margin_bottom = 483.0
+margin_bottom = 462.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -79,7 +79,7 @@ margin_bottom = 114.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="pub_name" type="RichTextLabel" parent="vscroll/VBoxContainer/HBoxContainer2"]
-margin_right = 360.0
+margin_right = 724.0
 margin_bottom = 30.0
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -92,12 +92,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="vscroll/VBoxContainer/HBoxContainer2"]
-margin_left = 364.0
-margin_right = 724.0
-margin_bottom = 30.0
-size_flags_horizontal = 3
-
 [node name="pub_date" type="Label" parent="vscroll/VBoxContainer/HBoxContainer2"]
 margin_left = 728.0
 margin_top = 7.0
@@ -109,7 +103,7 @@ text = "Date"
 [node name="description" type="RichTextLabel" parent="vscroll/VBoxContainer"]
 margin_top = 118.0
 margin_right = 760.0
-margin_bottom = 181.0
+margin_bottom = 190.0
 custom_fonts/normal_font = ExtResource( 8 )
 custom_colors/default_color = Color( 0.372549, 0.372549, 0.372549, 1 )
 text = "
@@ -118,15 +112,16 @@ fit_content_height = true
 scroll_active = false
 
 [node name="spacer_del_on_finish" type="Control" parent="vscroll/VBoxContainer"]
-margin_top = 185.0
+margin_top = 194.0
 margin_right = 760.0
-margin_bottom = 185.0
+margin_bottom = 204.0
+rect_min_size = Vector2( 0, 10 )
 size_flags_vertical = 3
 
 [node name="status_bar" type="HBoxContainer" parent="vscroll/VBoxContainer"]
-margin_top = 189.0
+margin_top = 208.0
 margin_right = 760.0
-margin_bottom = 225.0
+margin_bottom = 244.0
 alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -177,17 +172,17 @@ text = "0 steps"
 [node name="keyboard" parent="vscroll/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 229.0
+margin_top = 248.0
 margin_right = 760.0
-margin_bottom = 429.0
+margin_bottom = 448.0
 rect_min_size = Vector2( 0, 200 )
 size_flags_vertical = 11
 
 [node name="bottom_spacer" type="Control" parent="vscroll/VBoxContainer"]
-margin_top = 433.0
+margin_top = 452.0
 margin_right = 760.0
-margin_bottom = 483.0
-rect_min_size = Vector2( 0, 50 )
+margin_bottom = 462.0
+rect_min_size = Vector2( 0, 10 )
 
 [connection signal="meta_clicked" from="vscroll/VBoxContainer/HBoxContainer2/pub_name" to="." method="_on_publisher_info_meta_clicked"]
 [connection signal="pressed" from="vscroll/VBoxContainer/status_bar/go_back" to="." method="_on_go_back_pressed"]

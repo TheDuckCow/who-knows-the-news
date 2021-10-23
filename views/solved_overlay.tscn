@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://views/solved_overlay.gd" type="Script" id=4]
 [ext_resource path="res://sound/hover_crumple.tscn" type="PackedScene" id=5]
 [ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=6]
+[ext_resource path="res://sound/victory_jingle.mp3" type="AudioStream" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "animate_in"
@@ -53,6 +54,10 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "animate_in"
 anims/animate_in = SubResource( 1 )
+
+[node name="victory" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+volume_db = -9.0
 
 [node name="hover_crumple" parent="." instance=ExtResource( 5 )]
 

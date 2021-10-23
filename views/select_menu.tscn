@@ -41,9 +41,11 @@ __meta__ = {
 [node name="play_daily" type="Button" parent="layout/VBoxContainer"]
 margin_right = 720.0
 margin_bottom = 292.0
+rect_min_size = Vector2( 0, 75 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Play Today's Puzzle"
+disabled = true
+text = "Play Today's Puzzle [not yet ready]"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -59,6 +61,7 @@ margin_top = 322.0
 margin_right = 720.0
 margin_bottom = 360.0
 size_flags_horizontal = 3
+disabled = true
 text = "Play a Prior Daily Puzzle"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -91,7 +94,7 @@ margin_bottom = 500.0
 custom_fonts/normal_font = ExtResource( 2 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "Game by [url=\"http://theduckcow.com\"]Patrick W. Crawford (TheDuckCow)[/url]
+bbcode_text = "Game by [url=http://theduckcow.com]Patrick W. Crawford (TheDuckCow)[/url]
 Made for the 2021 [url=https://itch.io/jam/godot-fire-charity-jam-1]\"Godot Fire Charity Jam\"[/url] using the Godot game engine."
 text = "Game by Patrick W. Crawford (TheDuckCow)
 Made for the 2021 \"Godot Fire Charity Jam\" using the Godot game engine."

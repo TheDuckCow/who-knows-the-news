@@ -5,6 +5,7 @@ const SELECT_SCREEN = "res://views/select_menu.tscn"
 
 onready var next_button := get_node("anim_control/Control/HBoxContainer/next_button")
 onready var stats_label := get_node("anim_control/Control/Control/VBoxContainer/stats")
+onready var victory_audio := get_node("victory")
 
 var stat_text := ""
 var next_mode = GS.ScrambleSource.TOPIC_ARTICLE
@@ -23,6 +24,8 @@ func _ready():
 		next_button.text = "Next tutorial"
 	else:
 		next_button.text = "New puzzle"
+	if Cache.sound_on:
+		victory_audio.play(0)
 
 func _on_menu_pressed():
 	SceneTransition.load_menu_select()
