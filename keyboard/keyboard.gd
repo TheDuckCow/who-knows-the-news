@@ -44,7 +44,7 @@ var use_layout = LayoutType.US
 
 
 func _ready():
-	generate_keyboard()
+	# generate_keyboard() # Called by parent when ready.
 	var res = connect("key_pressed", self, "on_key_pressed")
 	if res != OK:
 		push_error("Failed to connect keypress")
@@ -71,7 +71,7 @@ func generate_keyboard() -> void:
 	
 	var button_size = 0
 	if max_row_width > 0:
-		button_size = (parent_width * 0.75) / max_row_width
+		button_size = (parent_width * 0.85) / max_row_width
 	else:
 		push_warning("Couldn't get best keyboard size")
 	
@@ -99,8 +99,6 @@ func add_key_to_row(parent_row:HBoxContainer, key:String, size:float) -> void:
 		#var dynamicfont = new_key.get_font("font")
 		new_key.set("custom_fonts/font", SmallFont)
 
-
-		
 	parent_row.add_child(new_key)
 	new_key.connect("pressed_with_value", self, "on_key_pressed")
 

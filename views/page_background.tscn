@@ -124,20 +124,6 @@ margin_top = 72.0
 margin_right = 760.0
 margin_bottom = 76.0
 
-[node name="Label" type="Label" parent="."]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -20.0
-margin_right = -5.0
-custom_fonts/font = ExtResource( 6 )
-custom_colors/font_color = Color( 0.619608, 0.619608, 0.619608, 1 )
-text = "Provided as-is, news from Google RSS feeds"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/language" to="." method="_on_lang_update"]
 [connection signal="mouse_entered" from="VBoxContainer/HBoxContainer/language" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/sound_toggle" to="." method="_on_sound_toggle_pressed"]

@@ -163,7 +163,7 @@ func _on_rss_load_parse(result, response_code, _headers, body):
 	print_debug("RSS request completed, parse XML now")
 	if response_code == 0:
 		print_debug("0 response code: %s, body: %s" % [result, body])
-		emit_signal("article_load_failed", "Could not connect to server")
+		emit_signal("article_load_failed", "Could not connect to server (likely due to CORS)")
 		return
 	if response_code != HTTPClient.RESPONSE_OK:
 		print_debug("Non 200 response code (%s): %s, body: %s" % [

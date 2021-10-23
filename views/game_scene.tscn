@@ -27,20 +27,35 @@ __meta__ = {
 
 [node name="page_background" parent="." instance=ExtResource( 5 )]
 
+[node name="steps_mobile" type="Label" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -120.0
+margin_top = 20.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 120, 0 )
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0 steps"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="vscroll" type="ScrollContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 20.0
 margin_top = 90.0
 margin_right = -20.0
-margin_bottom = -25.0
+margin_bottom = -5.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="vscroll"]
 margin_right = 760.0
-margin_bottom = 462.0
+margin_bottom = 448.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -79,7 +94,7 @@ margin_bottom = 114.0
 rect_min_size = Vector2( 0, 30 )
 
 [node name="pub_name" type="RichTextLabel" parent="vscroll/VBoxContainer/HBoxContainer2"]
-margin_right = 724.0
+margin_right = 680.0
 margin_bottom = 30.0
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -93,12 +108,19 @@ __meta__ = {
 }
 
 [node name="pub_date" type="Label" parent="vscroll/VBoxContainer/HBoxContainer2"]
-margin_left = 728.0
+margin_left = 684.0
 margin_top = 7.0
-margin_right = 760.0
+margin_right = 716.0
 margin_bottom = 23.0
 custom_fonts/font = ExtResource( 7 )
 text = "Date"
+
+[node name="mobile_desc" type="Button" parent="vscroll/VBoxContainer/HBoxContainer2"]
+margin_left = 720.0
+margin_right = 760.0
+margin_bottom = 30.0
+custom_fonts/font = ExtResource( 7 )
+text = "Info"
 
 [node name="description" type="RichTextLabel" parent="vscroll/VBoxContainer"]
 margin_top = 118.0
@@ -178,13 +200,8 @@ margin_bottom = 448.0
 rect_min_size = Vector2( 0, 200 )
 size_flags_vertical = 11
 
-[node name="bottom_spacer" type="Control" parent="vscroll/VBoxContainer"]
-margin_top = 452.0
-margin_right = 760.0
-margin_bottom = 462.0
-rect_min_size = Vector2( 0, 10 )
-
 [connection signal="meta_clicked" from="vscroll/VBoxContainer/HBoxContainer2/pub_name" to="." method="_on_publisher_info_meta_clicked"]
+[connection signal="pressed" from="vscroll/VBoxContainer/HBoxContainer2/mobile_desc" to="." method="_on_mobile_desc_pressed"]
 [connection signal="pressed" from="vscroll/VBoxContainer/status_bar/go_back" to="." method="_on_go_back_pressed"]
 [connection signal="pressed" from="vscroll/VBoxContainer/status_bar/reset" to="." method="_on_reset_pressed"]
 [connection signal="pressed" from="vscroll/VBoxContainer/status_bar/show_answer" to="." method="_on_show_answer_pressed"]

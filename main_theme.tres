@@ -3,7 +3,7 @@
 [ext_resource path="res://fonts/medio/medio.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=2]
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 6.0
 content_margin_right = 6.0
 bg_color = Color( 0.596078, 0.596078, 0.596078, 1 )
@@ -17,7 +17,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=2]
 content_margin_left = 6.0
 content_margin_right = 6.0
 bg_color = Color( 0.960784, 0.960784, 0.960784, 1 )
@@ -45,7 +45,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 6.0
 content_margin_right = 6.0
 bg_color = Color( 0.882353, 0.882353, 0.882353, 1 )
@@ -73,12 +73,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id=9]
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
-border_width_bottom = 2
-border_color = Color( 0.247059, 0.247059, 0.247059, 1 )
-
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.690196, 0.690196, 0.690196, 1 )
 border_width_left = 1
 border_width_right = 1
@@ -88,7 +83,7 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.894118, 0.894118, 0.894118, 0 )
 border_width_left = 3
 border_width_top = 2
@@ -100,23 +95,37 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_bottom = 2
+border_color = Color( 0.247059, 0.247059, 0.247059, 1 )
+
+[sub_resource type="DynamicFont" id=9]
 size = 35
 font_data = ExtResource( 1 )
 
 [resource]
-default_font = SubResource( 1 )
+default_font = SubResource( 9 )
 Button/colors/font_color = Color( 0.0980392, 0.0941176, 0.0941176, 1 )
 Button/colors/font_color_disabled = Color( 0.403922, 0.403922, 0.403922, 0.847059 )
 Button/colors/font_color_hover = Color( 0.164706, 0.164706, 0.164706, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
-Button/styles/disabled = SubResource( 6 )
-Button/styles/focus = SubResource( 4 )
+Button/styles/disabled = SubResource( 1 )
+Button/styles/focus = SubResource( 2 )
 Button/styles/hover = SubResource( 3 )
-Button/styles/normal = SubResource( 2 )
+Button/styles/normal = SubResource( 4 )
 Button/styles/pressed = SubResource( 5 )
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = SubResource( 7 )
+HScrollBar/styles/grabber_highlight = null
+HScrollBar/styles/grabber_pressed = null
+HScrollBar/styles/scroll = SubResource( 8 )
+HScrollBar/styles/scroll_focus = null
 Label/colors/font_color = Color( 0.105882, 0.101961, 0.101961, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
 Label/colors/font_outline_modulate = Color( 1, 1, 1, 1 )
@@ -136,9 +145,9 @@ LineEdit/colors/selection_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 LineEdit/constants/minimum_spaces = 12
 LineEdit/fonts/font = null
 LineEdit/icons/clear = null
-LineEdit/styles/focus = SubResource( 9 )
-LineEdit/styles/normal = SubResource( 9 )
-LineEdit/styles/read_only = SubResource( 9 )
+LineEdit/styles/focus = SubResource( 6 )
+LineEdit/styles/normal = SubResource( 6 )
+LineEdit/styles/read_only = SubResource( 6 )
 RichTextLabel/colors/default_color = Color( 0.0745098, 0.0705882, 0.0705882, 1 )
 RichTextLabel/colors/font_color_selected = Color( 0.0745098, 0.0705882, 0.0705882, 1 )
 RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 0 )
@@ -160,8 +169,8 @@ VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/increment = null
 VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 8 )
+VScrollBar/styles/grabber = SubResource( 7 )
 VScrollBar/styles/grabber_highlight = null
 VScrollBar/styles/grabber_pressed = null
-VScrollBar/styles/scroll = SubResource( 7 )
+VScrollBar/styles/scroll = SubResource( 8 )
 VScrollBar/styles/scroll_focus = null

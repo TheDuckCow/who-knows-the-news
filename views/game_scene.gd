@@ -4,6 +4,7 @@ extends Control
 const ScrambleState = preload("res://logic/scramble_state.gd")
 const LoadScramble = preload("res://logic/load_scramble.gd")
 const SolvedOverlay = preload("res://views/solved_overlay.tscn")
+const mobile_desc_popup = preload("res://views/mobile_description_popup.tscn")
 
 enum ScrambleSource {
 	TEST,
@@ -18,6 +19,7 @@ export(ScrambleSource) var source = ScrambleSource.TEST
 onready var phrase_label := get_node("vscroll/VBoxContainer/phrase_state")
 onready var keyboard := get_node("vscroll/VBoxContainer/keyboard")
 onready var step_label := get_node("vscroll/VBoxContainer/status_bar/steps")
+onready var steps_mobile := get_node("steps_mobile")
 onready var publisher_name := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_name")
 onready var publish_date := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_date")
 onready var dscription := get_node("vscroll/VBoxContainer/description")
@@ -29,6 +31,8 @@ onready var spacer_to_del := get_node("vscroll/VBoxContainer/spacer_del_on_finis
 # Nodes for responsive display
 onready var scroll_area := get_node("vscroll")
 onready var _v_margin_initial = scroll_area.margin_top
+onready var mobile_info := get_node("vscroll/VBoxContainer/HBoxContainer2/mobile_desc")
+
 
 var state: ScrambleState
 var article_link := "https://theduckcow.com" # Populated after load if any.
@@ -129,6 +133,7 @@ func load_failed(reason:String):
 
 
 func _process(_delta):
+	steps_mobile.text = get_timer_text()
 	if not is_instance_valid(step_label):
 		# At the end of the game, this section is dismissed.
 		return
@@ -219,6 +224,7 @@ func show_article_metadata(article_info) -> void:
 	publisher_name.visible = true
 	publish_date.visible = true
 	topic_hint.text = "%s: %s" % [tr("Category"), daily_article_topic]
+	dscription.text = article_info["description"] if "description" in article_info else "(no description fetched)"
 
 
 func show_tutorial_metadata() -> void:
@@ -252,18 +258,31 @@ func _on_reset_pressed():
 	update_phrase_label()
 
 
-## Create a more responsive display
+## Create a more responsive display.
 func _on_screen_size_change():
-	var screen_size = get_viewport_rect().size
-	if screen_size.y < 580:
-		# Y hieght is constrained
+	if Cache.is_compact_screen_size():
 		scroll_area.margin_top = _v_margin_initial - 30
-		if keyboard.use_small_font == false:
-			keyboard.use_small_font = true
-			keyboard.generate_keyboard()
+		keyboard.use_small_font = true
+		keyboard.generate_keyboard()
+		if state:
+			keyboard.update_allowed_keys(state.solution_phrase)
+		dscription.visible = false
+		steps_mobile.visible = true
+		step_label.visible = false
+		mobile_info.visible = true
 	else:
-		# Y hieght is plenty tall
 		scroll_area.margin_top = _v_margin_initial
-		if keyboard.use_small_font == true:
-			keyboard.use_small_font = false
-			keyboard.generate_keyboard()
+		keyboard.use_small_font = false
+		keyboard.generate_keyboard()
+		if state:
+			keyboard.update_allowed_keys(state.solution_phrase)
+		dscription.visible = true
+		steps_mobile.visible = false
+		step_label.visible = true
+		mobile_info.visible = false
+
+
+func _on_mobile_desc_pressed():
+	var popup = mobile_desc_popup.instance()
+	popup.description = dscription.text
+	add_child(popup)

@@ -196,13 +196,12 @@ Display=8
 
 config/name="Who Knows the News"
 config/description="Brush up on the news while training your brain with daily puzzles! This is an entry to the 2021 Godot Fire Charity Jam, which had the theme of \"Everything changes\". What changes more than the news?"
-run/main_scene="res://startup.tscn"
+run/main_scene="res://views/select_menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 SceneTransition="*res://views/scene_transition.tscn"
-Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 Cache="*res://logic/cache.gd"
 
 [display]
@@ -212,7 +211,7 @@ window/size/height=640
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/WAT/plugin.cfg", "res://addons/godot-firebase/plugin.cfg", "res://addons/http-sse-client/plugin.cfg", "res://addons/silicon.util.custom_docs/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/WAT/plugin.cfg", "res://addons/http-sse-client/plugin.cfg", "res://addons/silicon.util.custom_docs/plugin.cfg" )
 
 [physics]
 
