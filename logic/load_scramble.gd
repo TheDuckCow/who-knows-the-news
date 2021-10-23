@@ -22,16 +22,23 @@ signal article_metadata(article_dict)
 
 ## Generate a random, valid scramble transform.
 ## 
+## initial_phrase: initial phrase, used to limit the set of characters to swap.
 ## Output is a dict of all 26 english start-end character mappings, no repeats.
-static func generate_transform():
+static func generate_transform(initial_phrase:String):
 	var transform = {}
-	#var num = len(ONLY_SCRAMBLE_CHARS)
 	
 	var available = []
+	var tmp = initial_phrase.to_lower()
 	for ch in ONLY_SCRAMBLE_CHARS:
-		available.append(ch)
+		if ch in tmp:
+			available.append(ch)
 	
-	for src in ONLY_SCRAMBLE_CHARS:
+	# Because there's no deep copy in gdscript??
+	var avail_cp = []
+	for ch in available:
+		avail_cp.append(ch)
+
+	for src in avail_cp:
 		var selection = available[randi() % available.size()]
 		available.erase(selection)
 		transform[src] = selection
@@ -156,9 +163,8 @@ func _on_rss_load_parse(result, response_code, _headers, body):
 	
 	var this_article := select_target_article(articles)
 	var solution = this_article["title"]
-	var transform = generate_transform()
+	var transform = generate_transform(solution)
 	var initial_state = apply_scramble(solution, transform)
-	
 	emit_signal("article_metadata", this_article) # To load other scene visuals.
 	emit_signal("article_loaded", solution, initial_state) # To load puzzle.
 

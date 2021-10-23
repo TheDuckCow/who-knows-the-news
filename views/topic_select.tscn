@@ -52,13 +52,13 @@ caret_blink = true
 [node name="country" type="OptionButton" parent="VBoxContainer"]
 margin_top = 66.0
 margin_right = 760.0
-margin_bottom = 108.0
+margin_bottom = 104.0
 text = "Country"
 
 [node name="start" type="Button" parent="VBoxContainer"]
-margin_top = 128.0
+margin_top = 124.0
 margin_right = 760.0
-margin_bottom = 170.0
+margin_bottom = 162.0
 text = "Start Puzzle"
 
 [connection signal="mouse_entered" from="VBoxContainer/topic_hb/topic" to="hover_crumple" method="_on_mouse_entered"]

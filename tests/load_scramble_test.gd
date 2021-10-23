@@ -47,7 +47,7 @@ func test_apply_scramble_bad_transform() -> void:
 
 func test_generate_transform() -> void:
 	describe("When generating a new transform")
-	var transform = LoadScramble.generate_transform()
+	var transform = LoadScramble.generate_transform("sample")
 	asserts.is_not_null(transform, "transform is not null")
 	
 	var res = LoadScramble.apply_scramble("sample", transform)

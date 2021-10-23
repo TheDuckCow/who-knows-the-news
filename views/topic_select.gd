@@ -1,14 +1,10 @@
 extends Control
 
 const PLACEHOLDER_TOPIC := "Environment"
-const COUNTRIES = [
-	"US", "CA", "UK"
-]
-
+const COUNTRIES = ["US", "CA", "UK"]
 
 onready var input_topic := get_node("VBoxContainer/topic_hb/topic")
 onready var input_country := get_node("VBoxContainer/country")
-onready var input_language := get_node("VBoxContainer/language")
 onready var start_button := get_node("VBoxContainer/start")
 
 
