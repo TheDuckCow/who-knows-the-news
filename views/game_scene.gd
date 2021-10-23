@@ -20,6 +20,8 @@ onready var keyboard := get_node("VBoxContainer/keyboard")
 onready var step_label := get_node("VBoxContainer/HBoxContainer/steps")
 onready var publisher_name := get_node("VBoxContainer/HBoxContainer2/pub_name")
 onready var publish_date := get_node("VBoxContainer/HBoxContainer2/pub_date")
+onready var dscription := get_node("VBoxContainer/description")
+onready var topic_hint := get_node("VBoxContainer/topic_hint")
 
 var state: ScrambleState
 
@@ -47,6 +49,7 @@ func _ready():
 	phrase_label.visible = false # In case of still loading.
 	publisher_name.visible = false
 	publish_date.visible = false
+	topic_hint.text = "Category: Loading..."
 	
 	assert(keyboard.connect("key_pressed", self, "_on_key_pressed") == OK)
 
@@ -62,17 +65,22 @@ func load_scramble():
 			solution = res[0]
 			start = res[1]
 			load_state(solution, start)
+			keyboard.update_allowed_keys(solution)
+			topic_hint.text = "Category: Test"
 		ScrambleSource.TUTORIAL:
 			var res = LoadScramble.load_tutorial(tutorial_index)
 			solution = res[0]
 			start = res[1]
 			load_state(solution, start)
+			show_tutorial_metadata(tutorial_index)
+			keyboard.update_allowed_keys(solution)
 		ScrambleSource.TOPIC_ARTICLE:
 			var url = LoadScramble.get_rss_article_url(
 				daily_article_topic, daily_article_country, daily_article_language)
 			var loader = LoadScramble.new()
 			add_child(loader)
 			var _http = loader.load_rss_article_request(url)
+			topic_hint.text = "Loading article..."
 			
 			loader.connect("article_loaded", self, "load_state")
 			loader.connect("article_load_failed", self, "load_failed")
@@ -83,6 +91,7 @@ func load_scramble():
 
 func load_state(solution, start):
 	state = ScrambleState.new(solution, start)
+	keyboard.update_allowed_keys(solution)
 	update_phrase_label()
 	print(state.current_phrase)
 	
@@ -99,6 +108,7 @@ func load_failed(reason:String):
 	push_error("Failed to load scene with: %s" % reason)
 	# TODO: Handle here, maybe with popup and timer to go back to main menu
 	# to try again.
+	topic_hint.text = "Failed to load article"
 	SceneTransition.load_menu_select()
 
 
@@ -130,8 +140,9 @@ func update_phrase_label():
 				# Warn that it's already a valid character, don't swap!
 				tmp_phrase.append("[color=red]%s[/color]" % state.current_phrase[i])
 			else:
-				# Black for already correct charater
-				tmp_phrase.append("[color=black]%s[/color]" % state.current_phrase[i])
+				# Black for already correct charater;
+				# have no color here so that word wrapping works on solution.
+				tmp_phrase.append("%s" % state.current_phrase[i])
 		else:
 			if state.current_phrase[i] == keyboard.mid_swap and false:
 				# Highlight the character being swapped.
@@ -152,12 +163,21 @@ func _on_puzzle_solved():
 func show_article_metadata(article_info) -> void:
 	print_debug(article_info)
 	publisher_name.bbcode_text = "[url=%s]%s[/url]" % [
-		article_info['link'],
-		article_info['source']
+		article_info["link"],
+		article_info["source"]
 	]
-	publish_date.text = article_info['pubDate']
+	publish_date.text = article_info["pubDate"]
 	publisher_name.visible = true
 	publish_date.visible = true
+	topic_hint.text = "Category: %s" % daily_article_topic
+
+
+func show_tutorial_metadata(tutorial_index) -> void:
+	publisher_name.text = "Tutorial " + str(tutorial_index)
+	publisher_name.visible = true
+	dscription.visible = true
+	dscription.text = LoadScramble.TUTORIAL_META[tutorial_index][0]
+	topic_hint.text = LoadScramble.TUTORIAL_META[tutorial_index][1]
 
 
 func _on_go_back_pressed():

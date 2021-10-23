@@ -1,7 +1,21 @@
-[gd_resource type="Theme" load_steps=8 format=2]
+[gd_resource type="Theme" load_steps=9 format=2]
 
 [ext_resource path="res://fonts/medio/medio.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=2]
+
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 6.0
+content_margin_right = 6.0
+bg_color = Color( 0.596078, 0.596078, 0.596078, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.372549, 0.372549, 0.372549, 1 )
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 6.0
@@ -66,12 +80,12 @@ font_data = ExtResource( 1 )
 [resource]
 default_font = SubResource( 1 )
 Button/colors/font_color = Color( 0.0980392, 0.0941176, 0.0941176, 1 )
-Button/colors/font_color_disabled = Color( 0.9, 0.9, 0.9, 0.2 )
+Button/colors/font_color_disabled = Color( 0.403922, 0.403922, 0.403922, 0.847059 )
 Button/colors/font_color_hover = Color( 0.164706, 0.164706, 0.164706, 1 )
 Button/colors/font_color_pressed = Color( 0, 0, 0, 1 )
 Button/constants/hseparation = 2
 Button/fonts/font = null
-Button/styles/disabled = null
+Button/styles/disabled = SubResource( 6 )
 Button/styles/focus = SubResource( 4 )
 Button/styles/hover = SubResource( 3 )
 Button/styles/normal = SubResource( 2 )

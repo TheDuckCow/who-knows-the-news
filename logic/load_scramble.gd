@@ -12,6 +12,12 @@ const TUTORIAL_VALUES = {
 	2: ["Who Knows the News", {"k":"n"}], # Hint: The name of the game
 }
 
+const TUTORIAL_META = {
+	0: ["Solve the puzzle by unscrambling the letters above in as few steps as possible. Press two letters in a row to swap them. ", "Alternate Facts"],
+	1: ["Longer phrases may be harder, but take note when gray letters turn black - that means the letter is in the correct spot already!", "When you don't hear something"],
+	2: ["If you are really stuck, you can consider the topic at the top left (what's the hint here? Name of the game?), or even go searching on the publisher's website by clicking the link.", "The name of the game"]
+}
+
 const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
 
 

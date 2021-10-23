@@ -16,6 +16,7 @@ onready var game_scene = get_node("../../")
 
 # Way to disable the keyboard if needed, e.g. on game win.
 var is_active := true
+var allowed_keys = []
 
 # Keyboard layouts, where r0 = first, top row of keys.
 # Intent is to only show keys that would be swappable.
@@ -74,9 +75,33 @@ func add_key_to_row(parent_row:HBoxContainer, key:String) -> void:
 	new_key.connect("pressed_with_value", self, "on_key_pressed")
 
 
+func update_allowed_keys(solution):
+	allowed_keys = []
+	var tmp = solution.to_lower()
+	for ch in LoadScramble.ONLY_SCRAMBLE_CHARS:
+		if ch in tmp:
+			allowed_keys.append(ch)
+	
+	for row in row_container.get_children():
+		for button in row.get_children():
+			if not button is Button:
+				continue
+			elif is_disabled_char(button.text):
+				button.disabled = true
+
+
+func is_disabled_char(key:String):
+	var keyl = key.to_lower()
+	if keyl in LoadScramble.ONLY_SCRAMBLE_CHARS and not keyl in allowed_keys:
+		return true
+	return false
+	
+
 ## When a new character is pressed by shortcut key or virtual key press.
 func on_key_pressed(character:String) -> void:
 	if not is_active:
+		return
+	if is_disabled_char(character):
 		return
 	if not character.to_lower() in LoadScramble.ONLY_SCRAMBLE_CHARS:
 		# Skip other characters like esc etc.
