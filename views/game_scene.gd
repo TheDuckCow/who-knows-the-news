@@ -69,7 +69,7 @@ func _ready():
 	# The many attempts of just trying to get the keyboard to display properly.
 	var this_view = get_viewport()
 	this_view.connect("size_changed", self, "_on_screen_size_change")
-	var _startup_timer = get_tree().create_timer(0.6)
+	var _startup_timer = get_tree().create_timer(1.0)
 	keyboard.modulate.a = 0
 	_on_screen_size_change()
 	assert(_startup_timer.connect("timeout", self, "_on_screen_size_change") == OK)

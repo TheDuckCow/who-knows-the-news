@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=2]
@@ -32,6 +32,51 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.3 )
 }
 
+[sub_resource type="Animation" id=5]
+resource_name = "next_button_flash"
+length = 2.0
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("anim_control/Control/HBoxContainer/next_button:modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0.639216, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0.639216, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.2, 2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("anim_control/Control/HBoxContainer/next_button:modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.2, 2 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("anim_control/Control/HBoxContainer/next_button:modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0.815686, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0.815686, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.2, 2 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("anim_control/Control/HBoxContainer/next_button:modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.2, 2 )
+}
+
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.913725, 0.913725, 0.913725, 1 )
 border_width_left = 2
@@ -55,6 +100,10 @@ __meta__ = {
 autoplay = "animate_in"
 anims/animate_in = SubResource( 1 )
 
+[node name="button_pulse" type="AnimationPlayer" parent="."]
+autoplay = "next_button_flash"
+anims/next_button_flash = SubResource( 5 )
+
 [node name="victory" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
 volume_db = -9.0
@@ -63,6 +112,7 @@ volume_db = -9.0
 
 [node name="anim_control" type="Control" parent="."]
 anchor_right = 1.0
+anchor_bottom = 0.139
 rect_min_size = Vector2( 0, 140 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -125,8 +175,8 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="anim_control/Control"]
 margin_top = 104.0
 margin_right = 480.0
-margin_bottom = 129.0
-rect_min_size = Vector2( 0, 25 )
+margin_bottom = 139.0
+rect_min_size = Vector2( 0, 35 )
 custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
@@ -134,7 +184,7 @@ __meta__ = {
 
 [node name="menu" type="Button" parent="anim_control/Control/HBoxContainer"]
 margin_right = 230.0
-margin_bottom = 25.0
+margin_bottom = 35.0
 focus_neighbour_left = NodePath("../leaderboard_name")
 focus_neighbour_top = NodePath("../leaderboard_name")
 focus_neighbour_right = NodePath("../leaderboard_name")
@@ -149,7 +199,7 @@ __meta__ = {
 [node name="next_button" type="Button" parent="anim_control/Control/HBoxContainer"]
 margin_left = 250.0
 margin_right = 480.0
-margin_bottom = 25.0
+margin_bottom = 35.0
 focus_neighbour_left = NodePath("../menu")
 focus_neighbour_top = NodePath("../menu")
 focus_neighbour_right = NodePath("../menu")
@@ -162,10 +212,10 @@ __meta__ = {
 }
 
 [node name="open_article" type="Button" parent="anim_control/Control"]
-margin_top = 133.0
+margin_top = 143.0
 margin_right = 480.0
-margin_bottom = 158.0
-rect_min_size = Vector2( 0, 25 )
+margin_bottom = 178.0
+rect_min_size = Vector2( 0, 35 )
 custom_fonts/font = ExtResource( 6 )
 text = "Open Article"
 
