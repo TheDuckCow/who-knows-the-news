@@ -73,7 +73,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.690196, 0.690196, 0.690196, 1 )
 border_width_left = 1
 border_width_right = 1
@@ -83,7 +83,7 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0.894118, 0.894118, 0.894118, 0 )
 border_width_left = 3
 border_width_top = 2
@@ -95,7 +95,7 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxFlat" id=6]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 border_width_bottom = 2
 border_color = Color( 0.247059, 0.247059, 0.247059, 1 )
@@ -121,10 +121,10 @@ HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
 HScrollBar/icons/increment = null
 HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 7 )
+HScrollBar/styles/grabber = SubResource( 6 )
 HScrollBar/styles/grabber_highlight = null
 HScrollBar/styles/grabber_pressed = null
-HScrollBar/styles/scroll = SubResource( 8 )
+HScrollBar/styles/scroll = SubResource( 7 )
 HScrollBar/styles/scroll_focus = null
 Label/colors/font_color = Color( 0.105882, 0.101961, 0.101961, 1 )
 Label/colors/font_color_shadow = Color( 0, 0, 0, 0 )
@@ -145,9 +145,9 @@ LineEdit/colors/selection_color = Color( 0.490196, 0.490196, 0.490196, 1 )
 LineEdit/constants/minimum_spaces = 12
 LineEdit/fonts/font = null
 LineEdit/icons/clear = null
-LineEdit/styles/focus = SubResource( 6 )
-LineEdit/styles/normal = SubResource( 6 )
-LineEdit/styles/read_only = SubResource( 6 )
+LineEdit/styles/focus = SubResource( 8 )
+LineEdit/styles/normal = SubResource( 8 )
+LineEdit/styles/read_only = SubResource( 8 )
 RichTextLabel/colors/default_color = Color( 0.0745098, 0.0705882, 0.0705882, 1 )
 RichTextLabel/colors/font_color_selected = Color( 0.0745098, 0.0705882, 0.0705882, 1 )
 RichTextLabel/colors/font_color_shadow = Color( 0, 0, 0, 0 )
@@ -169,8 +169,8 @@ VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/increment = null
 VScrollBar/icons/increment_highlight = null
-VScrollBar/styles/grabber = SubResource( 7 )
+VScrollBar/styles/grabber = SubResource( 6 )
 VScrollBar/styles/grabber_highlight = null
 VScrollBar/styles/grabber_pressed = null
-VScrollBar/styles/scroll = SubResource( 8 )
+VScrollBar/styles/scroll = SubResource( 7 )
 VScrollBar/styles/scroll_focus = null

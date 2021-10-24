@@ -14,20 +14,22 @@ var end_msec: int
 var is_solved := false
 var gave_up := false
 
+# Acts as a primary key for caching.
 var article_page_url: String
-var article_image_url: String
-var article_credit_title: String
 
 var turns_taken: int = 0
 
 
-func _init(solution, start):
+func _init(solution, start, url):
 	solution_phrase = solution
 	starting_phrase = start
 	current_phrase = start
 	turns_taken = 0
 	start_msec = OS.get_ticks_msec()
 	check_solved()
+	article_page_url = url
+	
+	Cache.udpate_session_solve(self)
 
 
 func reset():
@@ -56,6 +58,7 @@ func swap_chars(a:String, b:String):
 			updated = true
 	turns_taken += 1
 	check_solved()
+	Cache.udpate_session_solve(self)
 	if updated:
 		emit_signal("state_updated_phrase")
 
@@ -65,13 +68,13 @@ func check_solved():
 		return
 	end_msec = OS.get_ticks_msec()
 	is_solved = true
-	print("Puzzle solved!")
+	#print("Puzzle solved!")
 	emit_signal("puzzle_solved")
+
 
 func give_up():
 	current_phrase = solution_phrase
 	end_msec = OS.get_ticks_msec()
 	is_solved = true
 	gave_up = true
-	print("Gave up")
-	
+	#print("Gave up")

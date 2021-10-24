@@ -15,6 +15,9 @@ var language = "en"
 var solved_urls = []
 var sound_on := true
 
+# Structure of {url:String : {steps:int, time:int, gave_up:bool}}
+# gave_up is assumed true until puzzle is solved.
+var session_solves = {}
 
 func _ready():
 	assert(connect("language_update", self, "_on_language_update") == OK)
@@ -28,3 +31,10 @@ func is_compact_screen_size() -> bool:
 	#var screen_size = get_viewport().get_rect().size
 	var screen_size = OS.window_size
 	return screen_size.x < 640 or screen_size.y < 480
+
+func udpate_session_solve(state:ScrambleState) -> void:
+	session_solves[state.article_page_url] = {
+		"swaps": state.turns_taken,
+		"time": state.end_msec - state.start_msec if state.end_msec else 0,
+		"gave_up": not state.is_solved
+	}

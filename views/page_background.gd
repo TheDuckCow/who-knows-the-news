@@ -1,5 +1,6 @@
 extends Control
 
+signal pressed_home
 
 onready var date := get_node("VBoxContainer/HBoxContainer2/date")
 onready var language := get_node("VBoxContainer/HBoxContainer/language")
@@ -73,7 +74,7 @@ func _on_screen_size_change():
 	#var screen_size = get_viewport_rect().size
 	if Cache.is_compact_screen_size(): # screen_size.x < 640 and screen_size.y < 580:
 		# Small in both directions
-		h_logo.visible = false
+		# h_logo.visible = false
 		h_title.visible = false
 		h_credit.visible = false
 		h_date.visible = false
@@ -93,8 +94,12 @@ func _on_screen_size_change():
 #		h_date.visible = false
 #		h_top_bar.visible = false
 	else:
-		h_logo.visible = true
+		# h_logo.visible = true
 		h_title.visible = true
 		h_credit.visible = true
 		h_date.visible = true
 		h_top_bar.visible = true
+
+
+func _on_logo_pressed():
+	emit_signal("pressed_home")

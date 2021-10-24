@@ -228,7 +228,7 @@ func _on_rss_load_parse(result, response_code, _headers, body):
 	var transform = generate_transform(solution)
 	var initial_state = apply_scramble(solution, transform)
 	emit_signal("article_metadata", this_article) # To load other scene visuals.
-	emit_signal("article_loaded", solution, initial_state) # To load puzzle.
+	emit_signal("article_loaded", solution, initial_state, this_article["link"])
 
 
 ## Parse for article data and return in structured way
@@ -277,7 +277,7 @@ func parse_articles_xml(body:PoolByteArray) -> Array:
 		elif found_first_itm == false:
 			continue # Skip all headers before first item tag.
 		var node_name = parser.get_node_name()
-		if not node_name in ['title', 'link', 'pubDate', 'source']: # 'description'
+		if not node_name in ['title', 'link', 'pubDate', 'source', 'description']: # 'description'
 			continue
 		# TODO: need some special handling of 'description'
 		if node_name in mid_article_data:
@@ -330,7 +330,6 @@ func select_target_article(articles:Array) -> Dictionary:
 			title = title.split("|", true, 1)[0]
 		if len(title) > 40:
 			title = title.split(" - ", true, 1)[0]
-		shortest_title_value = title
 		
 		# print_debug("article: ", articles[i]["title"])
 		# print_debug("Shortened: ", title)
@@ -338,12 +337,20 @@ func select_target_article(articles:Array) -> Dictionary:
 		if shortest_headline_len < 0:
 			shortest_headline_ind = i
 			shortest_headline_len = len(title)
+			shortest_title_value = title
 		elif len(title) < 8:
 			continue # Title is too short (but ok if this is the first)
 		elif len(title) < shortest_headline_len:
 			shortest_headline_ind = i
 			shortest_headline_len = len(title)
+			shortest_title_value = title
 	
+	#print_debug("Selected shortest_headline_len: %s, index %s" % [
+	#	shortest_headline_len, shortest_headline_ind])
+	#print(articles[shortest_headline_ind])
 	# Update the title to the shortened version, and return the whole structure.
-	articles[shortest_headline_ind]['title'] = shortest_title_value
+	if shortest_title_value: # Not set if nothing was shortened.
+		articles[shortest_headline_ind]['title'] = shortest_title_value
+	#print("Post update title with shortest val")
+	#print(articles[shortest_headline_ind])
 	return articles[shortest_headline_ind]

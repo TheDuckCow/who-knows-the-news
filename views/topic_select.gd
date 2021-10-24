@@ -12,6 +12,8 @@ func _ready():
 	input_topic.placeholder_text = PLACEHOLDER_TOPIC
 	for itm in COUNTRIES:
 		input_country.add_item(itm)
+	
+	assert($page_background.connect("pressed_home", self, "_on_back") == OK)
 
 
 func _on_start_pressed():
@@ -20,3 +22,6 @@ func _on_start_pressed():
 		COUNTRIES[input_country.selected] if input_country.selected != -1 else "US",
 		Cache.language
 	)
+
+func _on_back():
+	SceneTransition.load_menu_select()

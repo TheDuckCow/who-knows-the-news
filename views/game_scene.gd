@@ -22,16 +22,15 @@ onready var step_label := get_node("vscroll/VBoxContainer/status_bar/steps")
 onready var steps_mobile := get_node("steps_mobile")
 onready var publisher_name := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_name")
 onready var publish_date := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_date")
-onready var dscription := get_node("vscroll/VBoxContainer/description")
+onready var description := get_node("vscroll/VBoxContainer/description")
 onready var topic_hint := get_node("vscroll/VBoxContainer/topic_hint")
 onready var status_bar := get_node("vscroll/VBoxContainer/status_bar")
-
-onready var spacer_to_del := get_node("vscroll/VBoxContainer/spacer_del_on_finish")
 
 # Nodes for responsive display
 onready var scroll_area := get_node("vscroll")
 onready var _v_margin_initial = scroll_area.margin_top
 onready var mobile_info := get_node("vscroll/VBoxContainer/HBoxContainer2/mobile_desc")
+onready var spacer_to_del := get_node("vscroll/VBoxContainer/spacer_del_on_finish")
 
 
 var state: ScrambleState
@@ -73,6 +72,12 @@ func _ready():
 	keyboard.modulate.a = 0
 	_on_screen_size_change()
 	assert(_startup_timer.connect("timeout", self, "_on_screen_size_change") == OK)
+	
+	for ch in status_bar.get_children():
+		if ch is Button:
+			ch.disabled = true
+	
+	assert($page_background.connect("pressed_home", self, "_on_go_back_pressed") == OK)
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -85,14 +90,14 @@ func load_scramble():
 			var res = LoadScramble.load_test(0)
 			solution = res[0]
 			start = res[1]
-			load_state(solution, start)
+			load_state(solution, start, '')
 			keyboard.update_allowed_keys(solution)
 			topic_hint.text = "Category: Test"
 		ScrambleSource.TUTORIAL:
 			var res = LoadScramble.load_tutorial(tutorial_index)
 			solution = res[0]
 			start = res[1]
-			load_state(solution, start)
+			load_state(solution, start, '')
 			show_tutorial_metadata()
 			keyboard.update_allowed_keys(solution)
 		ScrambleSource.TOPIC_ARTICLE:
@@ -110,14 +115,19 @@ func load_scramble():
 			load_failed("No match to scramble source")
 
 
-func load_state(solution, start):
+func load_state(solution, start, url):
 	if not solution or not start:
 		load_failed("Solution or initial state is null")
 		return
-	state = ScrambleState.new(solution, start)
+	state = ScrambleState.new(solution, start, url)
 	keyboard.update_allowed_keys(solution)
 	update_phrase_label()
+	# Don't print out solution, chrome inspectors would cheat this way!
 	print(state.current_phrase)
+	
+	for ch in status_bar.get_children():
+		if ch is Button:
+			ch.disabled = false
 	
 	# Finally, make connections to this state object now created.
 	var res = state.connect("state_updated_phrase", self, "update_phrase_label")
@@ -211,7 +221,7 @@ func _on_puzzle_solved():
 	
 	solve_popup.article_link = article_link
 	solve_popup.stat_text = get_timer_text()
-	spacer_to_del.queue_free()
+	spacer_to_del.visible = false
 	container.add_child_below_node(keyboard, solve_popup)
 	status_bar.queue_free()
 	keyboard.queue_free()
@@ -228,7 +238,11 @@ func show_article_metadata(article_info) -> void:
 	publisher_name.visible = true
 	publish_date.visible = true
 	topic_hint.text = "%s: %s" % [tr("Category"), daily_article_topic]
-	dscription.text = article_info["description"] if "description" in article_info else "(no description fetched)"
+	# Unfortunately, the description bascially always has the headline (solution)
+	# in it's name. So either re-show hint, or disable all together.
+	# description.text = article_info["description"] if "description" in article_info else "(no description fetched)"
+	#description.text = "Unscramble the headline above, from the category: %s" % daily_article_topic
+	description.visible = false
 
 
 func show_tutorial_metadata() -> void:
@@ -236,8 +250,8 @@ func show_tutorial_metadata() -> void:
 	publisher_name.visible = true
 	publish_date.text = ""
 	publish_date.visible = true
-	dscription.visible = true
-	dscription.text = LoadScramble.TUTORIAL_META[tutorial_index][0]
+	description.visible = true
+	description.text = LoadScramble.TUTORIAL_META[tutorial_index][0]
 	topic_hint.text = "%s: %s" % [
 		tr("Category"),
 		LoadScramble.TUTORIAL_META[tutorial_index][1]
@@ -245,12 +259,18 @@ func show_tutorial_metadata() -> void:
 
 
 func _on_go_back_pressed():
+	if state:
+		state.give_up()
+		Cache.udpate_session_solve(state)
 	SceneTransition.load_menu_select()
 
 
 func _on_show_answer_pressed():
+	if not state:
+		return
 	state.give_up()
 	update_phrase_label()
+	Cache.udpate_session_solve(state)
 
 
 func _on_publisher_info_meta_clicked(meta):
@@ -258,6 +278,8 @@ func _on_publisher_info_meta_clicked(meta):
 
 
 func _on_reset_pressed():
+	if not state:
+		return
 	state.reset()
 	update_phrase_label()
 
@@ -271,7 +293,7 @@ func _on_screen_size_change():
 		keyboard.generate_keyboard()
 		if state:
 			keyboard.update_allowed_keys(state.solution_phrase)
-		dscription.visible = false
+		# description.visible = false
 		steps_mobile.visible = true
 		step_label.visible = false
 		mobile_info.visible = true
@@ -281,7 +303,7 @@ func _on_screen_size_change():
 		keyboard.generate_keyboard()
 		if state:
 			keyboard.update_allowed_keys(state.solution_phrase)
-		dscription.visible = true
+		# description.visible = true
 		steps_mobile.visible = false
 		step_label.visible = true
 		mobile_info.visible = false
@@ -289,5 +311,5 @@ func _on_screen_size_change():
 
 func _on_mobile_desc_pressed():
 	var popup = mobile_desc_popup.instance()
-	popup.description = dscription.text
+	popup.description = description.text
 	add_child(popup)
