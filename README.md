@@ -8,7 +8,10 @@ Status: **WIP**
 
 ## Play the game
 
-TBD; hoping to host this on itch.io or my own website as an html game.
+Play the game live in your webbrowser [on itch](https://theduckcow.itch.io/who-knows-the-news)!
+
+Some workarounds had to be made in order for CORS to access the Google News RSS feed, and these workarounds might not be in place forever. At the very least, you can go through some built in puzzles packaged with the game.
+
 
 ## View source code and run locally
 

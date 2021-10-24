@@ -28,6 +28,7 @@ signal article_loaded(solution, start)
 signal article_load_failed(reason)
 signal article_metadata(article_dict)
 
+var use_cloud_proxy = true
 
 ## Generate a random, valid scramble transform.
 ## 
@@ -147,15 +148,36 @@ static func get_rss_article_url(topic:String, country_code:String, language:Stri
 ## Will fire a signal on http load
 func load_rss_article_request(url) -> HTTPRequest:
 	var http = HTTPRequest.new()
-	http.set_timeout(15) # 15 seconds.
+	http.set_timeout(30) # 15 seconds.
+
+	# There are many limitations of the http node in html5 exports:
+	# https://docs.godotengine.org/en/3.0/getting_started/workflow/export/exporting_for_web.html#httpclient
+	# The biggest issue is that CORS is not enabled on our google feed.
+	# So, the workaround is to use a proxy cloud function created specifically
+	# for this project. This cloud function is locked down so that only requests
+	# to that google rss domain are allowed (but it is public access).
+	# This cloud function takes a single param which is the full url.
+
 	add_child(http)
 	http.use_threads = false
-	#http.blocking_signals...
 	http.connect("request_completed", self, "_on_rss_load_parse")
-	var headers = [
-		"Access-Control-Allow-Origin: https://news.google.com/",
-		"Access-Control-Allow-Methods: GET"]
-	http.request(url, headers)
+
+	if use_cloud_proxy:
+		# Use the cloud function.
+		var cloud_url = "https://us-central1-mcprep-cloud.cloudfunctions.net/dcg-know-news-cors-proxy"
+		# Note: Cors related headers are in the *servers* response to an OPTIOIN
+		# (vs POST) request, and if it gives a 204, the following is narrowly allowed
+		# ie: Post, with this specific kind of header.
+		var headers = ["Content-Type: application/json"]
+		var use_ssl = true
+		#var query = to_json({"url": url})
+		var query = JSON.print({"url": url})
+		print_debug(query)
+		http.request(cloud_url, headers, use_ssl, HTTPClient.METHOD_POST, query)
+	else:
+		# Non webbrowser, can directly make the RSS feed call without proxy.
+		var headers = []
+		http.request(url, headers, true)
 	return http
 	
 
@@ -172,6 +194,20 @@ func _on_rss_load_parse(result, response_code, _headers, body):
 			response_code, result])
 		return
 	
+	# Cloud function proxy errors to handle.
+	if body.get_string_from_utf8() == "No URL provided":
+		print_debug("Missing url in proxy request")
+		emit_signal("article_load_failed", "Missing url in proxy request")
+		return
+	elif body.get_string_from_utf8() == "No data found":
+		print_debug("No data returned from proxy request")
+		emit_signal("article_load_failed", "No data returned from proxy request")
+		return
+	elif body.get_string_from_utf8() == "Invalid request domain":
+		print_debug("Invalid url prefix")
+		emit_signal("article_load_failed", "No data returned from proxy request")
+		return
+
 	# Debug mode to save the xml to a file.
 	var debug = false
 	if debug:
