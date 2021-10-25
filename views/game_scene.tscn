@@ -9,7 +9,7 @@
 [ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=7]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=8]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 resource_name = "category_highlight"
 length = 2.0
 loop = true
@@ -69,7 +69,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.3, 0.8, 2 )
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "hint_highlight"
 length = 2.0
 loop = true
@@ -104,14 +104,14 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.3, 0.8, 2 )
 }
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.745098, 0.929412, 0.843137, 1 )
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.133333, 0.133333, 0.133333, 1 )
 border_width_top = 2
 border_width_bottom = 2
@@ -128,9 +128,9 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/category_highlight = SubResource( 3 )
+anims/category_highlight = SubResource( 1 )
 anims/headline_highlight = SubResource( 2 )
-anims/hint_highlight = SubResource( 4 )
+anims/hint_highlight = SubResource( 3 )
 
 [node name="page_background" parent="." instance=ExtResource( 5 )]
 
@@ -193,7 +193,7 @@ modulate = Color( 1, 1, 1, 0 )
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -202,7 +202,7 @@ __meta__ = {
 margin_top = 76.0
 margin_right = 760.0
 margin_bottom = 80.0
-custom_styles/separator = SubResource( 1 )
+custom_styles/separator = SubResource( 5 )
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="vscroll/VBoxContainer"]
 margin_top = 84.0

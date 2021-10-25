@@ -18,6 +18,7 @@ var gave_up := false
 
 # Acts as a primary key for caching.
 var article_page_url: String
+var publisher_url: String
 
 var turns_taken:int = 0
 var hints_given:int = 0
@@ -32,8 +33,30 @@ func _init(solution, start, url):
 	start_msec = OS.get_ticks_msec()
 	check_solved()
 	article_page_url = url
+	publisher_url = domain_from_url(url)
 	
 	Cache.udpate_session_solve(self)
+
+
+## Remove pages from (sub)domain, no trailing /
+static func domain_from_url(url:String) -> String:
+	if not url:
+		return ""
+	var break_i
+	var last_was_slash = false
+	for i in range(len(url)):
+		break_i = i
+		if url[i] == "/" and not last_was_slash:
+			last_was_slash = true
+			if len(url) == i+1:
+				break # Confirmed that it's a string ending in /
+			elif url[i+1] != "/":
+				break # Confirming not the // in http://...
+		else:
+			last_was_slash = false
+	if not last_was_slash:
+		break_i += 1 # For end of string
+	return url.left(break_i)
 
 
 func reset():
@@ -86,20 +109,30 @@ func undo_last_swap():
 		check_solved() # More a sanity safeguard than anything.
 
 
-func solve_one_char(give_penalty:bool):
+func still_scrambled_letters() -> Dictionary:
+	if is_solved:
+		return {}
+	# Find all indeces where the correct character is not placed
+	var avail = {}
+	for i in range(len(current_phrase)):
+		if current_phrase[i].to_lower() != solution_phrase[i].to_lower():
+			if not solution_phrase[i].to_lower() in avail:
+				avail[solution_phrase[i].to_lower()] = current_phrase[i].to_lower()
+	return avail
+
+
+func allowed_keys() -> Array:
+	return still_scrambled_letters().keys()
+
+
+func solve_one_char(give_penalty:bool) -> void:
 	if is_solved:
 		return
 	# Find all indeces where the correct character is not placed
-	var avail_solution = []
-	var avail_current = []
-	for i in range(len(current_phrase)):
-		if current_phrase[i].to_lower() != solution_phrase[i].to_lower():
-			if not solution_phrase[i].to_lower() in avail_solution:
-				avail_solution.append(solution_phrase[i].to_lower())
-				avail_current.append(current_phrase[i].to_lower())
+	var avail = still_scrambled_letters()
 	
 	# Pick a random index to swap
-	if not avail_solution:
+	if not avail:
 		push_error("Failed to find any characters to swap")
 		check_solved()
 		return
@@ -112,9 +145,10 @@ func solve_one_char(give_penalty:bool):
 		turns_taken -= 1
 
 	# Pick which character we want to put into the right place
-	var ind = randi() % avail_solution.size()
-	swap_chars(avail_solution[ind], avail_current[ind])
-	print_debug("Hint swapped %s & %s" %  [avail_solution[ind], avail_current[ind]])
+	var keys = avail.keys()
+	var ind = randi() % keys.size()
+	swap_chars(keys[ind], avail[keys[ind]])
+	print_debug("Hint swapped %s & %s" %  [keys[ind], avail[keys[ind]]])
 
 
 func give_up():

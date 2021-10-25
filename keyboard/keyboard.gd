@@ -57,24 +57,28 @@ func _unhandled_input(event) -> void:
 		emit_signal("key_pressed", keystr.to_lower())
 
 
-## Generate or regenerate the overall keyboard.
-func generate_keyboard() -> void:
-	for row in row_container.get_children():
-		# Disconnect needed?
-		row.queue_free()
-	
+func get_target_button_size() -> float:
 	var pnode = get_node("../")
 	var parent_width = pnode.rect_size.x
 	var max_row_width = 0
 	for row in LAYOUT[use_layout]:
 		if len(row) > max_row_width:
 			max_row_width = len(row)
-	
 	var button_size = 0
 	if max_row_width > 0:
 		button_size = (parent_width * 0.85) / max_row_width
 	else:
 		push_warning("Couldn't get best keyboard size")
+	return button_size
+
+
+## Generate or regenerate the overall keyboard.
+func generate_keyboard() -> void:
+	for row in row_container.get_children():
+		# Disconnect needed?
+		row.queue_free()
+	
+	var button_size = get_target_button_size()
 	
 	for row in LAYOUT[use_layout]:
 		var new_row = HBoxContainer.new()
@@ -106,18 +110,22 @@ func add_key_to_row(parent_row:HBoxContainer, key:String, size:float) -> void:
 	new_key.connect("pressed_with_value", self, "on_key_pressed")
 
 
-func update_allowed_keys(solution):
-	allowed_keys = []
-	var tmp = solution.to_lower()
-	for ch in LoadScramble.ONLY_SCRAMBLE_CHARS:
-		if ch in tmp:
-			allowed_keys.append(ch)
+func update_allowed_keys(_allowed_keys: Array):
+	#allowed_keys = [] # A cache used for future key presses and display.
+	allowed_keys = _allowed_keys
+	#var tmp = solution.to_lower()
+	#for ch in LoadScramble.ONLY_SCRAMBLE_CHARS:
+	#	if ch in tmp:
+	#		allowed_keys.append(ch)
+	
+	var size = get_target_button_size() # Update based on layout space.
 	
 	for row in row_container.get_children():
 		for button in row.get_children():
 			if not button is Button:
 				continue
-			elif is_disabled_char(button.text):
+			button.size = size
+			if is_disabled_char(button.text):
 				button.disabled = true
 
 
@@ -148,7 +156,10 @@ func on_key_pressed(character:String) -> void:
 	var focus_button := get_key(character)
 	if focus_button:
 		focus_button.grab_focus()
-	
+	make_key_sound()
+
+
+func make_key_sound():
 	if Cache.sound_on:
 		key_audio.pitch_scale = 1 + randf() * 0.3
 		key_audio.play(0)

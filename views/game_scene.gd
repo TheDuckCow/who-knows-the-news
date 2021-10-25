@@ -93,8 +93,8 @@ func load_scramble():
 			solution = res[0]
 			start = res[1]
 			load_state(solution, start, '')
-			keyboard.update_allowed_keys(solution)
 			topic_hint.text = "Category: Test"
+			keyboard.update_allowed_keys(state.allowed_keys())
 		ScrambleSource.TUTORIAL:
 			var res = LoadScramble.load_tutorial(tutorial_index)
 			solution = res[0]
@@ -118,8 +118,8 @@ func load_scramble():
 			# Update the "initial" phrase.
 			state.starting_phrase = state.current_phrase
 			show_tutorial_metadata()
-			keyboard.update_allowed_keys(solution)
 			publisher_name.visible = false
+			keyboard.update_allowed_keys(state.allowed_keys())
 		ScrambleSource.TOPIC_ARTICLE:
 			var url = LoadScramble.get_rss_article_url(
 				daily_article_topic, daily_article_country, daily_article_language)
@@ -140,10 +140,9 @@ func load_state(solution, start, url):
 		load_failed("Solution or initial state is null")
 		return
 	state = ScrambleState.new(solution, start, url)
-	keyboard.update_allowed_keys(solution)
+	keyboard.update_allowed_keys(state.allowed_keys())
 	update_phrase_label()
 	# Don't print out solution, chrome inspectors would cheat this way!
-	print(state.current_phrase)
 	
 	for ch in status_bar.get_children():
 		if ch is Button:
@@ -162,7 +161,7 @@ func load_failed(reason:String):
 	push_error("Failed to load scene with: %s" % reason)
 	# TODO: Handle here, maybe with popup and timer to go back to main menu
 	# to try again.
-	topic_hint.text = "Failed to load article (%s)" % reason
+	topic_hint.text = "Failed to load article (%s), tap the 'DuckCow' icon top left to go back" % reason
 	# SceneTransition.load_menu_select()
 
 
@@ -198,6 +197,7 @@ func _on_key_pressed(_chart):
 	update_phrase_label()
 
 
+## Update display headline and the keyboard allowed keys as well.
 func update_phrase_label():
 	phrase_label.visible = true
 	var tmp_phrase = []
@@ -222,6 +222,7 @@ func update_phrase_label():
 				tmp_phrase.append("[color=gray]%s[/color]" % state.current_phrase[i])
 	
 	phrase_label.bbcode_text = "[center]%s[/center]" % PoolStringArray(tmp_phrase).join("")
+	keyboard.update_allowed_keys(state.allowed_keys())
 
 
 func _on_puzzle_solved():
@@ -251,7 +252,7 @@ func show_article_metadata(article_info) -> void:
 	print_debug(article_info)
 	article_link = article_info["link"]
 	publisher_name.bbcode_text = "[url=%s]%s[/url]" % [
-		article_info["link"],
+		ScrambleState.domain_from_url(article_info["link"]),
 		article_info["source"]
 	]
 	publish_date.text = article_info["pubDate"]
@@ -296,7 +297,7 @@ func _on_show_answer_pressed():
 	#	state.solve_one_char(true)
 	#else:
 	#	state.give_up()
-
+	keyboard.make_key_sound()
 	update_phrase_label()
 	Cache.udpate_session_solve(state)
 
@@ -310,6 +311,7 @@ func _on_reset_pressed():
 	if not state:
 		return
 	state.reset()
+	keyboard.make_key_sound()
 	update_phrase_label()
 
 
@@ -321,7 +323,7 @@ func _on_screen_size_change():
 		keyboard.use_small_font = true
 		keyboard.generate_keyboard()
 		if state:
-			keyboard.update_allowed_keys(state.solution_phrase)
+			keyboard.update_allowed_keys(state.allowed_keys())
 		# description.visible = false
 		if is_instance_valid(step_label):
 			steps_mobile.visible = true
@@ -332,7 +334,7 @@ func _on_screen_size_change():
 		keyboard.use_small_font = false
 		keyboard.generate_keyboard()
 		if state:
-			keyboard.update_allowed_keys(state.solution_phrase)
+			keyboard.update_allowed_keys(state.allowed_keys())
 		# description.visible = true
 		if is_instance_valid(step_label):
 			steps_mobile.visible = false
@@ -350,6 +352,7 @@ func _on_mobile_desc_pressed():
 func _on_undo_pressed():
 	keyboard.mid_swap = ""
 	#keyboard.on_key_pressed("key_pressed")
+	keyboard.make_key_sound()
 	state.undo_last_swap()
 
 

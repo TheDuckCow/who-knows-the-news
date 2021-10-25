@@ -58,6 +58,7 @@ The News"
 fit_content_height = true
 
 [node name="play_daily" type="Button" parent="layout/VBoxContainer"]
+visible = false
 margin_top = 86.0
 margin_right = 760.0
 margin_bottom = 318.0
@@ -70,16 +71,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSeparator" type="HSeparator" parent="layout/VBoxContainer"]
-margin_top = 328.0
-margin_right = 760.0
-margin_bottom = 338.0
-rect_min_size = Vector2( 0, 10 )
-
 [node name="play_prior_day" type="Button" parent="layout/VBoxContainer"]
-margin_top = 348.0
+visible = false
+margin_top = 86.0
 margin_right = 760.0
-margin_bottom = 386.0
+margin_bottom = 136.0
+rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 disabled = true
 text = "Past Puzzle"
@@ -88,19 +85,28 @@ __meta__ = {
 }
 
 [node name="custom_topic" type="Button" parent="layout/VBoxContainer"]
-margin_top = 396.0
+margin_top = 86.0
 margin_right = 760.0
-margin_bottom = 434.0
+margin_bottom = 390.0
+rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Pick from Topic"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tutorial" type="Button" parent="layout/VBoxContainer"]
-margin_top = 444.0
+[node name="HSeparator" type="HSeparator" parent="layout/VBoxContainer"]
+margin_top = 400.0
 margin_right = 760.0
-margin_bottom = 482.0
+margin_bottom = 410.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="Tutorial" type="Button" parent="layout/VBoxContainer"]
+margin_top = 420.0
+margin_right = 760.0
+margin_bottom = 470.0
+rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 text = "Tutorial"
 __meta__ = {
@@ -108,9 +114,10 @@ __meta__ = {
 }
 
 [node name="credits" type="Button" parent="layout/VBoxContainer"]
-margin_top = 492.0
+margin_top = 480.0
 margin_right = 760.0
 margin_bottom = 530.0
+rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 text = "Credits"
 __meta__ = {

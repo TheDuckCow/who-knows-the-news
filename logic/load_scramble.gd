@@ -93,9 +93,9 @@ static func apply_scramble(source:String, transform:Dictionary):
 		if not ch in ONLY_SCRAMBLE_CHARS:
 			continue
 		if not ch in lookup:
-			print_debug(source)
-			print_debug(transform)
-			print_debug(lookup)
+			#print_debug(source)
+			#print_debug(transform)
+			#print_debug(lookup)
 			push_error("Char %s not in lookup map from %s" % [ch, source])
 			return null
 		
@@ -170,9 +170,7 @@ func load_rss_article_request(url) -> HTTPRequest:
 		# ie: Post, with this specific kind of header.
 		var headers = ["Content-Type: application/json"]
 		var use_ssl = true
-		#var query = to_json({"url": url})
 		var query = JSON.print({"url": url})
-		print_debug(query)
 		http.request(cloud_url, headers, use_ssl, HTTPClient.METHOD_POST, query)
 	else:
 		# Non webbrowser, can directly make the RSS feed call without proxy.
@@ -338,19 +336,21 @@ func select_target_article(articles:Array) -> Dictionary:
 			shortest_headline_ind = i
 			shortest_headline_len = len(title)
 			shortest_title_value = title
-		elif len(title) < 12:
+		elif len(title.replace(" ", "")) < 15:
 			continue # Title is too short (but ok if this is the first)
+		elif articles[i]["link"] in Cache.session_solves:
+			print_debug("Skipping already solved puzzle")
+			continue
 		elif len(title) < shortest_headline_len:
 			shortest_headline_ind = i
 			shortest_headline_len = len(title)
 			shortest_title_value = title
-	
+
 	#print_debug("Selected shortest_headline_len: %s, index %s" % [
 	#	shortest_headline_len, shortest_headline_ind])
 	#print(articles[shortest_headline_ind])
+
 	# Update the title to the shortened version, and return the whole structure.
 	if shortest_title_value: # Not set if nothing was shortened.
 		articles[shortest_headline_ind]['title'] = shortest_title_value
-	#print("Post update title with shortest val")
-	#print(articles[shortest_headline_ind])
 	return articles[shortest_headline_ind]
