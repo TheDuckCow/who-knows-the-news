@@ -44,3 +44,7 @@ func _on_screen_size_change():
 	else:
 		mobile_title.visible = false
 		$layout.margin_top = 100
+
+
+func _on_credits_pressed():
+	SceneTransition.show_credits()

@@ -60,54 +60,65 @@ fit_content_height = true
 [node name="play_daily" type="Button" parent="layout/VBoxContainer"]
 margin_top = 86.0
 margin_right = 760.0
-margin_bottom = 322.0
+margin_bottom = 318.0
 rect_min_size = Vector2( 0, 75 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 disabled = true
-text = "Play Today's Puzzle"
+text = "Today's Puzzle"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HSeparator" type="HSeparator" parent="layout/VBoxContainer"]
-margin_top = 332.0
+margin_top = 328.0
 margin_right = 760.0
-margin_bottom = 342.0
+margin_bottom = 338.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="play_prior_day" type="Button" parent="layout/VBoxContainer"]
-margin_top = 352.0
+margin_top = 348.0
 margin_right = 760.0
-margin_bottom = 390.0
+margin_bottom = 386.0
 size_flags_horizontal = 3
 disabled = true
-text = "Play Past Puzzle"
+text = "Past Puzzle"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="custom_topic" type="Button" parent="layout/VBoxContainer"]
-margin_top = 400.0
+margin_top = 396.0
 margin_right = 760.0
-margin_bottom = 438.0
+margin_bottom = 434.0
 size_flags_horizontal = 3
-text = "Puzzle from Topic"
+text = "Pick from Topic"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Tutorial" type="Button" parent="layout/VBoxContainer"]
-margin_top = 448.0
+margin_top = 444.0
 margin_right = 760.0
-margin_bottom = 486.0
+margin_bottom = 482.0
 size_flags_horizontal = 3
 text = "Tutorial"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="credits" type="Button" parent="layout/VBoxContainer"]
+margin_top = 492.0
+margin_right = 760.0
+margin_bottom = 530.0
+size_flags_horizontal = 3
+text = "Credits"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="RichTextLabel" type="RichTextLabel" parent="layout/VBoxContainer"]
+visible = false
 margin_top = 496.0
 margin_right = 760.0
 margin_bottom = 530.0
@@ -128,4 +139,6 @@ scroll_active = false
 [connection signal="pressed" from="layout/VBoxContainer/custom_topic" to="." method="_on_custom_topic_pressed"]
 [connection signal="mouse_entered" from="layout/VBoxContainer/Tutorial" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="pressed" from="layout/VBoxContainer/Tutorial" to="." method="_on_tutorial_pressed"]
+[connection signal="mouse_entered" from="layout/VBoxContainer/credits" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="pressed" from="layout/VBoxContainer/credits" to="." method="_on_credits_pressed"]
 [connection signal="meta_clicked" from="layout/VBoxContainer/RichTextLabel" to="." method="_on_link_clicked"]

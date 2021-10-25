@@ -106,7 +106,7 @@ anims/next_button_flash = SubResource( 2 )
 
 [node name="victory" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 7 )
-volume_db = -9.0
+volume_db = -14.0
 
 [node name="hover_crumple" parent="." instance=ExtResource( 5 )]
 
@@ -155,7 +155,7 @@ __meta__ = {
 margin_right = 480.0
 margin_bottom = 51.0
 custom_fonts/font = ExtResource( 2 )
-text = "Puzzle Solved!"
+text = "Headline Solved!"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false

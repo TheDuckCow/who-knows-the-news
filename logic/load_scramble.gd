@@ -7,18 +7,18 @@ const TEST_VALUES = {
 }
 
 const TUTORIAL_VALUES = {
-	0: ["Fake news", {"f":"k", "a":"e", "k":"s", "e":"a", "n":"f", "w":"n", "s":"w"}], # Hint: Alternative facts
+	0: ["Fake news", {"f":"f", "a":"e", "k":"s", "e":"a", "n":"n", "w":"k", "s":"w"}], # Hint: Alternative facts
 	1: ["No news is good news", {}], # , Hint: When you don't hear something...
 	2: ["Who Knows the News\nby Patrick W. Crawford", {}], # Hint: The name of the game
 }
 
 const TUTORIAL_META = {
-	0: ["    Tutorial stage 1/3. Solve the puzzle by unscrambling the letters above in as few steps as possible. Press two letters in a row to swap them. You can either use the virtual keyboard below, or simply type the letter on your physical keyboard.",
-		"Alternate Facts"],
-	1: ["    Tutorial stage 2/3. Longer phrases may be harder, but take note when gray letters turn black - that means the letter is in the correct spot already! Just be careful that you don’t turn solved black characters back into gray ones (and yes, that also means no cheating by just mashing on your keyboard).",
+	0: ["    TUTORIAL 1/3: Unscramble the news headline letters displayed above the line. Press one letter after another to swap them, using your keyboard or the on-screen keys below.",
+		"Alternate facts"],
+	1: ["    TUTORIAL 2/3: Longer phrases are harder. Use the Category Name (top left) to give you an idea, a word might even be in the headline itself!",
 	"When you hear no updates"],
-	2: ["   Tutorial stage 3/3. If you are really stuck, you can consider the topic at the top left. There’s a good chance that word will appear in the article, or otherwise hint at the solution. Another option is to click on the Publisher Name link, which will appear to the left just underneath the scrambled headline. You could try searching for the actual news article there!",
-		"The name of the game"]
+	2: ["   TUTORIAL 3/3: Try to solve shorter words first. If you are really stuck, you can press 'Use Hint' to correctly swap a single letter (costs 10 swaps). Scores are ranked first by number of swaps, then by time taken.",
+		"Name of the game and author"]
 }
 
 const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
@@ -330,15 +330,15 @@ func select_target_article(articles:Array) -> Dictionary:
 			title = title.split("|", true, 1)[0]
 		if len(title) > 40:
 			title = title.split(" - ", true, 1)[0]
-		
+
 		# print_debug("article: ", articles[i]["title"])
 		# print_debug("Shortened: ", title)
-		
+
 		if shortest_headline_len < 0:
 			shortest_headline_ind = i
 			shortest_headline_len = len(title)
 			shortest_title_value = title
-		elif len(title) < 8:
+		elif len(title) < 12:
 			continue # Title is too short (but ok if this is the first)
 		elif len(title) < shortest_headline_len:
 			shortest_headline_ind = i

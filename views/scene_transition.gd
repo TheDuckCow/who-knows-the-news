@@ -1,6 +1,7 @@
 ## Scene transition between one view and the next, set up as an AutoLoad
 extends CanvasLayer
 
+const CreditsScene := preload("res://views/credits.tscn")
 const GameSceneGd := preload("res://views/game_scene.gd")
 const GameScene := preload("res://views/game_scene.tscn")
 const SelectMenu := preload("res://views/select_menu.tscn")
@@ -25,10 +26,10 @@ func _ready():
 		push_error("Failed to connect animation player")
 
 
-func _process(_delta):
-	if Input.is_action_just_pressed("ui_cancel"):
+func _unhandled_input(event):
+	if event is InputEventKey and Input.is_action_just_pressed("ui_cancel"):
 		if is_menu_screen:
-			return # Already top level
+			return # Already top level.
 		print_debug("TODO: popup option to exit game if that's the mode")
 		load_menu_select()
 
@@ -51,8 +52,8 @@ func _load_new_scene(scn):
 	get_tree().get_root().add_child(current_scene)
 	get_tree().set_current_scene(current_scene)
 
+
 func load_menu_select() -> void:
-	print("Load menu select scene")
 	_load_new_scene(SelectMenu)
 	_anim_player.stop()
 	_anim_player.play("next_page")
@@ -60,7 +61,6 @@ func load_menu_select() -> void:
 
 func start_tutorial_scene(index:int) -> void:
 	_load_new_scene(GameScene)
-	
 	current_scene.source = GameSceneGd.ScrambleSource.TUTORIAL
 	current_scene.tutorial_index = index
 	current_scene.load_scramble()
@@ -84,10 +84,17 @@ func start_topic_scene(topic:String, country:String, language:String) -> void:
 	_anim_player.stop()
 	_anim_player.play("next_page")
 
+
 func load_daily_puzzle():
 	_load_new_scene(GameScene)
 	current_scene.source = GameSceneGd.ScrambleSource.TOPIC_ARTICLE
 
+
+func show_credits():
+	_load_new_scene(CreditsScene)
+	_anim_player.stop()
+	_anim_player.play("next_page")
+	
 
 func _on_animation_finished(_anim_name) -> void:
 	if not _texture_rect.visible:

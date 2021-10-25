@@ -16,6 +16,8 @@ enum ScrambleSource {
 
 export(ScrambleSource) var source = ScrambleSource.TEST
 
+onready var anim_player := get_node("AnimationPlayer")
+
 onready var phrase_label := get_node("vscroll/VBoxContainer/phrase_state")
 onready var keyboard := get_node("vscroll/VBoxContainer/keyboard")
 onready var step_label := get_node("vscroll/VBoxContainer/status_bar/steps")
@@ -23,12 +25,12 @@ onready var steps_mobile := get_node("steps_mobile")
 onready var publisher_name := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_name")
 onready var publish_date := get_node("vscroll/VBoxContainer/HBoxContainer2/pub_date")
 onready var description := get_node("vscroll/VBoxContainer/description")
-onready var topic_hint := get_node("vscroll/VBoxContainer/topic_hint")
+onready var topic_hint := get_node("vscroll/VBoxContainer/category")
 onready var status_bar := get_node("vscroll/VBoxContainer/status_bar")
 
 # Nodes for responsive display
 onready var scroll_area := get_node("vscroll")
-onready var _v_margin_initial = scroll_area.margin_top
+onready var _v_margin_initial:int = scroll_area.margin_top
 onready var mobile_info := get_node("vscroll/VBoxContainer/HBoxContainer2/mobile_desc")
 onready var spacer_to_del := get_node("vscroll/VBoxContainer/spacer_del_on_finish")
 
@@ -98,8 +100,26 @@ func load_scramble():
 			solution = res[0]
 			start = res[1]
 			load_state(solution, start, '')
+			# Make the tutorials easier, solving at least one already solved key.
+			if tutorial_index == 0:
+				# Pre-solved chars hard coded in the loaded sequence.
+				anim_player.play("headline_highlight")
+				steps_mobile.queue_free()
+				step_label.queue_free()
+			elif tutorial_index == 1:
+				anim_player.play("category_highlight")
+				state.solve_one_char(false)
+				steps_mobile.queue_free()
+				step_label.queue_free()
+			elif tutorial_index == 2:
+				anim_player.play("hint_highlight")
+				state.solve_one_char(false)
+			assert(state.connect("puzzle_solved", self, "_stop_tutorial_animation") == OK)
+			# Update the "initial" phrase.
+			state.starting_phrase = state.current_phrase
 			show_tutorial_metadata()
 			keyboard.update_allowed_keys(solution)
+			publisher_name.visible = false
 		ScrambleSource.TOPIC_ARTICLE:
 			var url = LoadScramble.get_rss_article_url(
 				daily_article_topic, daily_article_country, daily_article_language)
@@ -147,10 +167,10 @@ func load_failed(reason:String):
 
 
 func _process(_delta):
-	steps_mobile.text = get_timer_text()
 	if not is_instance_valid(step_label):
-		# At the end of the game, this section is dismissed.
+		# At the end of the game, this section is dismissed, or in some tutorials
 		return
+	steps_mobile.text = get_timer_text()
 	step_label.text = get_timer_text()
 
 
@@ -239,7 +259,7 @@ func show_article_metadata(article_info) -> void:
 	publish_date.visible = true
 	topic_hint.text = "%s: %s" % [tr("Category"), daily_article_topic]
 	# Unfortunately, the description bascially always has the headline (solution)
-	# in it's name. So either re-show hint, or disable all together.
+	# in it's name. So prefering to hide to get back the real estate.
 	# description.text = article_info["description"] if "description" in article_info else "(no description fetched)"
 	#description.text = "Unscramble the headline above, from the category: %s" % daily_article_topic
 	description.visible = false
@@ -251,7 +271,7 @@ func show_tutorial_metadata() -> void:
 	publish_date.text = ""
 	publish_date.visible = true
 	description.visible = true
-	description.text = LoadScramble.TUTORIAL_META[tutorial_index][0]
+	description.bbcode_text = LoadScramble.TUTORIAL_META[tutorial_index][0]
 	topic_hint.text = "%s: %s" % [
 		tr("Category"),
 		LoadScramble.TUTORIAL_META[tutorial_index][1]
@@ -265,10 +285,18 @@ func _on_go_back_pressed():
 	SceneTransition.load_menu_select()
 
 
+## For either hint or show answer
 func _on_show_answer_pressed():
+	keyboard.mid_swap = ""
 	if not state:
 		return
-	state.give_up()
+	# Initally had a "give up" button, but now prefer reveal 1 char at a time.
+	state.solve_one_char(true)
+	#if state.hints_given < 2:
+	#	state.solve_one_char(true)
+	#else:
+	#	state.give_up()
+
 	update_phrase_label()
 	Cache.udpate_session_solve(state)
 
@@ -278,6 +306,7 @@ func _on_publisher_info_meta_clicked(meta):
 
 
 func _on_reset_pressed():
+	keyboard.mid_swap = ""
 	if not state:
 		return
 	state.reset()
@@ -294,8 +323,9 @@ func _on_screen_size_change():
 		if state:
 			keyboard.update_allowed_keys(state.solution_phrase)
 		# description.visible = false
-		steps_mobile.visible = true
-		step_label.visible = false
+		if is_instance_valid(step_label):
+			steps_mobile.visible = true
+			step_label.visible = false
 		mobile_info.visible = true
 	else:
 		scroll_area.margin_top = _v_margin_initial
@@ -304,8 +334,9 @@ func _on_screen_size_change():
 		if state:
 			keyboard.update_allowed_keys(state.solution_phrase)
 		# description.visible = true
-		steps_mobile.visible = false
-		step_label.visible = true
+		if is_instance_valid(step_label):
+			steps_mobile.visible = false
+			step_label.visible = true
 		mobile_info.visible = false
 
 
@@ -313,3 +344,16 @@ func _on_mobile_desc_pressed():
 	var popup = mobile_desc_popup.instance()
 	popup.description = description.text
 	add_child(popup)
+
+
+## Deprecated
+func _on_undo_pressed():
+	keyboard.mid_swap = ""
+	#keyboard.on_key_pressed("key_pressed")
+	state.undo_last_swap()
+
+
+func _stop_tutorial_animation():
+	print_debug("Triggered stop animation?")
+	anim_player.stop(true)
+	anim_player.seek(0, true)

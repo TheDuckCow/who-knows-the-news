@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://views/topic_select.gd" type="Script" id=2]
 [ext_resource path="res://views/page_background.tscn" type="PackedScene" id=3]
 [ext_resource path="res://sound/hover_crumple.tscn" type="PackedScene" id=4]
+[ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=5]
+[ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=6]
+[ext_resource path="res://images/randomize.png" type="Texture" id=7]
 
 [node name="topic_select" type="Control"]
 anchor_right = 1.0
@@ -18,50 +21,97 @@ __meta__ = {
 
 [node name="hover_crumple" parent="." instance=ExtResource( 4 )]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="scroll" type="ScrollContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 20.0
-margin_top = 120.0
+margin_top = 90.0
 margin_right = -20.0
-margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="scroll"]
+margin_right = 760.0
+margin_bottom = 290.0
+size_flags_horizontal = 3
 custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="topic_hb" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Label" type="RichTextLabel" parent="scroll/VBoxContainer"]
 margin_right = 760.0
-margin_bottom = 38.0
+margin_bottom = 24.0
+custom_fonts/normal_font = ExtResource( 5 )
+text = "Choose (or randomize) the category for your next puzzle."
+fit_content_height = true
 
-[node name="Label" type="Label" parent="VBoxContainer/topic_hb"]
+[node name="topic_hb" type="HBoxContainer" parent="scroll/VBoxContainer"]
+margin_top = 44.0
+margin_right = 760.0
+margin_bottom = 82.0
+
+[node name="Label" type="Label" parent="scroll/VBoxContainer/topic_hb"]
 margin_top = 1.0
-margin_right = 272.0
+margin_right = 149.0
 margin_bottom = 37.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "One-word topic:   "
+text = "Category: "
 
-[node name="topic" type="LineEdit" parent="VBoxContainer/topic_hb"]
-margin_left = 276.0
-margin_right = 760.0
+[node name="topic" type="LineEdit" parent="scroll/VBoxContainer/topic_hb"]
+margin_left = 153.0
+margin_right = 712.0
 margin_bottom = 38.0
 size_flags_horizontal = 3
 placeholder_text = "Politics"
 caret_blink = true
 
-[node name="country" type="OptionButton" parent="VBoxContainer"]
-margin_top = 58.0
+[node name="random_topic" type="Button" parent="scroll/VBoxContainer/topic_hb"]
+margin_left = 716.0
 margin_right = 760.0
-margin_bottom = 96.0
+margin_bottom = 38.0
+icon = ExtResource( 7 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="scroll/VBoxContainer"]
+margin_top = 102.0
+margin_right = 760.0
+margin_bottom = 127.0
+
+[node name="Label" type="Label" parent="scroll/VBoxContainer/HBoxContainer"]
+margin_top = 1.0
+margin_right = 191.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 5 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Article from country:  "
+
+[node name="country" type="OptionButton" parent="scroll/VBoxContainer/HBoxContainer"]
+margin_left = 195.0
+margin_right = 760.0
+margin_bottom = 25.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 5 )
 text = "Country"
 
-[node name="start" type="Button" parent="VBoxContainer"]
-margin_top = 116.0
+[node name="start" type="Button" parent="scroll/VBoxContainer"]
+margin_top = 147.0
 margin_right = 760.0
-margin_bottom = 154.0
+margin_bottom = 185.0
 text = "Start Puzzle"
 
-[connection signal="mouse_entered" from="VBoxContainer/topic_hb/topic" to="hover_crumple" method="_on_mouse_entered"]
-[connection signal="mouse_entered" from="VBoxContainer/country" to="hover_crumple" method="_on_mouse_entered"]
-[connection signal="mouse_entered" from="VBoxContainer/start" to="hover_crumple" method="_on_mouse_entered"]
-[connection signal="pressed" from="VBoxContainer/start" to="." method="_on_start_pressed"]
+[node name="more_text" type="RichTextLabel" parent="scroll/VBoxContainer"]
+margin_top = 205.0
+margin_right = 760.0
+margin_bottom = 290.0
+custom_fonts/normal_font = ExtResource( 6 )
+text = "    From the single-word category listed above, a number of article headlines and links will be fetched. Then, a random one will be picked. The app filters out articles that are too long or headlines you have already tried unscrambling (during this session).
+    Articles come directly from Google News RSS feeds. No bias or filtering is applied for which articles or publishers appear, the code does not look at this at all."
+fit_content_height = true
+
+[connection signal="mouse_entered" from="scroll/VBoxContainer/topic_hb/topic" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="text_changed" from="scroll/VBoxContainer/topic_hb/topic" to="." method="_on_topic_text_changed"]
+[connection signal="pressed" from="scroll/VBoxContainer/topic_hb/random_topic" to="." method="_on_random_topic_pressed"]
+[connection signal="mouse_entered" from="scroll/VBoxContainer/HBoxContainer/country" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="mouse_entered" from="scroll/VBoxContainer/start" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="pressed" from="scroll/VBoxContainer/start" to="." method="_on_start_pressed"]

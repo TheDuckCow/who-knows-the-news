@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://keyboard/keyboard.tscn" type="PackedScene" id=1]
 [ext_resource path="res://views/game_scene.gd" type="Script" id=2]
@@ -8,6 +8,108 @@
 [ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=6]
 [ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=7]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=8]
+
+[sub_resource type="Animation" id=3]
+resource_name = "category_highlight"
+length = 2.0
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("vscroll/VBoxContainer/category:custom_colors/font_color:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0.541176, -0.25, 0, 0.25, 0, 0.541176, -0.25, 0, 0.25, 0, 0.376471, -0.25, 0, 0.25, 0, 0.541176, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("vscroll/VBoxContainer/category:custom_colors/font_color:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0.541176, -0.25, 0, 0.25, 0, 0.541176, -0.25, 0, 0.25, 0, 0.87451, -0.25, 0, 0.25, 0, 0.541176, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("vscroll/VBoxContainer/category:custom_colors/font_color:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0.541176, -0.25, 0, 0.25, 0, 0.541176, -0.25, 0, 0.25, 0, 0.721569, -0.25, 0, 0.25, 0, 0.541176, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("vscroll/VBoxContainer/category:custom_colors/font_color:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "headline_highlight"
+length = 2.0
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("vscroll/VBoxContainer/phrase_state/phrase_highlight:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "hint_highlight"
+length = 2.0
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("vscroll/VBoxContainer/status_bar/hint_answer:modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0.490196, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("vscroll/VBoxContainer/status_bar/hint_answer:modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0.87451, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("vscroll/VBoxContainer/status_bar/hint_answer:modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0.756863, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.8, 2 )
+}
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.745098, 0.929412, 0.843137, 1 )
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.133333, 0.133333, 0.133333, 1 )
@@ -24,6 +126,11 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/category_highlight = SubResource( 3 )
+anims/headline_highlight = SubResource( 2 )
+anims/hint_highlight = SubResource( 4 )
 
 [node name="page_background" parent="." instance=ExtResource( 5 )]
 
@@ -61,7 +168,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="topic_hint" type="Label" parent="vscroll/VBoxContainer"]
+[node name="category" type="Label" parent="vscroll/VBoxContainer"]
 margin_right = 760.0
 margin_bottom = 16.0
 custom_fonts/font = ExtResource( 7 )
@@ -80,6 +187,16 @@ bbcode_enabled = true
 bbcode_text = "[center]Hello World[/center]"
 text = "Hello World"
 fit_content_height = true
+
+[node name="phrase_highlight" type="Panel" parent="vscroll/VBoxContainer/phrase_state"]
+modulate = Color( 1, 1, 1, 0 )
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HSeparator" type="HSeparator" parent="vscroll/VBoxContainer"]
 margin_top = 76.0
@@ -128,6 +245,7 @@ margin_right = 760.0
 margin_bottom = 142.0
 custom_fonts/normal_font = ExtResource( 8 )
 custom_colors/default_color = Color( 0.372549, 0.372549, 0.372549, 1 )
+bbcode_enabled = true
 fit_content_height = true
 scroll_active = false
 
@@ -148,36 +266,48 @@ __meta__ = {
 }
 
 [node name="go_back" type="Button" parent="vscroll/VBoxContainer/status_bar"]
-margin_right = 99.0
+margin_right = 44.0
 margin_bottom = 36.0
 custom_fonts/font = ExtResource( 3 )
-text = "GO BACK"
+text = "Exit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="reset" type="Button" parent="vscroll/VBoxContainer/status_bar"]
-margin_left = 103.0
-margin_right = 172.0
+visible = false
+margin_left = 48.0
+margin_right = 103.0
 margin_bottom = 36.0
 custom_fonts/font = ExtResource( 3 )
-text = "RESET"
+text = "Reset"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="show_answer" type="Button" parent="vscroll/VBoxContainer/status_bar"]
-margin_left = 176.0
-margin_right = 262.0
+[node name="hint_answer" type="Button" parent="vscroll/VBoxContainer/status_bar"]
+margin_left = 48.0
+margin_right = 139.0
 margin_bottom = 36.0
 custom_fonts/font = ExtResource( 3 )
-text = "GIVE UP"
+text = "Give hint"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="undo" type="Button" parent="vscroll/VBoxContainer/status_bar"]
+visible = false
+margin_left = 202.0
+margin_right = 259.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 3 )
+text = "Undo"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Control" type="Control" parent="vscroll/VBoxContainer/status_bar"]
-margin_left = 266.0
+margin_left = 143.0
 margin_right = 654.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
@@ -202,4 +332,5 @@ size_flags_vertical = 11
 [connection signal="pressed" from="vscroll/VBoxContainer/HBoxContainer2/mobile_desc" to="." method="_on_mobile_desc_pressed"]
 [connection signal="pressed" from="vscroll/VBoxContainer/status_bar/go_back" to="." method="_on_go_back_pressed"]
 [connection signal="pressed" from="vscroll/VBoxContainer/status_bar/reset" to="." method="_on_reset_pressed"]
-[connection signal="pressed" from="vscroll/VBoxContainer/status_bar/show_answer" to="." method="_on_show_answer_pressed"]
+[connection signal="pressed" from="vscroll/VBoxContainer/status_bar/hint_answer" to="." method="_on_show_answer_pressed"]
+[connection signal="pressed" from="vscroll/VBoxContainer/status_bar/undo" to="." method="_on_undo_pressed"]

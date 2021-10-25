@@ -10,6 +10,7 @@ enum LayoutType {
 signal key_pressed(character)
 
 const SmallFont = preload("res://fonts/cotham-sans/cotham_16.tres")
+const MediumFont = preload("res://fonts/cotham-sans/cotham_20.tres")
 const LoadScramble = preload("res://logic/load_scramble.gd")
 const MOD_BLUE = Color(0.7, 0.8, 1.0)
 const MOD_RED = Color(1.0, 0.8, 0.8)
@@ -98,6 +99,8 @@ func add_key_to_row(parent_row:HBoxContainer, key:String, size:float) -> void:
 		#print_debug("CURRENT SIZE: ", new_key.get_font("font"))
 		#var dynamicfont = new_key.get_font("font")
 		new_key.set("custom_fonts/font", SmallFont)
+	else:
+		new_key.set("custom_fonts/font", MediumFont)
 
 	parent_row.add_child(new_key)
 	new_key.connect("pressed_with_value", self, "on_key_pressed")

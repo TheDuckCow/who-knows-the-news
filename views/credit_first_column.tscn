@@ -1,0 +1,152 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=1]
+[ext_resource path="res://images/godot_logo.png" type="Texture" id=2]
+[ext_resource path="res://images/firejam-logo.png" type="Texture" id=3]
+[ext_resource path="res://views/credit_clicks.gd" type="Script" id=4]
+
+[node name="credit_first_column" type="VBoxContainer"]
+margin_right = 363.0
+margin_bottom = 563.0
+size_flags_horizontal = 3
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="."]
+margin_right = 363.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 0, 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="thanks_headline" type="Label" parent="."]
+margin_top = 19.0
+margin_right = 363.0
+margin_bottom = 33.0
+text = "Thanks for Playing"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+margin_top = 37.0
+margin_right = 363.0
+margin_bottom = 41.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_top = 45.0
+margin_right = 363.0
+margin_bottom = 96.0
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[fill]    Thanks for playing the game! If you enjoyed it, be sure to rate the [url=https://theduckcow.itch.io/who-knows-the-news]game and leave a comment[/url]. Big thanks to [url=https://twitter.com/thekindkitten]@TheKindKitten[/url] for QA testing![/fill]"
+text = "    Thanks for playing the game! If you enjoyed it, be sure to rate the game and leave a comment. Big thanks to @TheKindKitten for QA testing!"
+fit_content_height = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+margin_top = 100.0
+margin_right = 363.0
+margin_bottom = 185.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer2"]
+margin_right = 179.0
+margin_bottom = 85.0
+size_flags_horizontal = 3
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[fill]    Made for the 2021 Godot Charity FirejJam. [url=https://itch.io/jam/godot-fire-charity-jam-1]See here[/url] for more about the gamejam and other entries.[/fill]"
+text = "    Made for the 2021 Godot Charity FirejJam. See here for more about the gamejam and other entries."
+fit_content_height = true
+
+[node name="firejam_logo" type="TextureButton" parent="HBoxContainer2"]
+margin_left = 183.0
+margin_right = 363.0
+margin_bottom = 85.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 3 )
+texture_hover = ExtResource( 3 )
+expand = true
+stretch_mode = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 189.0
+margin_right = 363.0
+margin_bottom = 308.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="godot_logo" type="TextureButton" parent="HBoxContainer"]
+margin_right = 179.0
+margin_bottom = 119.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+texture_normal = ExtResource( 2 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 2 )
+expand = true
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
+margin_left = 183.0
+margin_right = 363.0
+margin_bottom = 119.0
+size_flags_horizontal = 3
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[fill]     What is Godot anyways? Godot is a cross-platform, free and open-source game engine released under the MIT license. You can [url=https://godotengine.org/]try it out here[/url][/fill]"
+text = "     What is Godot anyways? Godot is a cross-platform, free and open-source game engine released under the MIT license. You can try it out here"
+fit_content_height = true
+
+[node name="assets_used" type="Label" parent="."]
+margin_top = 312.0
+margin_right = 363.0
+margin_bottom = 326.0
+text = "Assets used"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+margin_top = 330.0
+margin_right = 363.0
+margin_bottom = 334.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+margin_top = 338.0
+margin_right = 363.0
+margin_bottom = 474.0
+custom_fonts/normal_font = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "    [fill]    The following assets were used to create this game, all are technically CC0: Typewriter (sound), paper crumple (sound), newspaper page flip (sound), bricktown title (Font), cotham-sans (font), and international flags (icons).
+	Anything else not listed, such as the \"victory piano jingle\" and interface icons, are by the game's creator.[/fill]"
+text = "        The following assets were used to create this game, all are technically CC0: Typewriter (sound), paper crumple (sound), newspaper page flip (sound), bricktown title (Font), cotham-sans (font), and international flags (icons).
+	Anything else not listed, such as the \"victory piano jingle\" and interface icons, are by the game's creator."
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bottom_pad" type="Control" parent="."]
+margin_top = 478.0
+margin_right = 363.0
+margin_bottom = 493.0
+rect_min_size = Vector2( 0, 15 )
+
+[connection signal="meta_clicked" from="RichTextLabel" to="." method="_on_meta_clicked"]
+[connection signal="meta_clicked" from="HBoxContainer2/RichTextLabel" to="." method="_on_meta_clicked"]
+[connection signal="pressed" from="HBoxContainer2/firejam_logo" to="." method="_on_firejam_logo_pressed"]
+[connection signal="pressed" from="HBoxContainer/godot_logo" to="." method="_on_godot_logo_pressed"]
+[connection signal="meta_clicked" from="HBoxContainer/RichTextLabel" to="." method="_on_meta_clicked"]
+[connection signal="meta_clicked" from="RichTextLabel2" to="." method="_on_meta_clicked"]

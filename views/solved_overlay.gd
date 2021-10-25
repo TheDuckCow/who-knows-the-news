@@ -6,6 +6,7 @@ const SELECT_SCREEN = "res://views/select_menu.tscn"
 onready var next_button := get_node("anim_control/Control/HBoxContainer/next_button")
 onready var stats_label := get_node("anim_control/Control/Control/VBoxContainer/stats")
 onready var victory_audio := get_node("victory")
+onready var open_article := get_node("anim_control/Control/open_article")
 
 var stat_text := ""
 var next_mode = GS.ScrambleSource.TOPIC_ARTICLE
@@ -16,16 +17,18 @@ var tutorial_index: int
 
 
 func _ready():
-	next_button.grab_focus()
 	stats_label.text = stat_text
 	if next_mode == GS.ScrambleSource.DAILY_ARTICLE:
 		next_button.text = "Play daily article"
 	elif next_mode == GS.ScrambleSource.TUTORIAL:
 		next_button.text = "Next tutorial"
+		open_article.visible = false
 	else:
 		next_button.text = "New puzzle"
 	if Cache.sound_on:
 		victory_audio.play(0)
+	next_button.call_deferred("grab_focus")
+
 
 func _on_menu_pressed():
 	SceneTransition.load_menu_select()
@@ -34,7 +37,8 @@ func _on_menu_pressed():
 func _on_next_pressed():
 	print_debug("Next press, mode: %s" % next_mode)
 	if next_mode == GS.ScrambleSource.DAILY_ARTICLE:
-		SceneTransition.load_daily_puzzle()
+		# SceneTransition.load_daily_puzzle() # Not ready.
+		SceneTransition.load_topic_select_scene()
 	elif next_mode == GS.ScrambleSource.TUTORIAL:
 		SceneTransition.start_tutorial_scene(tutorial_index)
 	else:
