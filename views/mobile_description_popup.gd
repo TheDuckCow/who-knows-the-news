@@ -14,11 +14,11 @@ func _ready():
 
 
 func _on_close_popup_pressed():
-	pass # Replace with function body.
 	tween.interpolate_property(self, "modulate:a",
 		1, 0, 0.1,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	assert(tween.connect("tween_completed", self, "on_tween_finish") == OK)
+	var res = tween.connect("tween_completed", self, "on_tween_finish")
+	assert(res == OK)
 	tween.start()
 
 

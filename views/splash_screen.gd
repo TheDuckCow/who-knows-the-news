@@ -5,7 +5,8 @@ export(String) var file_name = "splash_screen"
 
 func _ready():
 	var _delay_screenshot = get_tree().create_timer(0.2)
-	assert(_delay_screenshot.connect("timeout", self, "save_screenshot") == OK)
+	var res = _delay_screenshot.connect("timeout", self, "save_screenshot")
+	assert(res == OK)
 
 
 func save_screenshot():

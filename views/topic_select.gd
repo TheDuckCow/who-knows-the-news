@@ -27,7 +27,9 @@ func _ready():
 		input_country.add_item(itm)
 	
 	input_topic.grab_focus()
-	assert($page_background.connect("pressed_home", self, "_on_back") == OK)
+	var res = $page_background.connect("pressed_home", self, "_on_back")
+	if res != OK:
+		push_error("Failed to connect bg home button in topic scene")
 
 
 func _on_start_pressed():
@@ -38,6 +40,7 @@ func _on_start_pressed():
 	)
 
 func _on_back():
+	print_debug("Pressed home")
 	SceneTransition.load_menu_select()
 
 

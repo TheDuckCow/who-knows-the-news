@@ -11,4 +11,6 @@ zip who-knows-the-news.zip index.html *.js *.png *.wasm *.pck *.import
 
 echo "Go to: "
 echo "http://localhost:8000/"
+echo "Or, the local network address:"
+ifconfig | grep 192.168
 python3 -m http.server

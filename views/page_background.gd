@@ -102,4 +102,5 @@ func _on_screen_size_change():
 
 
 func _on_logo_pressed():
+	print_debug("Pressed home [from bg scene]")
 	emit_signal("pressed_home")

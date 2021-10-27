@@ -17,11 +17,7 @@ func _ready():
 
 
 func _on_play_today_pressed():
-	#assert(get_tree().change_scene(GAME_SCENE) == OK)
-	#var trans = SceneTransition.instance()
-	#add_child(trans)
-	#_transition_rect.transition_to(GAME_SCENE)
-	#SceneTransition.def
+	#SceneTransition.tbd
 	pass
 
 
@@ -34,7 +30,8 @@ func _on_tutorial_pressed():
 
 
 func _on_link_clicked(meta):
-	assert(OS.shell_open(meta) == OK)
+	var res = OS.shell_open(meta)
+	assert(res == OK)
 
 
 func _on_screen_size_change():

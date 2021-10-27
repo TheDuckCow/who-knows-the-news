@@ -65,21 +65,32 @@ func _ready():
 	publish_date.visible = false
 	topic_hint.text = "Category: Loading..."
 	
-	assert(keyboard.connect("key_pressed", self, "_on_key_pressed") == OK)
+	var res = keyboard.connect("key_pressed", self, "_on_key_pressed")
+	if res != OK:
+		push_error("Failed to connect key press")
 	
 	# The many attempts of just trying to get the keyboard to display properly.
 	var this_view = get_viewport()
-	this_view.connect("size_changed", self, "_on_screen_size_change")
+	res = this_view.connect("size_changed", self, "_on_screen_size_change")
+	if res != OK:
+		push_error("Failed to connect size change handler")
 	var _startup_timer = get_tree().create_timer(1.0)
 	keyboard.modulate.a = 0
 	_on_screen_size_change()
-	assert(_startup_timer.connect("timeout", self, "_on_screen_size_change") == OK)
+	res = _startup_timer.connect("timeout", self, "_on_screen_size_change")
+	if res != OK:
+		push_error("Failed to connect gamescene startup timeout")
 	
 	for ch in status_bar.get_children():
 		if ch is Button:
 			ch.disabled = true
 	
-	assert($page_background.connect("pressed_home", self, "_on_go_back_pressed") == OK)
+	# This doens't work in HTML release export...
+	#assert($page_background.connect("pressed_home", self, "_on_go_back_pressed") == OK)
+	# But this does:
+	res = $page_background.connect("pressed_home", self, "_on_go_back_pressed")
+	if res != OK:
+		push_error("Failed to connect bg home button in topic scene")
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -244,8 +255,8 @@ func _on_puzzle_solved():
 	solve_popup.stat_text = get_timer_text()
 	spacer_to_del.visible = false
 	container.add_child_below_node(keyboard, solve_popup)
-	status_bar.queue_free()
-	keyboard.queue_free()
+	status_bar.visible = false # queue_free()
+	keyboard.visible = false # queue_free()
 
 
 func show_article_metadata(article_info) -> void:
@@ -303,7 +314,8 @@ func _on_show_answer_pressed():
 
 
 func _on_publisher_info_meta_clicked(meta):
-	assert(OS.shell_open(meta) == OK)
+	var res = OS.shell_open(meta)
+	assert(res == OK)
 
 
 func _on_reset_pressed():
