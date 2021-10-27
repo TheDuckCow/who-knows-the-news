@@ -18,6 +18,8 @@ var sound_on := true
 # gave_up is assumed true until puzzle is solved.
 var session_solves = {}
 
+var tutorial_stage = 0
+
 
 func _ready():
 	assert(connect("language_update", self, "_on_language_update") == OK)

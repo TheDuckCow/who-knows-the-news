@@ -27,7 +27,7 @@ func _on_custom_topic_pressed():
 
 
 func _on_tutorial_pressed():
-	SceneTransition.start_tutorial_scene(0)
+	SceneTransition.start_tutorial_scene(Cache.tutorial_stage)
 
 
 func _on_link_clicked(meta):

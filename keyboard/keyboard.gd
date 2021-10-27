@@ -120,13 +120,25 @@ func update_allowed_keys(_allowed_keys: Array):
 	
 	var size = get_target_button_size() # Update based on layout space.
 	
+	var valid_key = null
+	var any_focussed = true
 	for row in row_container.get_children():
 		for button in row.get_children():
 			if not button is Button:
 				continue
-			button.size = size
-			if is_disabled_char(button.text):
-				button.disabled = true
+			var key:Button = button
+			key.size = size
+			if is_disabled_char(key.text):
+				key.disabled = true
+				key.focus_mode = Button.FOCUS_NONE
+			else:
+				valid_key = key
+				key.disabled = false
+				key.focus_mode = Button.FOCUS_ALL
+	# Detect if nothing is focussed, then pick a first valid key if not
+	if valid_key and not get_focus_owner():
+		print_debug("No focus owner, assigning a valid key")
+		valid_key.grab_focus()
 
 
 func is_disabled_char(key:String):

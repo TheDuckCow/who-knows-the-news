@@ -246,8 +246,10 @@ func _on_puzzle_solved():
 		if tutorial_index < len(LoadScramble.TUTORIAL_VALUES) - 1:
 			solve_popup.next_mode = ScrambleSource.TUTORIAL
 			solve_popup.tutorial_index = tutorial_index + 1
+			Cache.tutorial_stage = solve_popup.tutorial_index
 		else:
 			solve_popup.next_mode = ScrambleSource.DAILY_ARTICLE
+			Cache.tutorial_stage = 0
 	else:
 		solve_popup.next_mode = ScrambleSource.TOPIC_ARTICLE
 	
