@@ -6,7 +6,8 @@ onready var mobile_title := get_node("layout/VBoxContainer/game_title_mobile")
 
 func _ready():
 	SceneTransition.is_menu_screen = true
-	$layout/VBoxContainer/play_daily.grab_focus()
+	#$layout/VBoxContainer/play_daily.grab_focus()
+	$layout/VBoxContainer/custom_topic.grab_focus()
 	if not SceneTransition.current_scene:
 		# One time, afterwards it should self-assign.
 		SceneTransition.current_scene = self

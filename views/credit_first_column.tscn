@@ -129,7 +129,7 @@ margin_right = 363.0
 margin_bottom = 474.0
 custom_fonts/normal_font = ExtResource( 1 )
 bbcode_enabled = true
-bbcode_text = "    [fill]    The following assets were used to create this game, all are technically CC0: Typewriter (sound), paper crumple (sound), newspaper page flip (sound), bricktown title (Font), cotham-sans (font), and international flags (icons).
+bbcode_text = "    [fill]    The following assets were used to create this game, all are technically CC0: [url=https://freesound.org/people/tams_kp/sounds/43559/]Typewriter[/url] (sound), [url=https://freesound.org/people/WavJunction.com/sounds/456769/]paper crumple[/url] (sound), [url=https://freesound.org/people/rambler52/sounds/332105/]newspaper page flip[/url] (sound), [url=https://fontmeme.com/fonts/bricktown-font/]bricktown title[/url] (Font), [url=https://fontmeme.com/fonts/cotham-sans-font/]cotham-sans[/url] (font), and [url=http://www.famfamfam.com/lab/icons/flags/]international flags[/url] (icons).
 	Anything else not listed, such as the \"victory piano jingle\" and interface icons, are by the game's creator.[/fill]"
 text = "        The following assets were used to create this game, all are technically CC0: Typewriter (sound), paper crumple (sound), newspaper page flip (sound), bricktown title (Font), cotham-sans (font), and international flags (icons).
 	Anything else not listed, such as the \"victory piano jingle\" and interface icons, are by the game's creator."

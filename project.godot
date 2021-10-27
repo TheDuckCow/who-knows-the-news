@@ -207,7 +207,7 @@ Cache="*res://logic/cache.gd"
 [display]
 
 window/size/width=800
-window/size/height=640
+window/size/height=700
 
 [editor_plugins]
 

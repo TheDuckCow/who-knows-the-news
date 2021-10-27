@@ -60,14 +60,16 @@ texture_normal = ExtResource( 3 )
 texture_pressed = ExtResource( 9 )
 texture_hover = ExtResource( 9 )
 texture_disabled = ExtResource( 3 )
-texture_focused = ExtResource( 3 )
+texture_focused = ExtResource( 9 )
 expand = true
 stretch_mode = 4
 
 [node name="game_title" type="Label" parent="VBoxContainer/HBoxContainer"]
 margin_left = 54.0
-margin_right = 724.0
+margin_right = 611.0
 margin_bottom = 38.0
+focus_next = NodePath("../language")
+focus_previous = NodePath("../logo")
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -78,7 +80,6 @@ __meta__ = {
 }
 
 [node name="language" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
-visible = false
 margin_left = 615.0
 margin_right = 724.0
 margin_bottom = 38.0

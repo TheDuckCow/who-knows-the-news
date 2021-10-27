@@ -15,3 +15,4 @@ func save_screenshot():
 	img.lock()
 	var full_path = "res://screenshots/%s.png" % file_name
 	var _res = img.save_png(full_path)
+	print_debug("Made screenshot to:", ProjectSettings.globalize_path(full_path))

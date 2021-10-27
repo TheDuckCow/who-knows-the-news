@@ -87,7 +87,7 @@ __meta__ = {
 [node name="custom_topic" type="Button" parent="layout/VBoxContainer"]
 margin_top = 86.0
 margin_right = 760.0
-margin_bottom = 390.0
+margin_bottom = 450.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -97,15 +97,15 @@ __meta__ = {
 }
 
 [node name="HSeparator" type="HSeparator" parent="layout/VBoxContainer"]
-margin_top = 400.0
+margin_top = 460.0
 margin_right = 760.0
-margin_bottom = 410.0
+margin_bottom = 470.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="Tutorial" type="Button" parent="layout/VBoxContainer"]
-margin_top = 420.0
+margin_top = 480.0
 margin_right = 760.0
-margin_bottom = 470.0
+margin_bottom = 530.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 text = "Tutorial"
@@ -114,9 +114,9 @@ __meta__ = {
 }
 
 [node name="credits" type="Button" parent="layout/VBoxContainer"]
-margin_top = 480.0
+margin_top = 540.0
 margin_right = 760.0
-margin_bottom = 530.0
+margin_bottom = 590.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 text = "Credits"
