@@ -104,6 +104,9 @@ func test_parse_articles_xml_small_mock() -> void:
 	asserts.is_equal(len(articles), 4, "the four mocked articles are detected")
 	
 	# Magic tests for these articles
+	if not articles:
+		push_error("Exited tests early due to assert not met")
+		return
 	asserts.is_equal(
 		articles[0].get('title'),
 		'Week Ahead in Energy and Environment: Oct. 25 - Reuters',
@@ -171,6 +174,9 @@ func test_parse_articles_xml_full_mock() -> void:
 	
 	#print_debug("The last description found:")
 	#print(articles[-1].get('description'))
+	if not articles:
+		push_error("Exited tests early due to assert not met")
+		return
 	asserts.is_equal(
 		articles[-1].get('title'),
 		"Building: What's the big deal for the environment? - DW (English)",
@@ -201,6 +207,10 @@ func test_select_target_article() -> void:
 	
 	# Now test the sorting function.
 	var target := loader.select_target_article(articles)
+	asserts.is_true(target.has('link'), "returns non-empty dictionary")
+	if not target:
+		push_error("Ending test early due to empty dict")
+		return
 	print_debug('Selected target')
 	print(target)
 	asserts.is_equal(

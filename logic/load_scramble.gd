@@ -261,25 +261,29 @@ func parse_articles_xml(body:PoolByteArray) -> Array:
 	var mid_article_data = {}
 	var found_first_itm = false
 	
-	# Idea is to partition by "item", where each item is and then filter down only for sections
-	# which the right attributes
+	# Idea is to partition by "item", where each item is and then filter down
+	# only for sections which the right attributes.
 	while parser.read() != ERR_FILE_EOF:
-		#print_debug(parser.get_node_type())
-		#if parser.get_node_type() != XMLParser.NODE_TEXT:
-		#	continue
-		if parser.get_node_name() == 'item':
-			found_first_itm = true
-			if _is_article_data_complete(mid_article_data):
-				articles.append(mid_article_data)
-			mid_article_data = {}
-		elif found_first_itm == false:
-			continue # Skip all headers before first item tag.
-		var node_name = parser.get_node_name()
-		if not node_name in ['title', 'link', 'pubDate', 'source', 'description']: # 'description'
+		var ntype = parser.get_node_type()
+		var node_name # Populate if NODE_ELEMENT (not NODE_TEXT).
+		if ntype == XMLParser.NODE_ELEMENT_END:
 			continue
-		# TODO: need some special handling of 'description'
-		if node_name in mid_article_data:
-			continue # Would be a </closing> tag, so skip it.
+		elif ntype == XMLParser.NODE_TEXT:
+			continue # Always reading from within structure of NODE_ELEMENT.
+		elif ntype == XMLParser.NODE_ELEMENT:
+			node_name = parser.get_node_name() # Always save name if element
+			if node_name == 'item':
+				found_first_itm = true
+				if _is_article_data_complete(mid_article_data):
+					articles.append(mid_article_data)
+				mid_article_data = {}
+		elif found_first_itm == false:
+			continue # Skip all headers before first <item> tag.
+		else:
+			push_warning("Unrecognized xml element")
+
+		if not node_name in ['title', 'link', 'pubDate', 'source', 'description']:
+			continue
 		
 		# Do another read to get the next attribute value within this article.
 		parser.read()
@@ -314,6 +318,9 @@ func select_target_article(articles:Array) -> Dictionary:
 	# and potentially a flag to decide how difficult or not.
 	# Could also keep a session cache of which article links have already been
 	# used, to avoid repeats.
+	if not articles:
+		push_error("No articles included to return")
+		return {}
 
 	# For now, just returning the shortest article by name for ease.
 	var shortest_headline_ind = 0
