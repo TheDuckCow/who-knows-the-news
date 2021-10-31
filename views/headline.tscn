@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=1]
+[ext_resource path="res://views/headline.gd" type="Script" id=2]
+
+[node name="headline" type="RichTextLabel"]
+anchor_right = 1.0
+margin_bottom = 52.0
+rect_min_size = Vector2( 0, 50 )
+rect_pivot_offset = Vector2( -176.884, -41.6669 )
+mouse_filter = 1
+size_flags_vertical = 5
+custom_fonts/normal_font = ExtResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Hello World[/center]"
+text = "Hello World"
+fit_content_height = true
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+test_value = "Hello world, how are you doing in this fine situation of news. This is a long line of text, definitely wraps."
+
+[node name="text_row" type="VBoxContainer" parent="."]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}

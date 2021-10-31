@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://main_theme.tres" type="Theme" id=1]
 [ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=2]
@@ -82,7 +82,17 @@ bg_color = Color( 0.913725, 0.913725, 0.913725, 1 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
-border_width_bottom = 40
+border_width_bottom = 2
+border_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+shadow_color = Color( 0, 0, 0, 0.141176 )
+shadow_offset = Vector2( 5, 5 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.172549, 0.172549, 0.172549, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
 border_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 shadow_color = Color( 0, 0, 0, 0.141176 )
 shadow_offset = Vector2( 5, 5 )
@@ -113,7 +123,6 @@ volume_db = -14.0
 [node name="anim_control" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 0.139
-rect_min_size = Vector2( 0, 140 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -130,41 +139,41 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" type="Control" parent="anim_control/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="anim_control/Control"]
 margin_right = 480.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 0, 100 )
+margin_bottom = 96.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Panel" type="Panel" parent="anim_control/Control/Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="PanelContainer" type="PanelContainer" parent="anim_control/Control/VBoxContainer"]
+margin_right = 480.0
+margin_bottom = 56.0
 custom_styles/panel = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="VBoxContainer" type="VBoxContainer" parent="anim_control/Control/Control"]
-anchor_right = 1.0
-margin_top = 8.0
-margin_bottom = 99.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="puzzle_solved_static" type="RichTextLabel" parent="anim_control/Control/VBoxContainer/PanelContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 478.0
+margin_bottom = 54.0
+custom_fonts/normal_font = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "[center]Headline Solved![/center]"
+text = "[center]Headline Solved![/center]"
+fit_content_height = true
 
-[node name="puzzle_solved_static" type="Label" parent="anim_control/Control/Control/VBoxContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="anim_control/Control/VBoxContainer"]
+margin_top = 56.0
 margin_right = 480.0
-margin_bottom = 51.0
-custom_fonts/font = ExtResource( 2 )
-text = "Headline Solved!"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_bottom = 96.0
+custom_styles/panel = SubResource( 4 )
 
-[node name="stats" type="Label" parent="anim_control/Control/Control/VBoxContainer"]
-margin_top = 55.0
-margin_right = 480.0
-margin_bottom = 91.0
+[node name="stats" type="Label" parent="anim_control/Control/VBoxContainer/PanelContainer2"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 478.0
+margin_bottom = 38.0
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "In xyz"
 align = 1
@@ -173,9 +182,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="anim_control/Control"]
-margin_top = 104.0
+margin_top = 100.0
 margin_right = 480.0
-margin_bottom = 139.0
+margin_bottom = 135.0
 rect_min_size = Vector2( 0, 35 )
 custom_constants/separation = 20
 __meta__ = {
@@ -208,9 +217,9 @@ __meta__ = {
 }
 
 [node name="open_article" type="Button" parent="anim_control/Control"]
-margin_top = 143.0
+margin_top = 139.0
 margin_right = 480.0
-margin_bottom = 178.0
+margin_bottom = 174.0
 rect_min_size = Vector2( 0, 35 )
 custom_fonts/font = ExtResource( 6 )
 text = "Open Article"

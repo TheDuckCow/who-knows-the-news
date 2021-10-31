@@ -18,7 +18,7 @@ export(ScrambleSource) var source = ScrambleSource.TEST
 
 onready var anim_player := get_node("AnimationPlayer")
 
-onready var phrase_label := get_node("vscroll/VBoxContainer/phrase_state")
+onready var phrase_label := get_node("vscroll/VBoxContainer/headline")
 onready var keyboard := get_node("vscroll/VBoxContainer/keyboard")
 onready var step_label := get_node("vscroll/VBoxContainer/status_bar/steps")
 onready var steps_mobile := get_node("steps_mobile")
@@ -64,23 +64,29 @@ func _ready():
 	publisher_name.visible = false
 	publish_date.visible = false
 	topic_hint.text = "Category: Loading..."
-	
+
 	var res = keyboard.connect("key_pressed", self, "_on_key_pressed")
 	if res != OK:
 		push_error("Failed to connect key press")
-	
+
+	res = phrase_label.connect("key_pressed", self, "_on_headline_press")
+	if res != OK:
+		push_error("Failed to connect headline key press")
+
+	res = keyboard.connect("key_press_processed", self, "_on_key_press_processed")
+	if res != OK:
+		push_error("Failed to connect headline post-key-press")
+
 	# The many attempts of just trying to get the keyboard to display properly.
 	var this_view = get_viewport()
 	res = this_view.connect("size_changed", self, "_on_screen_size_change")
 	if res != OK:
 		push_error("Failed to connect size change handler")
-	var _startup_timer = get_tree().create_timer(1.0)
 	keyboard.modulate.a = 0
+
+	# Run once to just get it started, seems like it needs multiple.
 	_on_screen_size_change()
-	res = _startup_timer.connect("timeout", self, "_on_screen_size_change")
-	if res != OK:
-		push_error("Failed to connect gamescene startup timeout")
-	
+
 	for ch in status_bar.get_children():
 		if ch is Button:
 			ch.disabled = true
@@ -91,6 +97,11 @@ func _ready():
 	res = $page_background.connect("pressed_home", self, "_on_go_back_pressed")
 	if res != OK:
 		push_error("Failed to connect bg home button in topic scene")
+
+
+func _on_headline_press(key:String):
+	# Trigger update to the keybaord, which will update sound etc.
+	keyboard.emit_signal("key_pressed", key)
 
 
 ## Takes the current config and sets up the scene for scrambling.
@@ -106,6 +117,7 @@ func load_scramble():
 			load_state(solution, start, '')
 			topic_hint.text = "Category: Test"
 			keyboard.update_allowed_keys(state.allowed_keys())
+			start_startup_timer()
 		ScrambleSource.TUTORIAL:
 			var res = LoadScramble.load_tutorial(tutorial_index)
 			solution = res[0]
@@ -131,6 +143,7 @@ func load_scramble():
 			show_tutorial_metadata()
 			publisher_name.visible = false
 			keyboard.update_allowed_keys(state.allowed_keys())
+			start_startup_timer()
 		ScrambleSource.TOPIC_ARTICLE:
 			var url = LoadScramble.get_rss_article_url(
 				daily_article_topic, daily_article_country, daily_article_language)
@@ -166,6 +179,8 @@ func load_state(solution, start, url):
 	res = state.connect("puzzle_solved", self, "_on_puzzle_solved")
 	if res != OK:
 		push_error("Failed to connect puzzle solved")
+
+	start_startup_timer()
 
 
 func load_failed(reason:String):
@@ -210,30 +225,13 @@ func _on_key_pressed(_chart):
 
 ## Update display headline and the keyboard allowed keys as well.
 func update_phrase_label():
-	phrase_label.visible = true
-	var tmp_phrase = []
-	if not state: # E.g. if it failed to load.
-		phrase_label.bbcode_text = ""
-		return
-	for i in range(len(state.current_phrase)):
-		if state.current_phrase[i] == state.solution_phrase[i]:
-			if state.current_phrase[i] == keyboard.mid_swap and false:
-				# Warn that it's already a valid character, don't swap!
-				tmp_phrase.append("[color=red]%s[/color]" % state.current_phrase[i])
-			else:
-				# Black for already correct charater;
-				# have no color here so that word wrapping works on solution.
-				tmp_phrase.append("%s" % state.current_phrase[i])
-		else:
-			if state.current_phrase[i] == keyboard.mid_swap and false:
-				# Highlight the character being swapped.
-				tmp_phrase.append("[color=blue]%s[/color]" % state.current_phrase[i])
-			else:
-				# Lighter color for not yet confirmed
-				tmp_phrase.append("[color=gray]%s[/color]" % state.current_phrase[i])
-	
-	phrase_label.bbcode_text = "[center]%s[/center]" % PoolStringArray(tmp_phrase).join("")
 	keyboard.update_allowed_keys(state.allowed_keys())
+
+
+## Updates after the keyboard has processed its own inputs, and update mid_swap.
+func _on_key_press_processed():
+	phrase_label.mid_swap = keyboard.mid_swap
+	phrase_label.call_deferred("update_headline")
 
 
 func _on_puzzle_solved():
@@ -329,9 +327,27 @@ func _on_reset_pressed():
 	update_phrase_label()
 
 
+func start_startup_timer():
+	var _startup_timer = get_tree().create_timer(0.5)
+	var res = _startup_timer.connect("timeout", self, "_startup_timer")
+	if res != OK:
+		push_error("Failed to connect gamescene startup timeout")
+
+
+func _startup_timer():
+	update_phrase_label()
+	_on_screen_size_change()
+	# Start the keyboard fade in.
+	$Tween.interpolate_property(keyboard, "modulate:a",
+		0, 1, 0.4, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	$Tween.start()
+
+
 ## Create a more responsive display.
 func _on_screen_size_change():
-	keyboard.modulate.a = 1
+	#keyboard.modulate.a
+	#phrase_label.self_modulate.a = 0.0 # To initially hide
+	phrase_label.set_headline(state, keyboard.mid_swap)
 	if Cache.is_compact_screen_size():
 		scroll_area.margin_top = _v_margin_initial - 30
 		keyboard.use_small_font = true
@@ -342,7 +358,8 @@ func _on_screen_size_change():
 		if is_instance_valid(step_label):
 			steps_mobile.visible = true
 			step_label.visible = false
-		mobile_info.visible = true
+		# Below line: Effectively disables feature, since no longer used to display info.
+		mobile_info.visible = false
 	else:
 		scroll_area.margin_top = _v_margin_initial
 		keyboard.use_small_font = false

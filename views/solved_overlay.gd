@@ -4,7 +4,7 @@ var GS = load("res://views/game_scene.gd")
 const SELECT_SCREEN = "res://views/select_menu.tscn"
 
 onready var next_button := get_node("anim_control/Control/HBoxContainer/next_button")
-onready var stats_label := get_node("anim_control/Control/Control/VBoxContainer/stats")
+onready var stats_label := get_node("anim_control/Control/VBoxContainer/PanelContainer2/stats")
 onready var victory_audio := get_node("victory")
 onready var open_article := get_node("anim_control/Control/open_article")
 

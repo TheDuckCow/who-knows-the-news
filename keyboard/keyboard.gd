@@ -8,6 +8,9 @@ enum LayoutType {
 # Fired when a staged swap has begun
 # warning-ignore:unused_signal
 signal key_pressed(character)
+# Allows for the interactive headline to ensure it updates after the mid_swap
+# variable has been updated.
+signal key_press_processed()
 
 const SmallFont = preload("res://fonts/cotham-sans/cotham_16.tres")
 const MediumFont = preload("res://fonts/cotham-sans/cotham_20.tres")
@@ -54,6 +57,8 @@ func _ready():
 func _unhandled_input(event) -> void:
 	if event is InputEventKey and event.pressed:
 		var keystr = OS.get_scancode_string(event.get_scancode_with_modifiers())
+		if not keystr.to_lower() in LoadScramble.ONLY_SCRAMBLE_CHARS:
+			return
 		emit_signal("key_pressed", keystr.to_lower())
 
 
@@ -121,7 +126,6 @@ func update_allowed_keys(_allowed_keys: Array):
 	var size = get_target_button_size() # Update based on layout space.
 	
 	var valid_key = null
-	var any_focussed = true
 	for row in row_container.get_children():
 		for button in row.get_children():
 			if not button is Button:
@@ -135,6 +139,7 @@ func update_allowed_keys(_allowed_keys: Array):
 				valid_key = key
 				key.disabled = false
 				key.focus_mode = Button.FOCUS_ALL
+
 	# Detect if nothing is focussed, then pick a first valid key if not
 	if valid_key and not get_focus_owner():
 		print_debug("No focus owner, assigning a valid key")
@@ -165,10 +170,13 @@ func on_key_pressed(character:String) -> void:
 		highlight_key(mid_swap, false)
 		mid_swap = ""
 	
+	# Update the title.
 	var focus_button := get_key(character)
-	if focus_button:
+	if focus_button and not focus_button.disabled:
 		focus_button.grab_focus()
 	make_key_sound()
+	emit_signal("key_press_processed")
+	print_debug("Finished keybaord on_key_pressed (including swap update)")
 
 
 func make_key_sound():

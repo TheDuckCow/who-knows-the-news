@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=1]
+[ext_resource path="res://views/headline_char_button.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.6, 0.6, 0.6, 0.0980392 )
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id=3]
+border_width_top = 2
+border_color = Color( 0.0745098, 0.231373, 0.517647, 1 )
+
+[node name="headline_char_button" type="Button"]
+margin_right = 54.0
+margin_bottom = 51.0
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 1 )
+custom_styles/focus = SubResource( 2 )
+custom_styles/disabled = SubResource( 1 )
+custom_styles/normal = SubResource( 1 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0.521569, 0.521569, 0.521569, 1 )
+custom_colors/font_color_hover = Color( 0.243137, 0.282353, 0.360784, 1 )
+custom_colors/font_color_pressed = Color( 0.0784314, 0.14902, 0.313726, 1 )
+custom_constants/hseparation = 0
+text = "W"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="underline" type="HSeparator" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -10.0
+custom_styles/separator = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="mouse_entered" from="." to="." method="_on_headline_char_button_mouse_entered"]
