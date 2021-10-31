@@ -18,7 +18,7 @@ export(ScrambleSource) var source = ScrambleSource.TEST
 
 onready var anim_player := get_node("AnimationPlayer")
 
-onready var phrase_label := get_node("vscroll/VBoxContainer/headline")
+onready var headline := get_node("vscroll/VBoxContainer/headline")
 onready var keyboard := get_node("vscroll/VBoxContainer/keyboard")
 onready var step_label := get_node("vscroll/VBoxContainer/status_bar/steps")
 onready var steps_mobile := get_node("steps_mobile")
@@ -60,7 +60,7 @@ var daily_article_topic: String
 
 func _ready():
 	keyboard.game_scene = self
-	phrase_label.visible = false # In case of still loading.
+	headline.visible = false # In case of still loading.
 	publisher_name.visible = false
 	publish_date.visible = false
 	topic_hint.text = "Category: Loading..."
@@ -69,7 +69,7 @@ func _ready():
 	if res != OK:
 		push_error("Failed to connect key press")
 
-	res = phrase_label.connect("key_pressed", self, "_on_headline_press")
+	res = headline.connect("key_pressed", self, "_on_headline_press")
 	if res != OK:
 		push_error("Failed to connect headline key press")
 
@@ -164,7 +164,6 @@ func load_state(solution, start, url):
 		load_failed("Solution or initial state is null")
 		return
 	state = ScrambleState.new(solution, start, url)
-	keyboard.update_allowed_keys(state.allowed_keys())
 	update_phrase_label()
 	# Don't print out solution, chrome inspectors would cheat this way!
 	
@@ -220,18 +219,20 @@ func get_timer_text() -> String:
 
 
 func _on_key_pressed(_chart):
+	headline.set_defocus()
 	update_phrase_label()
 
 
 ## Update display headline and the keyboard allowed keys as well.
 func update_phrase_label():
-	keyboard.update_allowed_keys(state.allowed_keys())
+	if state:
+		keyboard.update_allowed_keys(state.allowed_keys())
 
 
 ## Updates after the keyboard has processed its own inputs, and update mid_swap.
 func _on_key_press_processed():
-	phrase_label.mid_swap = keyboard.mid_swap
-	phrase_label.call_deferred("update_headline")
+	headline.mid_swap = keyboard.mid_swap
+	headline.call_deferred("update_headline")
 
 
 func _on_puzzle_solved():
@@ -260,7 +261,7 @@ func _on_puzzle_solved():
 
 
 func show_article_metadata(article_info) -> void:
-	print_debug(article_info)
+	#print_debug(article_info) # Don't print out, could see answer in developer panel!
 	article_link = article_info["link"]
 	publisher_name.bbcode_text = "[url=%s]%s[/url]" % [
 		ScrambleState.domain_from_url(article_info["link"]),
@@ -272,7 +273,7 @@ func show_article_metadata(article_info) -> void:
 	topic_hint.text = "%s: %s" % [tr("Category"), daily_article_topic]
 	# Unfortunately, the description bascially always has the headline (solution)
 	# in it's name. So prefering to hide to get back the real estate.
-	# description.text = article_info["description"] if "description" in article_info else "(no description fetched)"
+	#description.text = article_info["description"] if "description" in article_info else "(no description fetched)"
 	#description.text = "Unscramble the headline above, from the category: %s" % daily_article_topic
 	description.visible = false
 
@@ -297,19 +298,18 @@ func _on_go_back_pressed():
 	SceneTransition.load_menu_select()
 
 
-## For either hint or show answer
+## For either hint or show answer.
+##
+## Initally had a "give up" button, but now prefer reveal 1 char at a time,
+## with a 'cost' of 10 swaps added to your score.
 func _on_show_answer_pressed():
 	keyboard.mid_swap = ""
 	if not state:
 		return
-	# Initally had a "give up" button, but now prefer reveal 1 char at a time.
 	state.solve_one_char(true)
-	#if state.hints_given < 2:
-	#	state.solve_one_char(true)
-	#else:
-	#	state.give_up()
 	keyboard.make_key_sound()
 	update_phrase_label()
+	headline.call_deferred("update_headline")
 	Cache.udpate_session_solve(state)
 
 
@@ -335,7 +335,6 @@ func start_startup_timer():
 
 
 func _startup_timer():
-	#update_phrase_label()
 	_on_screen_size_change()
 	# Start the keyboard fade in.
 	$Tween.interpolate_property(keyboard, "modulate:a",
@@ -345,15 +344,12 @@ func _startup_timer():
 
 ## Create a more responsive display.
 func _on_screen_size_change():
-	#keyboard.modulate.a
-	#phrase_label.self_modulate.a = 0.0 # To initially hide
-	phrase_label.set_headline(state, keyboard.mid_swap)
+	headline.set_headline(state, keyboard.mid_swap)
+	keyboard.generate_keyboard()
+	update_phrase_label()
 	if Cache.is_compact_screen_size():
 		scroll_area.margin_top = _v_margin_initial - 30
 		keyboard.use_small_font = true
-		keyboard.generate_keyboard()
-		if state:
-			keyboard.update_allowed_keys(state.allowed_keys())
 		# description.visible = false
 		if is_instance_valid(step_label):
 			steps_mobile.visible = true
@@ -363,9 +359,6 @@ func _on_screen_size_change():
 	else:
 		scroll_area.margin_top = _v_margin_initial
 		keyboard.use_small_font = false
-		keyboard.generate_keyboard()
-		if state:
-			keyboard.update_allowed_keys(state.allowed_keys())
 		# description.visible = true
 		if is_instance_valid(step_label):
 			steps_mobile.visible = false

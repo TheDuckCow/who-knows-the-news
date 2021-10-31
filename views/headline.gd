@@ -51,7 +51,7 @@ func set_headline(_state, _mid_swap:String) -> void:
 		print_debug("Not ready for initial set of headline")
 		state = _state
 		mid_swap = _mid_swap
-	print_debug("Started to set headline")
+	#print_debug("Started to set headline")
 	if is_mid_update:
 		push_warning("Tried to set headline before first one was ready")
 		_rerun_queued_state = true
@@ -172,7 +172,8 @@ func update_headline():
 	if is_mid_update:
 		push_warning("Tried to update headline in middle of update")
 	else:
-		print("Updating interactive headline")
+		#print("Updating interactive headline")
+		pass
 	var ind = 0
 	for row in text_row.get_children():
 		if not row.visible:
@@ -191,9 +192,39 @@ func update_headline():
 				btn.disabled = true if not test_value else false
 			else:
 				btn.disabled = false
+			if btn.disabled:
+				btn.focus_mode = Button.FOCUS_NONE
 
 			_update_underline(btn)
 			btn.text = state.current_phrase[ind]
 			ind += 1
 		ind += 1 # For end of line, would be a sapce.
 	self_modulate.a = 0.0
+
+func _unhandled_input(_event) -> void:
+	if (
+		Input.is_action_pressed("ui_right")
+		or Input.is_action_pressed("ui_left")
+		or Input.is_action_pressed("ui_up")
+		or Input.is_action_pressed("ui_down")
+		or Input.is_action_pressed("ui_focus_next")
+		or Input.is_action_pressed("ui_focus_prev")):
+		_grab_button_focus()
+
+
+func _grab_button_focus():
+	for row in text_row.get_children():
+		for btn in row.get_children():
+			if not btn is Button:
+				continue
+			if not btn.disabled:
+				btn.grab_focus()
+				return
+
+func set_defocus():
+	for row in text_row.get_children():
+		for btn in row.get_children():
+			if not btn is Button:
+				continue
+			btn.release_focus()
+			btn._on_focus_exited()

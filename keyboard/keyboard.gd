@@ -49,6 +49,9 @@ var use_layout = LayoutType.US
 
 func _ready():
 	# generate_keyboard() # Called by parent when ready.
+
+	# When any source triggers a key press, even if not from this node itself
+	# (e.g. by headline), process them the same via this signal.
 	var res = connect("key_pressed", self, "on_key_pressed")
 	if res != OK:
 		push_error("Failed to connect keypress")
@@ -59,6 +62,9 @@ func _unhandled_input(event) -> void:
 		var keystr = OS.get_scancode_string(event.get_scancode_with_modifiers())
 		if not keystr.to_lower() in LoadScramble.ONLY_SCRAMBLE_CHARS:
 			return
+
+		# Not using arrow keys, release focus from headline button(s).
+		release_focus()
 		emit_signal("key_pressed", keystr.to_lower())
 
 
@@ -96,6 +102,8 @@ func generate_keyboard() -> void:
 		for key in row:
 			add_key_to_row(new_row, key, button_size)
 		new_row.add_child(end_spacer)
+	if mid_swap:
+		highlight_key(mid_swap, true)
 
 
 ## Populate a single row of keys, connecting signals as needed.
@@ -112,7 +120,7 @@ func add_key_to_row(parent_row:HBoxContainer, key:String, size:float) -> void:
 		new_key.set("custom_fonts/font", MediumFont)
 
 	parent_row.add_child(new_key)
-	new_key.connect("pressed_with_value", self, "on_key_pressed")
+	new_key.connect("pressed_with_value", self, "on_key_button_press")
 
 
 func update_allowed_keys(_allowed_keys: Array):
@@ -127,6 +135,8 @@ func update_allowed_keys(_allowed_keys: Array):
 	
 	var valid_key = null
 	for row in row_container.get_children():
+		if not row.visible:
+			continue # Potentially pending deletion.
 		for button in row.get_children():
 			if not button is Button:
 				continue
@@ -136,14 +146,17 @@ func update_allowed_keys(_allowed_keys: Array):
 				key.disabled = true
 				key.focus_mode = Button.FOCUS_NONE
 			else:
-				valid_key = key
+				if not valid_key:
+					valid_key = key
 				key.disabled = false
-				key.focus_mode = Button.FOCUS_ALL
+				# Update: Not allowing focus on buttons, in favor of headline.
+				key.focus_mode = Button.FOCUS_NONE # FOCUS_ALL
 
 	# Detect if nothing is focussed, then pick a first valid key if not
-	if valid_key and not get_focus_owner():
-		print_debug("No focus owner, assigning a valid key")
-		valid_key.grab_focus()
+	# Removed this in favor of focussing on headline if needed.
+	#if valid_key and not get_focus_owner():
+		#print_debug("No focus owner, assigning a valid key: ", valid_key.text)
+		#valid_key.grab_focus()
 
 
 func is_disabled_char(key:String):
@@ -152,6 +165,10 @@ func is_disabled_char(key:String):
 		return true
 	return false
 	
+
+func on_key_button_press(character) -> void:
+	emit_signal("key_pressed", character)
+
 
 ## When a new character is pressed by shortcut key or virtual key press.
 func on_key_pressed(character:String) -> void:
@@ -173,7 +190,8 @@ func on_key_pressed(character:String) -> void:
 	# Update the title.
 	var focus_button := get_key(character)
 	if focus_button and not focus_button.disabled:
-		focus_button.grab_focus()
+		if focus_button.focus_mode != Button.FOCUS_NONE:
+			focus_button.grab_focus()
 	make_key_sound()
 	emit_signal("key_press_processed")
 	print_debug("Finished keybaord on_key_pressed (including swap update)")
@@ -202,7 +220,6 @@ func highlight_key(key:String, enable:bool) -> void:
 	var node_ref := get_key(key)
 	if not node_ref:
 		return
-	# Do more styling
 	if enable:
 		node_ref.modulate = MOD_BLUE
 		node_ref.set_position(node_ref.rect_position + Vector2(0, 3))

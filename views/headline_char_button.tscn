@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=1]
 [ext_resource path="res://views/headline_char_button.gd" type="Script" id=2]
@@ -14,6 +14,20 @@ draw_center = false
 [sub_resource type="StyleBoxFlat" id=3]
 border_width_top = 2
 border_color = Color( 0.0745098, 0.231373, 0.517647, 1 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "focus"
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0.266667, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5, 1 )
+}
 
 [node name="headline_char_button" type="Button"]
 margin_right = 54.0
@@ -45,4 +59,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="focus_highlight" type="AnimationPlayer" parent="."]
+anims/focus = SubResource( 4 )
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
 [connection signal="mouse_entered" from="." to="." method="_on_headline_char_button_mouse_entered"]

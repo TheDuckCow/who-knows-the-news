@@ -32,6 +32,12 @@ func _ready():
 		push_error("Failed to connect bg home button in topic scene")
 
 
+func _process(_delta) -> void:
+	if input_topic.has_focus() and Input.is_action_just_pressed("ui_accept"):
+		print("Handled accept input")
+		start_button.grab_focus()
+
+
 func _on_start_pressed():
 	SceneTransition.start_topic_scene(
 		input_topic.text if input_topic.text != "" else PLACEHOLDER_TOPIC,
