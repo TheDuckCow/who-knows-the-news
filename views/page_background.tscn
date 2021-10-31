@@ -1,14 +1,15 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://images/sound_on.png" type="Texture" id=1]
 [ext_resource path="res://main_theme.tres" type="Theme" id=2]
-[ext_resource path="res://images/theduckcow-logo.png" type="Texture" id=3]
+[ext_resource path="res://images/logo.png" type="Texture" id=3]
 [ext_resource path="res://views/page_background.gd" type="Script" id=4]
 [ext_resource path="res://sound/hover_crumple.tscn" type="PackedScene" id=5]
 [ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=6]
 [ext_resource path="res://fonts/bricktown/Bricktown.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=8]
-[ext_resource path="res://icon.png" type="Texture" id=9]
+[ext_resource path="res://images/logo_focus.png" type="Texture" id=9]
+[ext_resource path="res://images/logo_press.png" type="Texture" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
@@ -58,7 +59,7 @@ rect_min_size = Vector2( 50, 0 )
 focus_neighbour_left = NodePath("../sound_toggle")
 focus_neighbour_right = NodePath("../sound_toggle")
 texture_normal = ExtResource( 3 )
-texture_pressed = ExtResource( 9 )
+texture_pressed = ExtResource( 10 )
 texture_hover = ExtResource( 9 )
 texture_disabled = ExtResource( 3 )
 texture_focused = ExtResource( 9 )

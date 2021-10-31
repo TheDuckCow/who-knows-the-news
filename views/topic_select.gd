@@ -26,6 +26,9 @@ func _ready():
 	for itm in COUNTRIES:
 		input_country.add_item(itm)
 	
+	if Cache.last_topic:
+		input_topic.text = Cache.last_topic
+	
 	input_topic.grab_focus()
 	var res = $page_background.connect("pressed_home", self, "_on_back")
 	if res != OK:
@@ -39,6 +42,7 @@ func _process(_delta) -> void:
 
 
 func _on_start_pressed():
+	Cache.last_topic = input_topic.text
 	SceneTransition.start_topic_scene(
 		input_topic.text if input_topic.text != "" else PLACEHOLDER_TOPIC,
 		COUNTRIES[input_country.selected] if input_country.selected != -1 else "US",

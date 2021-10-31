@@ -179,6 +179,7 @@ text = "Category: Tutorial"
 
 [node name="headline" parent="vscroll/VBoxContainer" instance=ExtResource( 9 )]
 anchor_right = 0.0
+margin_left = 0.0
 margin_top = 20.0
 margin_right = 760.0
 margin_bottom = 72.0

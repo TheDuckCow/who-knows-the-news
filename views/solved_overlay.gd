@@ -19,7 +19,7 @@ var tutorial_index: int
 func _ready():
 	stats_label.text = stat_text
 	if next_mode == GS.ScrambleSource.DAILY_ARTICLE:
-		next_button.text = "Play daily article"
+		next_button.text = "Play real article"
 	elif next_mode == GS.ScrambleSource.TUTORIAL:
 		next_button.text = "Next tutorial"
 		open_article.visible = false

@@ -197,7 +197,7 @@ Display=8
 config/name="Who Knows the News"
 config/description="Brush up on the news while training your brain with daily puzzles! This is an entry to the 2021 Godot Fire Charity Jam, which had the theme of \"Everything changes\". What changes more than the news?"
 run/main_scene="res://views/select_menu.tscn"
-config/icon="res://icon.png"
+config/icon="res://images/app_icon.png"
 
 [autoload]
 

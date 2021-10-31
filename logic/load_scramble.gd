@@ -7,9 +7,16 @@ const TEST_VALUES = {
 }
 
 const TUTORIAL_VALUES = {
-	0: ["Fake news", {"f":"f", "a":"e", "k":"s", "e":"a", "n":"n", "w":"k", "s":"w"}], # Hint: Alternative facts
-	1: ["No news is good news", {}], # , Hint: When you don't hear something...
-	2: ["Who Knows the News\nby Patrick W. Crawford", {}], # Hint: The name of the game
+	0: ["Fake news", {
+		"f":"f", "a":"e", "k":"s", "e":"a", "n":"n", "w":"k", "s":"w"
+		}], # Hint: Alternative facts
+	1: ["No news is good news", {
+		'd':'i', 'e':'d', 'g':'o', 'i':'s', 'n':'n', 'o':'e', 's':'g', 'w':'w'
+		}], # , Hint: When you don't hear something...
+	2: ["Who Knows the News by Patrick W. Crawford", {
+		"a":"d", "b":"a", "c":"c", "d":"f", "e":"t", "f":"i", "h":"n", "i":"r",
+		"k":"b", "n":"s", "o":"k", "p":"p", "r":"e", "s":"o", "t":"h", "w":"w",
+		"y":"y"}], # Hint: The name of the game
 }
 
 const TUTORIAL_META = {
@@ -52,6 +59,7 @@ static func generate_transform(initial_phrase:String):
 		var selection = available[randi() % available.size()]
 		available.erase(selection)
 		transform[src] = selection
+	#print_debug(transform)
 	return transform
 
 
@@ -345,7 +353,8 @@ func select_target_article(articles:Array) -> Dictionary:
 			shortest_title_value = title
 		elif len(title.replace(" ", "")) < 15:
 			continue # Title is too short (but ok if this is the first)
-		elif articles[i]["link"] in Cache.session_solves:
+		#elif articles[i]["link"] in Cache.headlines_played:
+		elif title in Cache.headlines_played:
 			print_debug("Skipping already solved puzzle")
 			continue
 		elif len(title) < shortest_headline_len:

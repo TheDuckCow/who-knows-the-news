@@ -91,9 +91,9 @@ func _ready():
 		if ch is Button:
 			ch.disabled = true
 	
-	# This doens't work in HTML release export...
+	# Aserts get removed on release export, so DON'T use this line below
 	#assert($page_background.connect("pressed_home", self, "_on_go_back_pressed") == OK)
-	# But this does:
+	# But instead do this.
 	res = $page_background.connect("pressed_home", self, "_on_go_back_pressed")
 	if res != OK:
 		push_error("Failed to connect bg home button in topic scene")
@@ -122,7 +122,6 @@ func load_scramble():
 			var res = LoadScramble.load_tutorial(tutorial_index)
 			solution = res[0]
 			start = res[1]
-			load_state(solution, start, '')
 			# Make the tutorials easier, solving at least one already solved key.
 			if tutorial_index == 0:
 				# Pre-solved chars hard coded in the loaded sequence.
@@ -131,18 +130,23 @@ func load_scramble():
 				step_label.queue_free()
 			elif tutorial_index == 1:
 				anim_player.play("category_highlight")
-				state.solve_one_char(false)
+				# state.solve_one_char(false)
 				steps_mobile.queue_free()
 				step_label.queue_free()
 			elif tutorial_index == 2:
 				anim_player.play("hint_highlight")
-				state.solve_one_char(false)
-			assert(state.connect("puzzle_solved", self, "_stop_tutorial_animation") == OK)
+				steps_mobile.queue_free()
+				step_label.queue_free()
+				# state.solve_one_char(false)
 			# Update the "initial" phrase.
-			state.starting_phrase = state.current_phrase
-			show_tutorial_metadata()
+			#state.starting_phrase = state.current_phrase
 			publisher_name.visible = false
-			keyboard.update_allowed_keys(state.allowed_keys())
+			# keyboard.update_allowed_keys(state.allowed_keys())
+			load_state(solution, start, '')
+			res = state.connect("puzzle_solved", self, "_stop_tutorial_animation")
+			if res != OK:
+				push_error("Failed to connect puzzle_solved")
+			show_tutorial_metadata()
 			start_startup_timer()
 		ScrambleSource.TOPIC_ARTICLE:
 			var url = LoadScramble.get_rss_article_url(
@@ -191,11 +195,11 @@ func load_failed(reason:String):
 
 
 func _process(_delta):
-	if not is_instance_valid(step_label):
+	if is_instance_valid(step_label):
+		step_label.text = get_timer_text()
 		# At the end of the game, this section is dismissed, or in some tutorials
-		return
-	steps_mobile.text = get_timer_text()
-	step_label.text = get_timer_text()
+	if is_instance_valid(steps_mobile):
+		steps_mobile.text = get_timer_text()
 
 
 func get_timer_text() -> String:
@@ -246,6 +250,8 @@ func _on_puzzle_solved():
 			solve_popup.next_mode = ScrambleSource.TUTORIAL
 			solve_popup.tutorial_index = tutorial_index + 1
 			Cache.tutorial_stage = solve_popup.tutorial_index
+			Cache.max_tutorial_stage_finished = max(
+				Cache.max_tutorial_stage_finished, tutorial_index)
 		else:
 			solve_popup.next_mode = ScrambleSource.DAILY_ARTICLE
 			Cache.tutorial_stage = 0
@@ -256,8 +262,10 @@ func _on_puzzle_solved():
 	solve_popup.stat_text = get_timer_text()
 	spacer_to_del.visible = false
 	container.add_child_below_node(keyboard, solve_popup)
-	status_bar.visible = false # queue_free()
-	keyboard.visible = false # queue_free()
+	status_bar.visible = false
+	keyboard.visible = false
+	
+	Cache.udpate_session_solve(state)
 
 
 func show_article_metadata(article_info) -> void:
@@ -351,7 +359,7 @@ func _on_screen_size_change():
 		scroll_area.margin_top = _v_margin_initial - 30
 		keyboard.use_small_font = true
 		# description.visible = false
-		if is_instance_valid(step_label):
+		if is_instance_valid(step_label) and is_instance_valid(steps_mobile):
 			steps_mobile.visible = true
 			step_label.visible = false
 		# Below line: Effectively disables feature, since no longer used to display info.
@@ -360,7 +368,7 @@ func _on_screen_size_change():
 		scroll_area.margin_top = _v_margin_initial
 		keyboard.use_small_font = false
 		# description.visible = true
-		if is_instance_valid(step_label):
+		if is_instance_valid(step_label) and is_instance_valid(steps_mobile):
 			steps_mobile.visible = false
 			step_label.visible = true
 		mobile_info.visible = false

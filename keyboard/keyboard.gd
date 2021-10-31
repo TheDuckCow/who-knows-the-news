@@ -194,7 +194,7 @@ func on_key_pressed(character:String) -> void:
 			focus_button.grab_focus()
 	make_key_sound()
 	emit_signal("key_press_processed")
-	print_debug("Finished keybaord on_key_pressed (including swap update)")
+	#print_debug("Finished keybaord on_key_pressed (including swap update)")
 
 
 func make_key_sound():

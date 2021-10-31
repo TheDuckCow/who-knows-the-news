@@ -47,10 +47,10 @@ func _update_underline(btn:Button) -> void:
 
 
 func set_headline(_state, _mid_swap:String) -> void:
-	if not initial_generation_done:
-		print_debug("Not ready for initial set of headline")
-		state = _state
-		mid_swap = _mid_swap
+	#if not initial_generation_done:
+	#	print_debug("Not ready for initial set of headline")
+	state = _state
+	mid_swap = _mid_swap
 	#print_debug("Started to set headline")
 	if is_mid_update:
 		push_warning("Tried to set headline before first one was ready")

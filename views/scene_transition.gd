@@ -30,7 +30,7 @@ func _unhandled_input(event):
 	if event is InputEventKey and Input.is_action_just_pressed("ui_cancel"):
 		if is_menu_screen:
 			return # Already top level.
-		print_debug("TODO: popup option to exit game if that's the mode")
+		# print_debug("TODO: popup option to exit game if that's the mode")
 		load_menu_select()
 
 
@@ -46,7 +46,9 @@ func _load_new_scene(scn):
 	_texture_rect.texture = tex
 	_texture_rect.visible = true
 	
-	current_scene.queue_free() # No longer needed.
+	# Added while trying to ensure export stability.
+	if is_instance_valid(current_scene):
+		current_scene.queue_free() # No longer needed.
 	current_scene = scn.instance()
 	is_menu_screen = false # Greedy, revert back if untrue in load_menu_select.
 	get_tree().get_root().add_child(current_scene)

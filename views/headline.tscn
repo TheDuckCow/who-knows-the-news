@@ -5,6 +5,8 @@
 
 [node name="headline" type="RichTextLabel"]
 anchor_right = 1.0
+margin_left = 10.0
+margin_right = -10.0
 margin_bottom = 52.0
 rect_min_size = Vector2( 0, 50 )
 rect_pivot_offset = Vector2( -176.884, -41.6669 )
