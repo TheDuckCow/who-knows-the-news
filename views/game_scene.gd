@@ -335,7 +335,7 @@ func start_startup_timer():
 
 
 func _startup_timer():
-	update_phrase_label()
+	#update_phrase_label()
 	_on_screen_size_change()
 	# Start the keyboard fade in.
 	$Tween.interpolate_property(keyboard, "modulate:a",

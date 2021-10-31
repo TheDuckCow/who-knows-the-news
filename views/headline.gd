@@ -35,6 +35,17 @@ func _ready():
 		push_error("Failed to connect word_wrapp_done")
 
 
+func _on_key_press(key):
+	emit_signal("key_pressed", key)
+
+
+func _update_underline(btn:Button) -> void:
+	if mid_swap and mid_swap.to_lower() == btn.text.to_lower():
+		btn.underline.visible = true
+	else:
+		btn.underline.visible = false
+
+
 func set_headline(_state, _mid_swap:String) -> void:
 	if not initial_generation_done:
 		print_debug("Not ready for initial set of headline")
@@ -93,7 +104,12 @@ func set_headline(_state, _mid_swap:String) -> void:
 func generate_word_lines(solution:String) -> void:
 	var words = solution.split(" ")
 	var lines = [[]]
+
+	# Clear current values
 	self.bbcode_text = ""
+	for child in text_row.get_children():
+		child.visible = false
+
 	for i in range(words.size()):
 		var ind = lines.size() - 1
 		lines[ind].append(words[i])
@@ -116,45 +132,10 @@ func generate_word_lines(solution:String) -> void:
 	emit_signal("word_wrapp_done", lines)
 
 
-func update_headline():
-	if is_mid_update:
-		push_warning("Tried to update headline in middle of update")
-	else:
-		print("Updating interactive headline")
-	var ind = 0
-	for row in text_row.get_children():
-		for btn in row.get_children():
-			if ind >= len(state.current_phrase):
-				push_error("Iteration index %s exceeded phrase length: %s" % [
-					ind, state.current_phrase])
-				break
-			if not btn is Button:
-				ind += 1
-				continue
-			elif not state.current_phrase[ind].to_lower() in LoadScramble.ONLY_SCRAMBLE_CHARS:
-				pass
-			elif state.solution_phrase[ind] == state.current_phrase[ind]:
-				btn.disabled = true if not test_value else false
-			else:
-				btn.disabled = false
-			
-			if mid_swap and mid_swap.to_lower() == btn.text.to_lower():
-				btn.underline.visible = true
-			else:
-				btn.underline.visible = false
-			btn.text = state.current_phrase[ind]
-			ind += 1
-		ind += 1 # For end of line, would be a sapce.
-	self_modulate.a = 0.0
-
-
-func _on_key_press(key):
-	emit_signal("key_pressed", key)
-
-
 func _on_word_wrap_done(lines:Array):
-	print_debug("Generate headline buttons on_word_wrap_done")
+	#print_debug("Generate headline buttons on_word_wrap_done")
 	for child in text_row.get_children():
+		child.visible = false
 		child.queue_free()
 	
 	for line in lines:
@@ -179,11 +160,40 @@ func _on_word_wrap_done(lines:Array):
 				if not ltr.to_lower() in LoadScramble.ONLY_SCRAMBLE_CHARS:
 					btn.disabled = true
 				hbox.add_child(btn)
-
-	is_mid_update = false
+				_update_underline(btn)
 
 	# Now apply current phrase.
-	mid_swap = ""
+	is_mid_update = false
 	update_headline()
-
 	initial_generation_done = true
+
+
+func update_headline():
+	if is_mid_update:
+		push_warning("Tried to update headline in middle of update")
+	else:
+		print("Updating interactive headline")
+	var ind = 0
+	for row in text_row.get_children():
+		if not row.visible:
+			continue # Queued deletion from prior step.
+		for btn in row.get_children():
+			if ind >= len(state.current_phrase):
+				push_error("Iteration index %s exceeded phrase length: %s" % [
+					ind, state.current_phrase])
+				break
+			if not btn is Button:
+				ind += 1
+				continue
+			elif not state.current_phrase[ind].to_lower() in LoadScramble.ONLY_SCRAMBLE_CHARS:
+				pass
+			elif state.solution_phrase[ind] == state.current_phrase[ind]:
+				btn.disabled = true if not test_value else false
+			else:
+				btn.disabled = false
+
+			_update_underline(btn)
+			btn.text = state.current_phrase[ind]
+			ind += 1
+		ind += 1 # For end of line, would be a sapce.
+	self_modulate.a = 0.0
