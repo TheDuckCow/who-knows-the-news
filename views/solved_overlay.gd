@@ -7,6 +7,7 @@ onready var next_button := get_node("anim_control/Control/HBoxContainer/next_but
 onready var stats_label := get_node("anim_control/Control/VBoxContainer/PanelContainer2/stats")
 onready var victory_audio := get_node("victory")
 onready var open_article := get_node("anim_control/Control/open_article")
+onready var solved_bb := get_node("anim_control/Control/VBoxContainer/PanelContainer/puzzle_solved_static")
 
 var stat_text := ""
 var next_mode = GS.ScrambleSource.TOPIC_ARTICLE
@@ -19,15 +20,17 @@ var tutorial_index: int
 func _ready():
 	stats_label.text = stat_text
 	if next_mode == GS.ScrambleSource.DAILY_ARTICLE:
-		next_button.text = "Play real article"
+		next_button.text = tr("UI_TUT_FINISH")
 	elif next_mode == GS.ScrambleSource.TUTORIAL:
-		next_button.text = "Next tutorial"
+		next_button.text = tr("UI_NEXT_TUT")
 		open_article.visible = false
 	else:
-		next_button.text = "New puzzle"
+		next_button.text = tr("UI_NEW_PUZZLE")
 	if Cache.sound_on:
 		victory_audio.play(0)
 	next_button.call_deferred("grab_focus")
+
+	solved_bb.bbcode_text = tr(solved_bb.bbcode_text)
 
 
 func _on_menu_pressed():

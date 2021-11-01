@@ -29,29 +29,32 @@ __meta__ = {
 }
 
 [node name="desktop_vbox" type="VBoxContainer" parent="desktop_scroll"]
-margin_right = 754.0
-margin_bottom = 633.0
+margin_right = 760.0
+margin_bottom = 378.0
 rect_clip_content = true
 size_flags_horizontal = 3
 
 [node name="desktop_hb" type="HBoxContainer" parent="desktop_scroll/desktop_vbox"]
-margin_right = 754.0
-margin_bottom = 633.0
+margin_right = 760.0
+margin_bottom = 378.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="credit_first_column" parent="desktop_scroll/desktop_vbox/desktop_hb" instance=ExtResource( 4 )]
-margin_bottom = 633.0
+margin_right = 368.0
+margin_bottom = 378.0
 
 [node name="middle_split" type="Control" parent="desktop_scroll/desktop_vbox/desktop_hb"]
-margin_left = 367.0
-margin_right = 387.0
-margin_bottom = 633.0
+margin_left = 372.0
+margin_right = 392.0
+margin_bottom = 378.0
 rect_min_size = Vector2( 20, 0 )
 
 [node name="credit_second_column" parent="desktop_scroll/desktop_vbox/desktop_hb" instance=ExtResource( 3 )]
-margin_bottom = 633.0
+margin_left = 396.0
+margin_right = 760.0
+margin_bottom = 378.0
 
 [node name="mobile_scroll" type="ScrollContainer" parent="."]
 visible = false
@@ -67,7 +70,7 @@ __meta__ = {
 
 [node name="mobile_vbox" type="VBoxContainer" parent="mobile_scroll"]
 margin_right = 760.0
-margin_bottom = 1174.0
+margin_bottom = 662.0
 rect_clip_content = true
 size_flags_horizontal = 3
 

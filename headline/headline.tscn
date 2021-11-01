@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://fonts/medio/medio_50.tres" type="DynamicFont" id=1]
-[ext_resource path="res://views/headline.gd" type="Script" id=2]
+[ext_resource path="res://headline/headline.gd" type="Script" id=2]
 
 [node name="headline" type="RichTextLabel"]
 anchor_right = 1.0

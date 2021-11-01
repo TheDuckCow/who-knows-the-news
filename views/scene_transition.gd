@@ -5,6 +5,7 @@ const CreditsScene := preload("res://views/credits.tscn")
 const GameSceneGd := preload("res://views/game_scene.gd")
 const GameScene := preload("res://views/game_scene.tscn")
 const SelectMenu := preload("res://views/select_menu.tscn")
+const StartDaily := preload("res://views/start_daily.tscn")
 const TopicSelect := preload("res://views/topic_select.tscn")
 
 onready var _anim_player := $Control/AnimationPlayer
@@ -53,10 +54,27 @@ func _load_new_scene(scn):
 	is_menu_screen = false # Greedy, revert back if untrue in load_menu_select.
 	get_tree().get_root().add_child(current_scene)
 	get_tree().set_current_scene(current_scene)
+	#get_tree().get_root().call_deferred("add_child", current_scene)
+	#get_tree().call_deferred("set_current_scene", current_scene)
 
 
 func load_menu_select() -> void:
 	_load_new_scene(SelectMenu)
+	_anim_player.stop()
+	_anim_player.play("next_page")
+
+
+func load_start_daily() -> void:
+	_load_new_scene(StartDaily)
+	_anim_player.stop()
+	_anim_player.play("next_page")
+
+
+func start_daily_puzzle(date) -> void:
+	_load_new_scene(GameScene)
+	current_scene.source = GameSceneGd.ScrambleSource.DAILY_ARTICLE
+	current_scene.daily_artical_date = date
+	current_scene.load_scramble()
 	_anim_player.stop()
 	_anim_player.play("next_page")
 
@@ -87,11 +105,6 @@ func start_topic_scene(topic:String, country:String, language:String) -> void:
 	_anim_player.play("next_page")
 
 
-func load_daily_puzzle():
-	_load_new_scene(GameScene)
-	current_scene.source = GameSceneGd.ScrambleSource.TOPIC_ARTICLE
-
-
 func show_credits():
 	_load_new_scene(CreditsScene)
 	_anim_player.stop()
@@ -102,7 +115,7 @@ func _on_animation_finished(_anim_name) -> void:
 	if not _texture_rect.visible:
 		return # Bypass to avoid recursive backwards run
 	#_anim_player.disconnect("animation_finished", self, "_on_animation_finished")
-	print("Finished animation, start the game scene")
+	#print("Finished animation, start the game scene")
 	_texture_rect.visible = false
 	# To put back at start - not visible, avoids jitter on next animation run.
 	_anim_player.play_backwards("next_page")

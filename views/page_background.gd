@@ -13,33 +13,37 @@ onready var h_credit := get_node("VBoxContainer/HBoxContainer2/top_credit")
 onready var h_date := get_node("VBoxContainer/HBoxContainer2/date")
 onready var h_top_bar := get_node("VBoxContainer/top_separator")
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	set_sound_button()
 	for itm in Cache.LANGUAGES:
 		language.add_item(itm)
+	#language.text = Cache.language
+	language.selected = Cache.LANGUAGES.find(Cache.language)
 	language.icon = load("res://images/languages/%s.png" % Cache.language)
 	
 	var date_dict = {
-		1: "Jan",
-		2: "Feb",
-		3: "Mar",
-		4: "Apr",
-		5: "May",
-		6: "Jun",
-		7: "Jul",
-		8: "Aug",
-		9: "Sep",
-		10: "Oct",
-		11: "Nov",
-		12: "Dec",
+		1: "M_JAN",
+		2: "M_FEB",
+		3: "M_MAR",
+		4: "M_APR",
+		5: "M_MAY",
+		6: "M_JUN",
+		7: "M_JUL",
+		8: "M_AUG",
+		9: "M_SEP",
+		10: "M_OCT",
+		11: "M_NOV",
+		12: "M_DEC",
 	}
 	var dt := OS.get_date()
-	date.text = "%s. %s, %s" % [date_dict[dt["month"]], dt["day"], dt["year"]]
+	date.text = "%s. %s, %s" % [tr(date_dict[dt["month"]]), dt["day"], dt["year"]]
 	
 	var this_view = get_viewport()
 	this_view.connect("size_changed", self, "_on_screen_size_change")
 	_on_screen_size_change()
+	
+	h_credit.bbcode_text = tr(h_credit.bbcode_text)
 
 
 func _on_top_credit_meta_clicked(meta):

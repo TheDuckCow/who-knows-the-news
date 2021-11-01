@@ -222,6 +222,10 @@ ui_cancel={
  ]
 }
 
+[locale]
+
+translations=PoolStringArray( "res://translations/translations.en.translation", "res://translations/translations.es.translation" )
+
 [physics]
 
 common/enable_pause_aware_picking=true

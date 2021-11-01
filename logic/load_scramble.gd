@@ -9,23 +9,20 @@ const TEST_VALUES = {
 const TUTORIAL_VALUES = {
 	0: ["Fake news", {
 		"f":"f", "a":"e", "k":"s", "e":"a", "n":"n", "w":"k", "s":"w"
-		}], # Hint: Alternative facts
+		}],
 	1: ["No news is good news", {
 		'd':'i', 'e':'d', 'g':'o', 'i':'s', 'n':'n', 'o':'e', 's':'g', 'w':'w'
-		}], # , Hint: When you don't hear something...
+		}],
 	2: ["Who Knows the News by Patrick W. Crawford", {
 		"a":"d", "b":"a", "c":"c", "d":"f", "e":"t", "f":"i", "h":"n", "i":"r",
 		"k":"b", "n":"s", "o":"k", "p":"p", "r":"e", "s":"o", "t":"h", "w":"w",
-		"y":"y"}], # Hint: The name of the game
+		"y":"y"}],
 }
 
 const TUTORIAL_META = {
-	0: ["    TUTORIAL 1/3: Unscramble the news headline letters displayed above the line. Press one letter after another to swap them, using your keyboard or the on-screen keys below.",
-		"Alternate facts"],
-	1: ["    TUTORIAL 2/3: Longer phrases are harder. Use the Category Name (top left) to give you an idea, a word might even be in the headline itself!",
-	"When you hear no updates"],
-	2: ["   TUTORIAL 3/3: Try to solve shorter words first. If you are really stuck, you can press 'Use Hint' to correctly swap a single letter (costs 10 swaps). Scores are ranked first by number of swaps, then by time taken.",
-		"Name of the game and author"]
+	0: ["TUT_01_META", "TUT_01_HINT"],
+	1: ["TUT_02_META", "TUT_02_HINT"],
+	2: ["TUT_03_META", "TUT_03_HINT"]
 }
 
 const ONLY_SCRAMBLE_CHARS = "abcdefghijklmnopqrstuvwxyz"
@@ -146,11 +143,19 @@ static func get_rss_article_url(topic:String, country_code:String, language:Stri
 		country_code = "US"
 	if not language:
 		language = "en"
-	var url = "https://news.google.com/rss/search?q=%s&hl=%s-%s" % [
-		topic, language, country_code
-	]
+	var url
+	if topic:
+		# Will pull from RSS query feed based on input keyword (no spaces)
+		url = "https://news.google.com/rss/search?q=%s&hl=%s-%s" % [
+			topic, language, country_code
+		]
+	else:
+		# Will pull from top articles from today.
+		url = "https://news.google.com/rss?hl=%s-%s" % [language, country_code]
+		
 	print_debug("Loading article from RSS from: %s" % url)
 	return url
+
 
 ## Non static loader to send request for rss feed values.
 ## Will fire a signal on http load

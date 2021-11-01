@@ -1,7 +1,7 @@
 """Proxy for requests made to google rss feeds."""
 import requests
 
-RSS_URL_PART = "https://news.google.com/rss/search"
+RSS_URL_PART = "https://news.google.com/rss"
 
 
 def forward_rss_request(request):
@@ -14,11 +14,7 @@ def forward_rss_request(request):
         `make_response <http://flask.pocoo.org/docs/1.0/api/#flask.Flask.make_response>`.
     """
 
-    # Set CORS headers for the preflight request; this is an initial request
-    # that the browser itself will automatically make, if the request is
-    # coming from an app in web browser. Based on the response, the browser
-    # will then auto send forward the original request (so one request
-    # from the game app will show up as a 204 then 200 from the function side).
+    # Set CORS headers for the preflight request.
     if request.method == 'OPTIONS':
         # Allows GET requests from any origin with the Content-Type
         # header and caches preflight response for an 3600s

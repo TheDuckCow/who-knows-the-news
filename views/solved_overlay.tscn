@@ -159,8 +159,8 @@ margin_right = 478.0
 margin_bottom = 54.0
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
-bbcode_text = "[center]Headline Solved![/center]"
-text = "Headline Solved!"
+bbcode_text = "UI_SOLVED_BB"
+text = "UI_SOLVED_BB"
 fit_content_height = true
 
 [node name="PanelContainer2" type="PanelContainer" parent="anim_control/Control/VBoxContainer"]
@@ -198,7 +198,7 @@ focus_neighbour_left = NodePath("../next_button")
 focus_neighbour_right = NodePath("../next_button")
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 3 )
-text = "Back to menu"
+text = "UI_BACK_TO_MENU"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -222,7 +222,7 @@ margin_right = 480.0
 margin_bottom = 174.0
 rect_min_size = Vector2( 0, 35 )
 custom_fonts/font = ExtResource( 6 )
-text = "Open Article"
+text = "UI_OPEN_ARTICLE"
 
 [connection signal="mouse_entered" from="anim_control/Control/HBoxContainer/menu" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="pressed" from="anim_control/Control/HBoxContainer/menu" to="." method="_on_menu_pressed"]

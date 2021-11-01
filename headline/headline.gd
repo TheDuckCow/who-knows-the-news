@@ -8,7 +8,7 @@ signal word_wrapp_done(lines)
 signal key_pressed(key)
 
 const LoadScramble = preload("res://logic/load_scramble.gd")
-const HeadlineButton := preload("res://views/headline_char_button.tscn")
+const HeadlineButton := preload("res://headline/headline_char_button.tscn")
 const ScrambleState := preload("res://logic/scramble_state.gd")
 
 onready var text_row := get_node("text_row")

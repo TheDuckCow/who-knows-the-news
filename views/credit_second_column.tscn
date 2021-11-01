@@ -13,6 +13,7 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+page = "right"
 
 [node name="Control" type="Control" parent="."]
 margin_right = 363.0
@@ -28,7 +29,7 @@ margin_right = 363.0
 margin_bottom = 49.0
 rect_min_size = Vector2( 0, 30 )
 custom_fonts/font = ExtResource( 1 )
-text = "Back to menu"
+text = "UI_BACK_TO_MENU"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -46,66 +47,66 @@ __meta__ = {
 margin_top = 72.0
 margin_right = 363.0
 margin_bottom = 86.0
-text = "Disclaimer"
+text = "CR_DISCLAIMER"
 
 [node name="HSeparator" type="HSeparator" parent="."]
 margin_top = 90.0
 margin_right = 363.0
 margin_bottom = 94.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="CR_AS_IS_BB" type="RichTextLabel" parent="."]
 margin_top = 98.0
 margin_right = 363.0
-margin_bottom = 302.0
+margin_bottom = 115.0
 custom_fonts/normal_font = ExtResource( 1 )
 bbcode_enabled = true
-bbcode_text = "[fill]    This project is provided as-is. All non-tutorial news articles included are directly coming from the [url=https://news.google.com/]Google News[/url] RSS feed. No bias is introduced in the selection of articles beyond what Google News provides itself. No filtering is done for which publisher sources are allowed. The only filtering done is to ensure the article headlines have a suitable length for the game to run. If you see an article or topic you don't like or think a publisher should be removed, please reach out to support@theduckcow.com with a link to the article and title.[/fill]"
-text = "    This project is provided as-is. All non-tutorial news articles included are directly coming from the Google News RSS feed. No bias is introduced in the selection of articles beyond what Google News provides itself. No filtering is done for which publisher sources are allowed. The only filtering done is to ensure the article headlines have a suitable length for the game to run. If you see an article or topic you don't like or think a publisher should be removed, please reach out to support@theduckcow.com with a link to the article and title."
+bbcode_text = "CR_AS_IS_BB"
+text = "CR_AS_IS_BB"
 fit_content_height = true
 
 [node name="bottom_pad3" type="Control" parent="."]
-margin_top = 306.0
+margin_top = 119.0
 margin_right = 363.0
-margin_bottom = 321.0
+margin_bottom = 134.0
 rect_min_size = Vector2( 0, 15 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="disclaimer2" type="Label" parent="."]
-margin_top = 325.0
+[node name="more_games" type="Label" parent="."]
+margin_top = 138.0
 margin_right = 363.0
-margin_bottom = 339.0
-text = "More Games"
+margin_bottom = 152.0
+text = "CR_MORE_GAMES"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HSeparator2" type="HSeparator" parent="."]
-margin_top = 343.0
+margin_top = 156.0
 margin_right = 363.0
-margin_bottom = 347.0
+margin_bottom = 160.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="."]
-margin_top = 351.0
+[node name="CR_OTHER_BB" type="RichTextLabel" parent="."]
+margin_top = 164.0
 margin_right = 363.0
-margin_bottom = 436.0
+margin_bottom = 181.0
 custom_fonts/normal_font = ExtResource( 1 )
 bbcode_enabled = true
-bbcode_text = "[fill]    Be sure to check out other games that TheDuckCow has worked on! See the [url=https://theduckcow.itch.io/]itch.io page here[/url], and in particular, consider trying out the team project: DuckCowDrive prototype (teaser image below).[/fill]"
-text = "    Be sure to check out other games that TheDuckCow has worked on! See the itch.io page here, and in particular, consider trying out the team project: DuckCowDrive prototype (teaser image below)."
+bbcode_text = "CR_OTHER_BB"
+text = "CR_OTHER_BB"
 fit_content_height = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="dcd_teaser" type="TextureButton" parent="."]
-margin_top = 440.0
+margin_top = 185.0
 margin_right = 363.0
-margin_bottom = 570.0
+margin_bottom = 315.0
 rect_min_size = Vector2( 0, 130 )
 size_flags_horizontal = 3
 texture_normal = ExtResource( 2 )
@@ -118,12 +119,12 @@ __meta__ = {
 }
 
 [node name="bottom_pad" type="Control" parent="."]
-margin_top = 574.0
+margin_top = 319.0
 margin_right = 363.0
-margin_bottom = 589.0
+margin_bottom = 334.0
 rect_min_size = Vector2( 0, 15 )
 
 [connection signal="pressed" from="back_to_menu" to="." method="_on_back_to_menu_pressed"]
-[connection signal="meta_clicked" from="RichTextLabel" to="." method="_on_meta_clicked"]
-[connection signal="meta_clicked" from="RichTextLabel2" to="." method="_on_meta_clicked"]
+[connection signal="meta_clicked" from="CR_AS_IS_BB" to="." method="_on_meta_clicked"]
+[connection signal="meta_clicked" from="CR_OTHER_BB" to="." method="_on_meta_clicked"]
 [connection signal="pressed" from="dcd_teaser" to="." method="_on_dcd_teaser_pressed"]

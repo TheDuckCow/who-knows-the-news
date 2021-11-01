@@ -148,7 +148,7 @@ func solve_one_char(give_penalty:bool) -> void:
 	var keys = avail.keys()
 	var ind = randi() % keys.size()
 	swap_chars(keys[ind], avail[keys[ind]])
-	print_debug("Hint swapped %s & %s" %  [keys[ind], avail[keys[ind]]])
+	#print_debug("Hint swapped %s & %s" %  [keys[ind], avail[keys[ind]]])
 
 
 func give_up():

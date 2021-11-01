@@ -63,7 +63,7 @@ func _ready():
 	headline.visible = false # In case of still loading.
 	publisher_name.visible = false
 	publish_date.visible = false
-	topic_hint.text = "Category: Loading..."
+	topic_hint.text = tr("UI_CAT_LOADING")
 
 	var res = keyboard.connect("key_pressed", self, "_on_key_pressed")
 	if res != OK:
@@ -89,6 +89,9 @@ func _ready():
 
 	for ch in status_bar.get_children():
 		if ch is Button:
+			if ch.name == "go_back":
+				# Ensure can always go back
+				continue
 			ch.disabled = true
 	
 	# Aserts get removed on release export, so DON'T use this line below
@@ -154,7 +157,19 @@ func load_scramble():
 			var loader = LoadScramble.new()
 			add_child(loader)
 			var _http = loader.load_rss_article_request(url)
-			topic_hint.text = "Loading article..."
+			topic_hint.text = tr("UI_LOAD_ARTICLE")
+			
+			loader.connect("article_loaded", self, "load_state")
+			loader.connect("article_load_failed", self, "load_failed")
+			loader.connect("article_metadata", self, "show_article_metadata")
+		ScrambleSource.DAILY_ARTICLE:
+			# TODO: Implement check against Cache.daily_completed[daily_artical_date]
+			var url = LoadScramble.get_rss_article_url(
+				"", daily_article_country, daily_article_language)
+			var loader = LoadScramble.new()
+			add_child(loader)
+			var _http = loader.load_rss_article_request(url)
+			topic_hint.text = tr("UI_LOAD_ARTICLE")
 			
 			loader.connect("article_loaded", self, "load_state")
 			loader.connect("article_load_failed", self, "load_failed")
@@ -188,10 +203,11 @@ func load_state(solution, start, url):
 
 func load_failed(reason:String):
 	push_error("Failed to load scene with: %s" % reason)
-	# TODO: Handle here, maybe with popup and timer to go back to main menu
-	# to try again.
-	topic_hint.text = "Failed to load article (%s), tap the 'DuckCow' icon top left to go back" % reason
-	# SceneTransition.load_menu_select()
+	var trans_var = tr("UI_ERROR_MSG")
+	if "%" in trans_var:
+		topic_hint.text = tr("UI_ERROR_MSG") % reason
+	else:
+		topic_hint.text = "Failed to load article (%s), tap the top-left logo icon to go back" % reason
 
 
 func _process(_delta):
@@ -215,7 +231,7 @@ func get_timer_text() -> String:
 	var seconds = int(floor(t/1000 % 60))
 	var txt = "%s %s, %02d:%02d" % [
 		state.turns_taken,
-		tr("swaps"),
+		tr("UI_SWAPS"),
 		minutes,
 		seconds
 	]
@@ -250,6 +266,7 @@ func _on_puzzle_solved():
 			solve_popup.next_mode = ScrambleSource.TUTORIAL
 			solve_popup.tutorial_index = tutorial_index + 1
 			Cache.tutorial_stage = solve_popup.tutorial_index
+			# warning-ignore:narrowing_conversion
 			Cache.max_tutorial_stage_finished = max(
 				Cache.max_tutorial_stage_finished, tutorial_index)
 		else:
@@ -278,7 +295,7 @@ func show_article_metadata(article_info) -> void:
 	publish_date.text = article_info["pubDate"]
 	publisher_name.visible = true
 	publish_date.visible = true
-	topic_hint.text = "%s: %s" % [tr("Category"), daily_article_topic]
+	topic_hint.text = "%s: %s" % [tr("UI_CATEGORY"), daily_article_topic]
 	# Unfortunately, the description bascially always has the headline (solution)
 	# in it's name. So prefering to hide to get back the real estate.
 	#description.text = article_info["description"] if "description" in article_info else "(no description fetched)"
@@ -292,10 +309,10 @@ func show_tutorial_metadata() -> void:
 	publish_date.text = ""
 	publish_date.visible = true
 	description.visible = true
-	description.bbcode_text = LoadScramble.TUTORIAL_META[tutorial_index][0]
+	description.bbcode_text = tr(LoadScramble.TUTORIAL_META[tutorial_index][0])
 	topic_hint.text = "%s: %s" % [
-		tr("Category"),
-		LoadScramble.TUTORIAL_META[tutorial_index][1]
+		tr("UI_CATEGORY"),
+		tr(LoadScramble.TUTORIAL_META[tutorial_index][1])
 	]
 
 
@@ -383,12 +400,10 @@ func _on_mobile_desc_pressed():
 ## Deprecated
 func _on_undo_pressed():
 	keyboard.mid_swap = ""
-	#keyboard.on_key_pressed("key_pressed")
 	keyboard.make_key_sound()
 	state.undo_last_swap()
 
 
 func _stop_tutorial_animation():
-	print_debug("Triggered stop animation?")
 	anim_player.stop(true)
 	anim_player.seek(0, true)

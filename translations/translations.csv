@@ -1,0 +1,64 @@
+keys	en	es
+GAME_NAME	Who Knows the News	Quién Sabe las Noticias
+GAME_NAME_BB	[center]Who Knows The News[/center]	[center]Quién Sabe las Noticias[/center]
+GAME_BY_BB	[right]By Patrick W. Crawford ([url=https://theduckcow.com]TheDuckCow[/url])[/right]	[right]De Patrick W. Crawford ([url=https://theduckcow.com]TheDuckCow[/url])[/right]
+GAME_CC	(C) 2021 - Patrick W. Crawford, all rights reserved	(C) 2021 - Patrick W. Crawford, all rights reserved
+M_JAN	Jan	Enero
+M_FEB	Feb	Feb
+M_MAR	Mar	Marzo
+M_APR	Apr	Abril
+M_MAY	May	Mayo
+M_JUN	Jun	Junio
+M_JUL	Jul	Julio
+M_AUG	Aug	Ago
+M_SEP	Sep	Sept
+M_OCT	Oct	Octu
+M_NOV	Nov	Novi
+M_DEC	Dec	Dici
+G_TODAY	Today's Puzzle	Puzzle de hoy
+G_PRIOR_DAY	Play a Prior Daily Puzzle	Rompecabezas pasado
+G_TOPIC	Pick from Topic	Elegir de un Tema
+G_TUTORIAL	Tutorial	Tutorial
+G_CREDIT	Credits	Créditos
+UI_START	Start Puzzle	Iniciar rompecabezas
+UI_GO_BACK	Go back	Regresa
+UI_RESET	Reset	Reiniciar
+UI_GIVE_HINT	Give hint	Dar una pista
+UI_EXIT	Exit	Salida
+UI_SWAPS	swaps	pasos
+UI_CATEGORY	Category	Categoría
+UI_CAT_LOADING	Category: Loading...	Categoría: Cargando...
+UI_LOAD_ARTICLE	Loading article...	Cargando artículo...
+UI_ERROR_MSG	Failed to load article (%s), tap the top-left logo icon to go back	No se pudo cargar el artículo (%s), toca el ícono del logotipo en la parte superior izquierda para volver
+UI_TOPIC_PLACEHOLDER	Environment	Entorno
+UI_SOLVED_BB	[center]Headline Solved![/center]	[center]¡Título Resuelto![/center]
+UI_BACK_TO_MENU	Back to menu	Volver al menú
+UI_OPEN_ARTICLE	Open article	Abrir articulo
+UI_NEXT_TUT	Next tutorial	Siguiente tutorial
+UI_TUT_FINISH	Play real article	Juegar artículo real
+UI_NEW_PUZZLE	New puzzle	Nuevo juego
+CR_THANKS_PLAYING	Thanks for Playing	Gracias por jugar
+CR_TY_2	[fill]    Thanks for playing the game! If you enjoyed it, be sure to rate the [url=https://theduckcow.itch.io/who-knows-the-news]game and leave a comment[/url]. Big thanks to [url=https://twitter.com/thekindkitten]@TheKindKitten[/url] for QA testing![/fill]	[fill]    ¡Gracias por jugar el juego! Si te gustó, asegúrate de calificar el juego y [url=https://theduckcow.itch.io/who-knows-the-news]dejar un comentario[/url]. ¡Muchas gracias a [url=https://twitter.com/thekindkitten]@TheKindKitten[/url]  por las pruebas de control de calidad![/fill]
+CR_MADE_FOR	[fill]    Made for the 2021 Godot Charity FirejJam. [url=https://itch.io/jam/godot-fire-charity-jam-1]See here[/url] for more about the gamejam and other entries.[/fill]	[fill]    Hecho para el Godot Charity FirejJam 2021. [url=https://itch.io/jam/godot-fire-charity-jam-1]Consulte aquí[/url] para obtener más información sobre gamejam y otras entradas.[/fill]
+CR_GODOT_WHAT	[fill]     What is Godot anyways? Godot is a cross-platform, free and open-source game engine released under the MIT license. You can [url=https://godotengine.org/]try it out here[/url][/fill]	[fill]     ¿Qué es Godot de todos modos? Godot es un motor de juego multiplataforma, gratuito y de código abierto lanzado bajo la licencia del MIT. Puedes [url=https://godotengine.org/]probarlo aquí.[/url][/fill]
+CR_ASSETS_USED	Assets used	Activos utilizados
+CR_ASSETS_BB	    [fill]    The following assets were used to create this game, all are technically CC0: [url=https://freesound.org/people/tams_kp/sounds/43559/]Typewriter[/url] (sound), [url=https://freesound.org/people/WavJunction.com/sounds/456769/]paper crumple[/url] (sound), [url=https://freesound.org/people/rambler52/sounds/332105/]newspaper page flip[/url] (sound), [url=https://fontmeme.com/fonts/bricktown-font/]bricktown title[/url] (Font), [url=https://fontmeme.com/fonts/cotham-sans-font/]cotham-sans[/url] (font), and [url=http://www.famfamfam.com/lab/icons/flags/]international flags[/url] (icons).  Anything else not listed, such as the "victory piano jingle" and interface icons, are by the game's creator.[/fill]	[fill]    Los siguientes recursos se utilizaron para crear este juego, todos técnicamente CC0:[url=https://freesound.org/people/tams_kp/sounds/43559/]Máquina de escribir[/url] (sonido), [url=https://freesound.org/people/WavJunction.com/sounds/456769/]arrugamiento de papel[/url] (sonido), [url=https://freesound.org/people/rambler52/sounds/332105/]cambio de página[/url] (sonido), [url=https://fontmeme.com/fonts/bricktown-font/]bricktown title[/url] (fuente), [url=https://fontmeme.com/fonts/cotham-sans-font/]cotham-sans[/url] (fuente), y [url=http://www.famfamfam.com/lab/icons/flags/]banderas internacionales[/url] (iconos).         Cualquier otra cosa que no aparezca en la lista, como el "jingle de piano de la victoria" y los íconos de la interfaz, son del creador del juego.[/fill]
+CR_DISCLAIMER	Disclaimer	Descargo de responsabilidad
+CR_AS_IS_BB	[fill]    This project is provided as-is. All non-tutorial news articles included are directly coming from the [url=https://news.google.com/]Google News[/url] RSS feed. No bias is introduced in the selection of articles beyond what Google News provides itself. No filtering is done for which publisher sources are allowed. The only filtering done is to ensure the article headlines have a suitable length for the game to run. If you see an article or topic you don't like or think a publisher should be removed, please reach out to support@theduckcow.com with a link to the article and title.[/fill]	[fill]    Este proyecto se proporciona tal cual. Todos los artículos de noticias que no son tutoriales incluidos provienen directamente del feed de Google NewsRSS. No se introduce ningún sesgo en la selección de artículos más allá de lo que proporciona [url=https://news.google.com/]Google News[/url]. No se filtra qué fuentes de los editores están permitidas. El único filtrado que se realiza es garantizar que los titulares de los artículos tengan una longitud adecuada para que se ejecute el juego. Si ve un artículo o tema que no le gusta o cree que un editor debería eliminarse, comuníquese con support@theduckcow.com con un enlace al artículo y al título.[/fill]
+CR_MORE_GAMES	More Games	Más juegos
+CR_OTHER_BB	[fill]    Be sure to check out other games that TheDuckCow has worked on! See the [url=https://theduckcow.itch.io/]itch.io page here[/url], and in particular, consider trying out the team project: DuckCowDrive prototype (teaser image below).[/fill]	[fill]    ¡Asegúrate de ver otros juegos en los que ha trabajado TheDuckCow! Vea la [url=https://theduckcow.itch.io/]página itch.io aquí[/url] y, en particular, considere probar el proyecto de equipo: prototipo DuckCowDrive (imagen teaser a continuación).[/fill]
+DLY_READY	Are you ready?	¿Estás listo?
+DLY_READY_BB	[center]You only have one shot at the daily puzzle.[/center]	[center]Solo tienes una oportunidad para el rompecabezas diario.[/center]
+DLY_NO_TUT	It looks like you haven't completed all of the tutorials yet. [url=tutorial]Press here[/url] to start or pick up where you left off.	Parece que aún no ha completado todos los tutoriales. [url=tutorial]Presione aquí[/url] para comenzar o continuar donde lo dejó.
+DLY_RATE_GAME	Do you enjoy this game? Be sure to give it a [url=https://theduckcow.itch.io/who-knows-the-news]rating and comment here[/url]! You can play both on your mobile phone and desktop browser.	¿Disfrutas este juego? ¡Asegúrate de calificarlo y [url=https://theduckcow.itch.io/who-knows-the-news]comentarlo aquí[/url]! Puede jugar tanto en su teléfono móvil como en su navegador de escritorio.
+TOPIC_CHOOSE	Choose (or randomize) the category for your next puzzle.	Elija (o aleatorice) la categoría para su próximo rompecabezas.
+TOPIC_CAT_COLON	Category:	Categoría:
+TOPIC_FROM_COUNTRY	Article from country:  	Artículo del país:
+TOPIC_START	Start Puzzle	Iniciar rompecabezas
+TOPIC_FOOTER	    From the single-word category listed above, a number of article headlines and links will be fetched. Then, a random one will be picked. The app filters out articles that are too long or headlines you have already tried unscrambling (during this session).     Articles come directly from Google News RSS feeds. No bias or filtering is applied for which articles or publishers appear, the code does not look at this at all. All headlines pulled into this game have an available url, but sometimes there may be a paywall on the other side.	    De la categoría de una sola palabra mencionada anteriormente, se buscarán varios titulares de artículos y enlaces. Luego, se elegirá uno al azar. La aplicación filtra los artículos que son demasiado largos o los titulares que ya ha intentado descifrar (durante esta sesión).     Los artículos provienen directamente de las fuentes RSS de Google News. No se aplica ningún sesgo o filtrado para los artículos o editores que aparecen, el código no mira esto en absoluto. Todos los titulares incluidos en este juego tienen una URL disponible, pero a veces puede haber un muro de pago en el otro lado.
+TUT_01_META	    TUTORIAL 1/3: Unscramble the news headline letters displayed above the line. Press one letter after another to swap them, using your keyboard or the on-screen keys below.	    TUTORIAL 1/3: Descifre las letras de los titulares de noticias que se muestran encima de la línea. Presione una letra tras otra para intercambiarlas, usando su teclado o las teclas en pantalla a continuación.
+TUT_02_META	    TUTORIAL 2/3: Longer phrases are harder. Use the Category Name (top left) to give you an idea, a word might even be in the headline itself!	    TUTORIAL 2/3: Las frases más largas son más difíciles. Use el nombre de la categoría (arriba a la izquierda) para darle una idea, ¡incluso una palabra podría estar en el título!
+TUT_03_META	    TUTORIAL 3/3: Try to solve shorter words first. If you are really stuck, you can press 'Use Hint' to correctly swap a single letter (costs 10 swaps). Scores are ranked first by number of swaps, then by time taken.	    TUTORIAL 3/3: Primero intenta resolver palabras más cortas. Si está realmente atascado, puede presionar 'Usar pista' para intercambiar correctamente una sola letra (cuesta 10 intercambios). Las puntuaciones se clasifican primero por el número de intercambios y luego por el tiempo empleado.
+TUT_01_HINT	Alternate facts	Hechos alternativos
+TUT_02_HINT	When you hear no updates	Cuando no escuchas actualizaciones
+TUT_03_HINT	Name of the game and author	Nombre del juego y autora

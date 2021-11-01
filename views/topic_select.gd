@@ -1,7 +1,7 @@
 extends Control
 
 const PLACEHOLDER_TOPIC := "Environment"
-const COUNTRIES = ["US", "CA", "UK"]
+const COUNTRIES = ["US", "CA", "UK", "AU", "SP", "MX"]
 const ALLOWS_CHARS = "[A-Za-z-']"
 
 const RANDOM_TOPICS = [
@@ -25,14 +25,22 @@ func _ready():
 	input_topic.placeholder_text = PLACEHOLDER_TOPIC
 	for itm in COUNTRIES:
 		input_country.add_item(itm)
-	
+
 	if Cache.last_topic:
 		input_topic.text = Cache.last_topic
-	
+	if Cache.last_topic_lang:
+		input_country.selected = COUNTRIES.find(Cache.last_topic_lang)
+
 	input_topic.grab_focus()
 	var res = $page_background.connect("pressed_home", self, "_on_back")
 	if res != OK:
 		push_error("Failed to connect bg home button in topic scene")
+
+	var topic_label = $scroll/VBoxContainer/topic_label
+	topic_label.text = tr(topic_label.text)
+
+	var footer = $scroll/VBoxContainer/footer
+	footer.bbcode_text = tr(footer.bbcode_text)
 
 
 func _process(_delta) -> void:
@@ -43,6 +51,7 @@ func _process(_delta) -> void:
 
 func _on_start_pressed():
 	Cache.last_topic = input_topic.text
+	Cache.last_topic_lang = input_country.text
 	SceneTransition.start_topic_scene(
 		input_topic.text if input_topic.text != "" else PLACEHOLDER_TOPIC,
 		COUNTRIES[input_country.selected] if input_country.selected != -1 else "US",
@@ -78,3 +87,7 @@ func _on_random_topic_pressed():
 	else:
 		new_category = RANDOM_TOPICS[ind]
 	input_topic.set_text(new_category)
+
+
+func _on_mouse_entered():
+	pass # Replace with function body.

@@ -6,8 +6,8 @@ onready var mobile_title := get_node("layout/VBoxContainer/game_title_mobile")
 
 func _ready():
 	SceneTransition.is_menu_screen = true
-	#$layout/VBoxContainer/play_daily.grab_focus()
-	$layout/VBoxContainer/custom_topic.grab_focus()
+	$layout/VBoxContainer/play_daily.grab_focus()
+	#$layout/VBoxContainer/custom_topic.grab_focus()
 	if not SceneTransition.current_scene:
 		# One time, afterwards it should self-assign.
 		SceneTransition.current_scene = self
@@ -15,11 +15,13 @@ func _ready():
 	var this_view = get_viewport()
 	this_view.connect("size_changed", self, "_on_screen_size_change")
 	_on_screen_size_change()
+	
+	var title_mobile = $layout/VBoxContainer/game_title_mobile
+	title_mobile.bbcode_text = tr(title_mobile.bbcode_text)
 
 
 func _on_play_today_pressed():
-	#SceneTransition.tbd
-	pass
+	SceneTransition.load_start_daily()
 
 
 func _on_custom_topic_pressed():

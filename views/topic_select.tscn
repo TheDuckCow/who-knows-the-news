@@ -33,18 +33,18 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="scroll"]
 margin_right = 760.0
-margin_bottom = 347.0
+margin_bottom = 262.0
 size_flags_horizontal = 3
 custom_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="RichTextLabel" parent="scroll/VBoxContainer"]
+[node name="topic_label" type="RichTextLabel" parent="scroll/VBoxContainer"]
 margin_right = 760.0
 margin_bottom = 24.0
 custom_fonts/normal_font = ExtResource( 5 )
-text = "Choose (or randomize) the category for your next puzzle."
+text = "TOPIC_CHOOSE"
 fit_content_height = true
 
 [node name="topic_hb" type="HBoxContainer" parent="scroll/VBoxContainer"]
@@ -54,13 +54,13 @@ margin_bottom = 82.0
 
 [node name="Label" type="Label" parent="scroll/VBoxContainer/topic_hb"]
 margin_top = 1.0
-margin_right = 149.0
+margin_right = 337.0
 margin_bottom = 37.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Category: "
+text = "TOPIC_CAT_COLON"
 
 [node name="topic" type="LineEdit" parent="scroll/VBoxContainer/topic_hb"]
-margin_left = 153.0
+margin_left = 341.0
 margin_right = 712.0
 margin_bottom = 38.0
 size_flags_horizontal = 3
@@ -80,15 +80,15 @@ margin_bottom = 132.0
 
 [node name="Label" type="Label" parent="scroll/VBoxContainer/HBoxContainer"]
 margin_top = 3.0
-margin_right = 191.0
+margin_right = 243.0
 margin_bottom = 26.0
 custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Article from country:  "
+text = "TOPIC_FROM_COUNTRY"
 
 [node name="country" type="OptionButton" parent="scroll/VBoxContainer/HBoxContainer"]
-margin_left = 195.0
-margin_right = 292.0
+margin_left = 247.0
+margin_right = 344.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 custom_fonts/font = ExtResource( 5 )
@@ -98,26 +98,31 @@ text = "Country"
 margin_top = 152.0
 margin_right = 760.0
 margin_bottom = 190.0
-text = "Start Puzzle"
+text = "TOPIC_START"
 
-[node name="more_text" type="RichTextLabel" parent="scroll/VBoxContainer"]
+[node name="footer" type="RichTextLabel" parent="scroll/VBoxContainer"]
 margin_top = 210.0
 margin_right = 760.0
-margin_bottom = 312.0
+margin_bottom = 227.0
 custom_fonts/normal_font = ExtResource( 6 )
-text = "    From the single-word category listed above, a number of article headlines and links will be fetched. Then, a random one will be picked. The app filters out articles that are too long or headlines you have already tried unscrambling (during this session).
-    Articles come directly from Google News RSS feeds. No bias or filtering is applied for which articles or publishers appear, the code does not look at this at all. All headlines pulled into this game have an available url, but sometimes there may be a paywall on the other side."
+bbcode_enabled = true
+bbcode_text = "TOPIC_FOOTER"
+text = "TOPIC_FOOTER"
 fit_content_height = true
 
 [node name="Control" type="Control" parent="scroll/VBoxContainer"]
-margin_top = 332.0
+margin_top = 247.0
 margin_right = 760.0
-margin_bottom = 347.0
+margin_bottom = 262.0
 rect_min_size = Vector2( 0, 15 )
 
 [connection signal="mouse_entered" from="scroll/VBoxContainer/topic_hb/topic" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="text_changed" from="scroll/VBoxContainer/topic_hb/topic" to="." method="_on_topic_text_changed"]
+[connection signal="focus_entered" from="scroll/VBoxContainer/topic_hb/random_topic" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="mouse_entered" from="scroll/VBoxContainer/topic_hb/random_topic" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="pressed" from="scroll/VBoxContainer/topic_hb/random_topic" to="." method="_on_random_topic_pressed"]
+[connection signal="focus_entered" from="scroll/VBoxContainer/HBoxContainer/country" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="mouse_entered" from="scroll/VBoxContainer/HBoxContainer/country" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="focus_entered" from="scroll/VBoxContainer/start" to="." method="_on_mouse_entered"]
 [connection signal="mouse_entered" from="scroll/VBoxContainer/start" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="pressed" from="scroll/VBoxContainer/start" to="." method="_on_start_pressed"]

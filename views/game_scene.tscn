@@ -7,7 +7,7 @@
 [ext_resource path="res://views/page_background.tscn" type="PackedScene" id=5]
 [ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=7]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=8]
-[ext_resource path="res://views/headline.tscn" type="PackedScene" id=9]
+[ext_resource path="res://headline/headline.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Animation" id=1]
 resource_name = "category_highlight"
@@ -266,10 +266,10 @@ __meta__ = {
 }
 
 [node name="go_back" type="Button" parent="vscroll/VBoxContainer/status_bar"]
-margin_right = 44.0
+margin_right = 84.0
 margin_bottom = 36.0
 custom_fonts/font = ExtResource( 3 )
-text = "Exit"
+text = "UI_EXIT"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -286,11 +286,11 @@ __meta__ = {
 }
 
 [node name="hint_answer" type="Button" parent="vscroll/VBoxContainer/status_bar"]
-margin_left = 48.0
-margin_right = 139.0
+margin_left = 88.0
+margin_right = 232.0
 margin_bottom = 36.0
 custom_fonts/font = ExtResource( 3 )
-text = "Give hint"
+text = "UI_GIVE_HINT"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -307,17 +307,17 @@ __meta__ = {
 }
 
 [node name="Control" type="Control" parent="vscroll/VBoxContainer/status_bar"]
-margin_left = 143.0
-margin_right = 654.0
+margin_left = 236.0
+margin_right = 640.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 
 [node name="steps" type="Label" parent="vscroll/VBoxContainer/status_bar"]
-margin_left = 658.0
+margin_left = 644.0
 margin_right = 760.0
 margin_bottom = 36.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "0 steps"
+text = "0 swaps"
 
 [node name="keyboard" parent="vscroll/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0

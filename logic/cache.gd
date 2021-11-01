@@ -9,8 +9,7 @@ signal language_update(locale)
 const LANGUAGES = [
 	"en", 
 	"es",
-	"fr",
-	"de"
+	#"fr",
 ]
 
 var max_tutorial_stage_finished := -1
@@ -19,9 +18,15 @@ var sound_on := true
 
 # Structure of {url:String : {steps:int, time:int, gave_up:bool}}
 # gave_up is assumed true until puzzle is solved.
-var headlines_played = {}
-var tutorial_stage = 0
+var headlines_played := {}
+# Structure of {"YYYY-MM-DD":SolutionPhrase}
+var daily_completed := {}
+var tutorial_stage:int = 0
 var last_topic := ""
+var last_topic_lang := ""
+
+# To skip double updates
+var local_update := false
 
 
 func _ready():
@@ -34,6 +39,9 @@ func _ready():
 
 func _on_language_update(locale):
 	language = locale
+	TranslationServer.set_locale(language)
+	save_local_game()
+	SceneTransition.load_menu_select()
 
 
 func is_compact_screen_size() -> bool:
@@ -44,15 +52,19 @@ func is_compact_screen_size() -> bool:
 
 
 func udpate_session_solve(state:ScrambleState) -> void:
-	var date = OS.get_datetime()
 	headlines_played[state.solution_phrase] = {
 		"current": state.current_phrase if state.current_phrase != state.solution_phrase else "",
 		"swaps": state.turns_taken,
 		"time": state.end_msec - state.start_msec if state.end_msec else 0,
 		"gave_up": not state.is_solved,
-		"date": "%s-%s-%s" % [date["year"], date["month"], date["day"]]
+		"date": get_today()
 	}
 	save_local_game()
+
+
+func get_today() -> String:
+	var date = OS.get_datetime()
+	return "%s-%s-%s" % [date["year"], date["month"], date["day"]]
 
 
 func save_local_game():
@@ -61,6 +73,7 @@ func save_local_game():
 		"sound_on": sound_on,
 		"max_tutorial_stage_finished": max_tutorial_stage_finished,
 		"headlines_played": headlines_played,
+		"last_topic_lang": last_topic_lang
 	}
 	
 	var file = File.new()
@@ -94,6 +107,7 @@ func load_local_game():
 	
 	if save_data.has("language"):
 		language = save_data["language"]
+		TranslationServer.set_locale(language)
 		loaded_any = true
 	if save_data.has("sound_on"):
 		sound_on = save_data["sound_on"]
@@ -105,6 +119,9 @@ func load_local_game():
 		loaded_any = true
 	if save_data.has("headlines_played"):
 		headlines_played = save_data["headlines_played"]
+		loaded_any = true
+	if save_data.has("last_topic_lang"):
+		last_topic_lang = save_data["last_topic_lang"]
 		loaded_any = true
 	
 	if not loaded_any:

@@ -68,21 +68,20 @@ stretch_mode = 4
 
 [node name="game_title" type="Label" parent="VBoxContainer/HBoxContainer"]
 margin_left = 54.0
-margin_right = 724.0
+margin_right = 611.0
 margin_bottom = 38.0
 focus_next = NodePath("../language")
 focus_previous = NodePath("../logo")
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Who Knows The News"
+text = "GAME_NAME"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="language" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
-visible = false
 margin_left = 615.0
 margin_right = 724.0
 margin_bottom = 38.0
@@ -129,8 +128,8 @@ size_flags_horizontal = 3
 custom_fonts/normal_font = ExtResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[right]By Patrick W. Crawford ([url=https://theduckcow.com]TheDuckCow[/url])[/right]"
-text = "By Patrick W. Crawford (TheDuckCow)"
+bbcode_text = "GAME_BY_BB"
+text = "GAME_BY_BB"
 scroll_active = false
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
