@@ -73,7 +73,8 @@ func save_local_game():
 		"sound_on": sound_on,
 		"max_tutorial_stage_finished": max_tutorial_stage_finished,
 		"headlines_played": headlines_played,
-		"last_topic_lang": last_topic_lang
+		"last_topic_lang": last_topic_lang,
+		"daily_completed": daily_completed
 	}
 	
 	var file = File.new()
@@ -122,6 +123,9 @@ func load_local_game():
 		loaded_any = true
 	if save_data.has("last_topic_lang"):
 		last_topic_lang = save_data["last_topic_lang"]
+		loaded_any = true
+	if save_data.has("daily_completed"):
+		daily_completed = save_data["daily_completed"]
 		loaded_any = true
 	
 	if not loaded_any:

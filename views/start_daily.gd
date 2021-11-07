@@ -14,6 +14,7 @@ onready var past_daily_desktop := get_node("Container/VBoxContainer/past_daily_d
 onready var past_daily_mobile := get_node("Container/VBoxContainer/past_daily_mobile")
 onready var no_tutorial := get_node("Container/VBoxContainer/no_tutorial")
 onready var play_daily := get_node("Container/VBoxContainer/play_daily")
+onready var play_another := get_node("Container/VBoxContainer/another_puzzle")
 
 # For translation only
 onready var ready_bb  := get_node("Container/VBoxContainer/ready_bb")
@@ -33,14 +34,25 @@ func _ready():
 	ready_bb.bbcode_text = tr(ready_bb.bbcode_text)
 	general_text.bbcode_text = tr(general_text.bbcode_text)
 	
+	print_debug("Check if today's date already found:")
+	print(today_date)
+	print(Cache.daily_completed)
 	if Cache.daily_completed.has(today_date):
-		play_daily.text = "%s" % [
-			tr("DLY_ALREADY_DONE") #Cache.daily_completed[today_date
-			]
-		play_daily.disable = true
+		play_daily.text = "%s %s" % [
+			tr("DLY_ALREADY_DONE"), today_date]
+		play_daily.disabled = true
+		play_daily.focus_mode = Button.FOCUS_NONE
+		play_another.visible = true
+	else:
+		play_another.visible = false
 	
 	# Not ready yet, idea is to pull from user daily stats.
 	#load_daily_stats()
+	
+	var res = $page_background.connect("pressed_home", SceneTransition, "load_menu_select")
+	if res != OK:
+		push_error("Failed to connect bg home button in topic scene")
+
 
 func load_daily_stats():
 	for i in range(DAYS.size()):
@@ -59,3 +71,7 @@ func _on_RichTextLabel2_meta_clicked(meta):
 	else:
 		var res = OS.shell_open(meta)
 		assert(res == OK)
+
+
+func _on_another_puzzle_pressed():
+	SceneTransition.load_topic_select_scene()

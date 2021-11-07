@@ -30,7 +30,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Container"]
 margin_right = 760.0
-margin_bottom = 257.0
+margin_bottom = 299.0
 rect_pivot_offset = Vector2( -323.738, -69.2478 )
 size_flags_horizontal = 3
 
@@ -61,25 +61,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HSeparator" type="HSeparator" parent="Container/VBoxContainer"]
+[node name="another_puzzle" type="Button" parent="Container/VBoxContainer"]
 margin_top = 147.0
 margin_right = 760.0
-margin_bottom = 197.0
+margin_bottom = 185.0
+text = "UI_NEW_PUZZLE"
+
+[node name="HSeparator" type="HSeparator" parent="Container/VBoxContainer"]
+margin_top = 189.0
+margin_right = 760.0
+margin_bottom = 239.0
 rect_min_size = Vector2( 0, 50 )
 
 [node name="no_tutorial" type="RichTextLabel" parent="Container/VBoxContainer"]
-margin_top = 201.0
+margin_top = 243.0
 margin_right = 760.0
-margin_bottom = 225.0
+margin_bottom = 267.0
 bbcode_enabled = true
 bbcode_text = "DLY_NO_TUT"
 text = "DLY_NO_TUT"
 fit_content_height = true
 
 [node name="general_text" type="RichTextLabel" parent="Container/VBoxContainer"]
-margin_top = 229.0
+margin_top = 271.0
 margin_right = 760.0
-margin_bottom = 253.0
+margin_bottom = 295.0
 bbcode_enabled = true
 bbcode_text = "DLY_RATE_GAME"
 text = "DLY_RATE_GAME"
@@ -92,12 +98,15 @@ margin_right = 760.0
 margin_bottom = 325.0
 
 [node name="past_daily_desktop" type="HBoxContainer" parent="Container/VBoxContainer"]
-margin_top = 257.0
+margin_top = 299.0
 margin_right = 760.0
-margin_bottom = 257.0
+margin_bottom = 299.0
 
 [connection signal="focus_entered" from="Container/VBoxContainer/play_daily" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="mouse_entered" from="Container/VBoxContainer/play_daily" to="hover_crumple" method="_on_mouse_entered"]
 [connection signal="pressed" from="Container/VBoxContainer/play_daily" to="." method="_on_play_daily_pressed"]
+[connection signal="focus_entered" from="Container/VBoxContainer/another_puzzle" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="mouse_entered" from="Container/VBoxContainer/another_puzzle" to="hover_crumple" method="_on_mouse_entered"]
+[connection signal="pressed" from="Container/VBoxContainer/another_puzzle" to="." method="_on_another_puzzle_pressed"]
 [connection signal="meta_clicked" from="Container/VBoxContainer/no_tutorial" to="." method="_on_RichTextLabel2_meta_clicked"]
 [connection signal="meta_clicked" from="Container/VBoxContainer/general_text" to="." method="_on_RichTextLabel2_meta_clicked"]

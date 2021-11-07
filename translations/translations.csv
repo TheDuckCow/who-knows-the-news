@@ -51,6 +51,7 @@ DLY_READY	Are you ready?	¿Estás listo?
 DLY_READY_BB	[center]You only have one shot at the daily puzzle.[/center]	[center]Solo tienes una oportunidad para el rompecabezas diario.[/center]
 DLY_NO_TUT	It looks like you haven't completed all of the tutorials yet. [url=tutorial]Press here[/url] to start or pick up where you left off.	Parece que aún no ha completado todos los tutoriales. [url=tutorial]Presione aquí[/url] para comenzar o continuar donde lo dejó.
 DLY_RATE_GAME	Do you enjoy this game? Be sure to give it a [url=https://theduckcow.itch.io/who-knows-the-news]rating and comment here[/url]! You can play both on your mobile phone and desktop browser.	¿Disfrutas este juego? ¡Asegúrate de calificarlo y [url=https://theduckcow.itch.io/who-knows-the-news]comentarlo aquí[/url]! Puede jugar tanto en su teléfono móvil como en su navegador de escritorio.
+DLY_ALREADY_DONE	Completed:	Terminada:
 TOPIC_CHOOSE	Choose (or randomize) the category for your next puzzle.	Elija (o aleatorice) la categoría para su próximo rompecabezas.
 TOPIC_CAT_COLON	Category:	Categoría:
 TOPIC_FROM_COUNTRY	Article from country:  	Artículo del país:

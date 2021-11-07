@@ -40,8 +40,7 @@ func _on_menu_pressed():
 func _on_next_pressed():
 	print_debug("Next press, mode: %s" % next_mode)
 	if next_mode == GS.ScrambleSource.DAILY_ARTICLE:
-		# SceneTransition.load_daily_puzzle() # Not ready.
-		SceneTransition.load_topic_select_scene()
+		SceneTransition.load_start_daily()
 	elif next_mode == GS.ScrambleSource.TUTORIAL:
 		SceneTransition.start_tutorial_scene(tutorial_index)
 	else:

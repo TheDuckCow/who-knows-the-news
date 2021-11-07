@@ -182,6 +182,13 @@ func load_state(solution, start, url):
 	if not solution or not start:
 		load_failed("Solution or initial state is null")
 		return
+
+	if source == ScrambleSource.DAILY_ARTICLE:
+		# Ensure can't run today's date more than once.
+		print_debug("Saved daily article solution for %s" % daily_artical_date)
+		Cache.daily_completed[daily_artical_date] = solution
+		Cache.save_local_game()
+
 	state = ScrambleState.new(solution, start, url)
 	update_phrase_label()
 	# Don't print out solution, chrome inspectors would cheat this way!
@@ -262,13 +269,13 @@ func _on_puzzle_solved():
 	
 	# Assign the "next" action.
 	if source == ScrambleSource.TUTORIAL:
+		# warning-ignore:narrowing_conversion
+		Cache.max_tutorial_stage_finished = max(
+			Cache.max_tutorial_stage_finished, tutorial_index)
 		if tutorial_index < len(LoadScramble.TUTORIAL_VALUES) - 1:
 			solve_popup.next_mode = ScrambleSource.TUTORIAL
 			solve_popup.tutorial_index = tutorial_index + 1
 			Cache.tutorial_stage = solve_popup.tutorial_index
-			# warning-ignore:narrowing_conversion
-			Cache.max_tutorial_stage_finished = max(
-				Cache.max_tutorial_stage_finished, tutorial_index)
 		else:
 			solve_popup.next_mode = ScrambleSource.DAILY_ARTICLE
 			Cache.tutorial_stage = 0
