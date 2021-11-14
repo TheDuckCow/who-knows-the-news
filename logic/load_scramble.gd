@@ -288,6 +288,7 @@ func parse_articles_xml(body:PoolByteArray) -> Array:
 			if node_name == 'item':
 				found_first_itm = true
 				if _is_article_data_complete(mid_article_data):
+					mid_article_data['pubDate'] = _extract_rss_date(mid_article_data['pubDate'])
 					articles.append(mid_article_data)
 				mid_article_data = {}
 		elif found_first_itm == false:
@@ -304,6 +305,7 @@ func parse_articles_xml(body:PoolByteArray) -> Array:
 		
 	# Closing condition.
 	if _is_article_data_complete(mid_article_data):
+		mid_article_data['pubDate'] = _extract_rss_date(mid_article_data['pubDate'])
 		articles.append(mid_article_data)
 	
 	print_debug("Parsed data, article count: ", len(articles))
@@ -323,6 +325,30 @@ func _is_article_data_complete(article_data:Dictionary) -> bool:
 	#elif not 'description' in article_data:
 	#	return false
 	return true
+
+
+## Extract date e.g. "Mon, 25 Oct 2021" from "Mon, 25 Oct 2021 07:00:00 GMT".
+static func _extract_rss_date(date_str:String) -> String:
+	var final:String
+	if ":" in date_str:
+		# Get the : after the hour figure
+		var split_ary = date_str.split(":", true, 1)
+		var split:String = split_ary[0]
+
+		# Get last space, and show everything until then.
+		var last_space:int
+		for i in range(len(split)):
+			if split[i] == " ":
+				last_space = i
+
+		 # 8: Ensure length at least a year, month, day in numbers.
+		if last_space and last_space > 8 and last_space < len(split):
+			final = split.substr(0, last_space)
+		else:
+			final = date_str
+	else:
+		final = date_str
+	return final
 
 
 ## Select a suitable article from the total list of articles present.

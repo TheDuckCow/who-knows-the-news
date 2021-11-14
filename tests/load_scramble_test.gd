@@ -117,7 +117,7 @@ func test_parse_articles_xml_small_mock() -> void:
 		"first article full link matches")
 	asserts.is_equal(
 		articles[0].get('pubDate'),
-		"Fri, 22 Oct 2021 21:07:00 GMT",
+		"Fri, 22 Oct 2021", # Shortened by rss date parser, chopped off:  21:07:00 GMT
 		"first article publish date matches"
 	)
 	asserts.is_equal(
@@ -143,7 +143,7 @@ func test_parse_articles_xml_small_mock() -> void:
 		"last article full link matches")
 	asserts.is_equal(
 		articles[-1].get('pubDate'),
-		"Sat, 23 Oct 2021 08:00:57 GMT",
+		"Sat, 23 Oct 2021", # Orig: "Sat, 23 Oct 2021 08:00:57 GMT",
 		"last article publish date matches"
 	)
 	asserts.is_equal(
@@ -224,3 +224,15 @@ func test_select_target_article() -> void:
 		'and the correct link is still included'
 	)
 	
+func test_extract_rss_date() -> void:
+	describe("When extracting the date from the rss field")
+	parameters([
+		["start", "expected", "msg"],
+		["Mon, 25 Oct 2021 07:00:00 GMT", "Mon, 25 Oct 2021", "base example matched"],
+		["Mon, 25 Oct 2021 7:00pm", "Mon, 25 Oct 2021", "alt-base example matched"],
+		["2021/10/10", "2021/10/10", "shorthand unchanged"],
+		["10/1", "10/1", "super short unchanged"],
+		["Monday: Jan 5th", "Monday: Jan 5th", "Alt format unchanged"]
+	])
+	var output = LoadScramble._extract_rss_date(p["start"])
+	asserts.is_equal(output, p["expected"], p["msg"])
