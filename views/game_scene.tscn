@@ -137,16 +137,15 @@ anims/hint_highlight = SubResource( 3 )
 [node name="page_background" parent="." instance=ExtResource( 5 )]
 
 [node name="steps_mobile" type="Label" parent="."]
-visible = false
-anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -120.0
 margin_top = 20.0
+margin_right = -20.0
 margin_bottom = 26.0
 rect_min_size = Vector2( 120, 0 )
 custom_fonts/font = ExtResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0 steps"
+align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
