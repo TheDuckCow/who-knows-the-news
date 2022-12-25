@@ -3,3 +3,7 @@
 tests/metadata.json
 tests/results.xml
 builds/
+addons/*
+addons/WAT/*
+addons/godot-firebase/*
+addons/http-sse-client/*
