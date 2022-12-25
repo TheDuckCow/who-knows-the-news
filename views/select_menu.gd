@@ -1,6 +1,7 @@
 extends Control
 
 const GAME_SCENE = "res://views/game_scene.tscn"
+const LoadScramble := preload("res://logic/load_scramble.gd")
 
 onready var mobile_title := get_node("layout/VBoxContainer/game_title_mobile")
 
@@ -29,6 +30,8 @@ func _on_custom_topic_pressed():
 
 
 func _on_tutorial_pressed():
+	if Cache.tutorial_stage > LoadScramble.TUTORIAL_VALUES.keys().max():
+		Cache.tutorial_stage = 0
 	SceneTransition.start_tutorial_scene(Cache.tutorial_stage)
 
 
