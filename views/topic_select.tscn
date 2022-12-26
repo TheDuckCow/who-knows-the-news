@@ -32,7 +32,7 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="scroll"]
-margin_right = 760.0
+margin_right = 509.0
 margin_bottom = 262.0
 size_flags_horizontal = 3
 custom_constants/separation = 20
@@ -82,8 +82,8 @@ margin_bottom = 132.0
 margin_top = 3.0
 margin_right = 243.0
 margin_bottom = 26.0
-custom_fonts/font = ExtResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 5 )
 text = "TOPIC_FROM_COUNTRY"
 
 [node name="country" type="OptionButton" parent="scroll/VBoxContainer/HBoxContainer"]

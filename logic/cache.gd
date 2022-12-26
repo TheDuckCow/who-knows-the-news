@@ -47,8 +47,64 @@ func _on_language_update(locale):
 func is_compact_screen_size() -> bool:
 	# OS.get_windows_size()
 	#var screen_size = get_viewport().get_rect().size
+	var mult = set_response_font_size()
 	var screen_size = OS.window_size
-	return screen_size.x < 640 or screen_size.y < 480
+	return screen_size.x < 640 * mult or screen_size.y < 480 * mult
+
+
+## Assigns the desirable font sizes across teh game based on DPIs + screen size.
+func set_response_font_size() -> float:
+	# Load the shared font resources.
+	var main_theme = preload("res://main_theme.tres")
+	var bg_topbar = preload("res://fonts/bricktown/bg_topbar_title.tres")
+	var bg_cotham_16 = preload("res://fonts/cotham-sans/cotham_16.tres")
+	var bg_cotham_20 = preload("res://fonts/cotham-sans/cotham_20.tres")
+	var medio_20 = preload("res://fonts/medio/medio_20.tres")
+	var medio_50 = preload("res://fonts/medio/medio_50.tres")
+	
+	# Calcualte the screen size and multiplier.
+	# Guidance is to ensure buttons stay a clickable size, meaning a vertical
+	# height (forced by button size) of 44 points
+	# https://docs.godotengine.org/en/3.5/classes/class_os.html#class-os-method-get-screen-dpi
+	#
+	# On OS names:
+	# https://docs.godotengine.org/en/latest/classes/class_os.html#class-os-method-get-name
+	var font_multiplier: float = 1.0
+	print_debug("Scaling? OS: %s, Scale: %s, dpi: %s"
+			   % [OS.get_name(), OS.get_screen_scale(), OS.get_screen_dpi()])
+	match OS.get_name():
+		"Windows", "UWP":
+			font_multiplier = OS.get_screen_scale()
+		"OSX":
+			font_multiplier = OS.get_screen_scale()
+			print("MacOS")
+		"Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
+			font_multiplier = OS.get_screen_scale()
+		"Android":
+			font_multiplier = OS.get_screen_dpi() / 72 / OS.get_screen_scale()
+			print("Android")
+		"iOS":
+			# get_screen_dpi() is not implemented for iOS, always 72.
+			font_multiplier = OS.get_screen_scale()
+		"HTML5":
+			font_multiplier = OS.get_screen_scale() / 72 / OS.get_screen_scale()
+	
+	print("Final font multiplier:", font_multiplier)
+	
+	# Alt approach of width-based scaling
+	#var dpi = OS.get_screen_dpi()
+	#var pwidth = OS.window_size.x
+	#var inch_width = dpi / 72.0
+	
+	# Apply the target offsets vs their intended default.
+	main_theme.default_font.size = 35 * font_multiplier
+	bg_topbar.size = 30 * font_multiplier
+	bg_cotham_16.size = 16 * font_multiplier
+	bg_cotham_20.size = 20 * font_multiplier
+	medio_20.size = 20 * font_multiplier
+	medio_50.size = 50 * font_multiplier
+	
+	return font_multiplier
 
 
 func udpate_session_solve(state:ScrambleState) -> void:

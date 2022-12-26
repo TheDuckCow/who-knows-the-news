@@ -35,6 +35,18 @@ func _unhandled_input(event):
 		load_menu_select()
 
 
+## Handler for the android back button. Must have set_quit_on_go_back = False
+func _notification(what: int):
+	match what:
+		MainLoop.NOTIFICATION_WM_GO_BACK_REQUEST:
+			if is_menu_screen:
+				print_debug("Menu screen go back")
+				get_tree().quit() # default behavior
+			else:
+				print_debug("Non menu screen go back")
+				call_deferred("load_menu_select")
+
+
 func _load_new_scene(scn):
 	run_random_audio()
 	#_anim_player.seek(0, true) # Make sure at start of anim to begin with.

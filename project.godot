@@ -198,6 +198,7 @@ config/name="Who Knows the News"
 config/description="Brush up on the news while training your brain with daily puzzles! This is an entry to the 2021 Godot Fire Charity Jam, which had the theme of \"Everything changes\". What changes more than the news?"
 run/main_scene="res://views/select_menu.tscn"
 config/icon="res://images/app_icon.png"
+config/quit_on_go_back=false
 
 [autoload]
 
@@ -208,6 +209,10 @@ Cache="*res://logic/cache.gd"
 
 window/size/width=800
 window/size/height=700
+window/dpi/allow_hidpi=true
+window/energy_saving/keep_screen_on=false
+window/handheld/orientation="portrait"
+window/ios/hide_home_indicator=false
 
 [editor_plugins]
 
@@ -233,4 +238,5 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
 environment/default_environment="res://default_env.tres"

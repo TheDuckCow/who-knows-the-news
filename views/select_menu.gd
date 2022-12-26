@@ -41,6 +41,7 @@ func _on_link_clicked(meta):
 
 
 func _on_screen_size_change():
+	Cache.set_response_font_size()
 	if Cache.is_compact_screen_size():
 		mobile_title.visible = true
 		$layout.margin_top = 50

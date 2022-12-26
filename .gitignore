@@ -7,3 +7,4 @@ addons/*
 addons/WAT/*
 addons/godot-firebase/*
 addons/http-sse-client/*
+android/*

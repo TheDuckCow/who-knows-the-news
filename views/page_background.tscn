@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://images/sound_on.png" type="Texture" id=1]
 [ext_resource path="res://main_theme.tres" type="Theme" id=2]
@@ -6,25 +6,16 @@
 [ext_resource path="res://views/page_background.gd" type="Script" id=4]
 [ext_resource path="res://sound/hover_crumple.tscn" type="PackedScene" id=5]
 [ext_resource path="res://fonts/cotham-sans/cotham_16.tres" type="DynamicFont" id=6]
-[ext_resource path="res://fonts/bricktown/Bricktown.otf" type="DynamicFontData" id=7]
+[ext_resource path="res://fonts/bricktown/bg_topbar_title.tres" type="DynamicFont" id=7]
 [ext_resource path="res://fonts/cotham-sans/cotham_20.tres" type="DynamicFont" id=8]
 [ext_resource path="res://images/logo_focus.png" type="Texture" id=9]
 [ext_resource path="res://images/logo_press.png" type="Texture" id=10]
-
-[sub_resource type="DynamicFont" id=1]
-size = 30
-extra_spacing_top = -10
-extra_spacing_bottom = -5
-font_data = ExtResource( 7 )
 
 [node name="page_background" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 2 )
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -41,9 +32,6 @@ anchor_bottom = 1.0
 margin_left = 20.0
 margin_top = 10.0
 margin_right = -20.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 760.0
@@ -64,7 +52,7 @@ texture_hover = ExtResource( 9 )
 texture_disabled = ExtResource( 3 )
 texture_focused = ExtResource( 9 )
 expand = true
-stretch_mode = 4
+stretch_mode = 5
 
 [node name="game_title" type="Label" parent="VBoxContainer/HBoxContainer"]
 margin_left = 54.0
@@ -73,8 +61,8 @@ margin_bottom = 38.0
 focus_next = NodePath("../language")
 focus_previous = NodePath("../logo")
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 7 )
 text = "GAME_NAME"
 align = 1
 __meta__ = {
@@ -86,8 +74,8 @@ margin_left = 615.0
 margin_right = 724.0
 margin_bottom = 38.0
 rect_min_size = Vector2( 80, 0 )
-custom_fonts/font = ExtResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 8 )
 text = "Language"
 flat = true
 
@@ -98,6 +86,7 @@ margin_bottom = 38.0
 focus_neighbour_left = NodePath("../logo")
 focus_neighbour_right = NodePath("../logo")
 texture_normal = ExtResource( 1 )
+stretch_mode = 5
 
 [node name="top_separator" type="HSeparator" parent="VBoxContainer"]
 margin_top = 42.0
@@ -113,8 +102,8 @@ margin_bottom = 66.0
 margin_right = 378.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 6 )
 text = "Oct. 10, 2021"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -125,8 +114,8 @@ margin_left = 382.0
 margin_right = 760.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_fonts/normal_font = ExtResource( 6 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = ExtResource( 6 )
 bbcode_enabled = true
 bbcode_text = "GAME_BY_BB"
 text = "GAME_BY_BB"
